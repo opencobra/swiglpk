@@ -76,5 +76,6 @@ setup(
     ],
     py_modules=['swiglpk'],
     cmdclass={'build': CustomBuild, 'install': CustomInstall},
-    ext_modules=[Extension("_swiglpk", sources=["glpk.i"], libraries=['glpk'])]
+    ext_modules=[Extension("_swiglpk", sources=["glpk.i"], libraries=['glpk'])],
+    include_package_data = True
 )
