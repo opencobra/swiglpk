@@ -59,7 +59,7 @@ setup(
     url='TBD',
     long_description=open('README.md').read(),
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Topic :: Utilities',
         'Programming Language :: Python :: 2.5',
         'Programming Language :: Python :: 2.6',
