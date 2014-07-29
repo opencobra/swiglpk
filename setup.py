@@ -50,10 +50,10 @@ copy_glpk_header()
 
 setup(
     name='swiglpk',
-    version='0.0.0',
+    version='0.1.0',
     author='Nikolaus Sonnenschein',
     author_email='niko.sonnenschein@gmail.com',
-    description='swiglpk - swig bindings for glpk',
+    description='swiglpk - Simple swig bindings for the GNU Linear Programming Kit',
     license='Apache License Version 2.0',
     keywords='optimization swig glpk',
     url='TBD',
