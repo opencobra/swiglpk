@@ -48,6 +48,14 @@ class CustomInstall(install):
 # Copy and process glpk.h into current directory
 copy_glpk_header()
 
+# from https://coderwall.com/p/qawuyq
+try:
+    import pypandoc
+
+    description = pypandoc.convert('README.md', 'rst')
+except (IOError, ImportError):
+    description = ''
+
 setup(
     name='swiglpk',
     version='0.1.0',
@@ -57,7 +65,7 @@ setup(
     license='Apache License Version 2.0',
     keywords='optimization swig glpk',
     url='TBD',
-    long_description=open('README.md').read(),
+    long_description=description,
     classifiers=[
         'Development Status :: 4 - Beta',
         'Topic :: Utilities',

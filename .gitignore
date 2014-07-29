@@ -6,3 +6,5 @@ swiglpk.py
 _swiglpk.so
 glpk.h
 .idea
+swiglpk.egg-info/
+dist/
