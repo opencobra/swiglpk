@@ -1,1 +1,8 @@
+*.pyc
+build/
 ext/glpk-*
+glpk_wrap.c
+swiglpk.py
+_swiglpk.so
+glpk.h
+.idea

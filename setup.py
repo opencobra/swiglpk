@@ -12,11 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
+import os
 from setuptools import setup, Extension, find_packages
 from distutils.command.build import build
 from setuptools.command.install import install
-# from setuptools.command.install_lib import install_lib
+import subprocess
+
+def copy_glpk_header():
+    glpsol_path = os.path.dirname(subprocess.check_output(['which', 'glpsol']))
+    glpk_header_path = os.path.join(os.path.dirname(glpsol_path), 'include', 'glpk.h')
+    if os.path.exists(glpk_header_path):
+        with open('glpk.h', 'w') as out_handle:
+            with open(glpk_header_path) as in_handle:
+                for line in in_handle:
+                    if line == 'void glp_vprintf(const char *fmt, va_list arg);\n':
+                        out_handle.write('// The following line is commented out because it is causing problems with swig\n')
+                        out_handle.write('// void glp_vprintf(const char *fmt, va_list arg);')
+                    else:
+                        out_handle.write(line)
+    else:
+        raise Exception('Could not find glpk.h! Maybe glpk or glpsol is not installed.')
+
 
 class CustomBuild(build):
     def run(self):
@@ -29,6 +45,8 @@ class CustomInstall(install):
         self.run_command('build_ext')
         self.do_egg_install()
 
+# Copy and process glpk.h into current directory
+copy_glpk_header()
 
 setup(
     name='swiglpk',
