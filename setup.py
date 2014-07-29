@@ -64,7 +64,7 @@ setup(
     description='swiglpk - Simple swig bindings for the GNU Linear Programming Kit',
     license='Apache License Version 2.0',
     keywords='optimization swig glpk',
-    url='TBD',
+    url='https://github.com/biosustain/swiglpk',
     long_description=description,
     classifiers=[
         'Development Status :: 4 - Beta',
