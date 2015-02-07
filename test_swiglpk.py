@@ -39,7 +39,7 @@ def test_swiglpk():
     x1 = glp_get_col_prim(lp, 1);
     x2 = glp_get_col_prim(lp, 2);
     x3 = glp_get_col_prim(lp, 3);
-    print "\nZ = %g; x1 = %g; x2 = %g; x3 = %g\n" % (Z, x1, x2, x3);
+    print("\nZ = %g; x1 = %g; x2 = %g; x3 = %g\n" % (Z, x1, x2, x3))
 
     nose.tools.assert_almost_equal(Z, 733.3333333333333)
     nose.tools.assert_almost_equal(x1, 33.333333333333336)

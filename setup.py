@@ -20,7 +20,7 @@ import subprocess
 
 def copy_glpk_header():
     glpsol_path = os.path.dirname(subprocess.check_output(['which', 'glpsol']))
-    glpk_header_path = os.path.join(os.path.dirname(glpsol_path), 'include', 'glpk.h')
+    glpk_header_path = os.path.join(os.path.dirname(glpsol_path).decode("utf-8"), 'include', 'glpk.h')
     if os.path.exists(glpk_header_path):
         with open('glpk.h', 'w') as out_handle:
             with open(glpk_header_path) as in_handle:
