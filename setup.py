@@ -58,7 +58,7 @@ except (IOError, ImportError):
 
 setup(
     name='swiglpk',
-    version='0.1.0',
+    version='1.0.0',
     author='Nikolaus Sonnenschein',
     author_email='niko.sonnenschein@gmail.com',
     description='swiglpk - Simple swig bindings for the GNU Linear Programming Kit',
@@ -68,11 +68,12 @@ setup(
     long_description=description,
     test_suite='nose.collector',
     classifiers=[
-        'Development Status :: 4 - Beta',
-        'Topic :: Utilities',
-        'Programming Language :: Python :: 2.5',
-        'Programming Language :: Python :: 2.6',
+        'Development Status :: 5 - Production/Stable',
+        'Topic :: Scientific/Engineering',
+        'Topic :: Software Development',
+        'Intended Audience :: Science/Research',
         'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.4',
         'License :: OSI Approved :: Apache Software License',
     ],
     py_modules=['swiglpk'],

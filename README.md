@@ -62,7 +62,7 @@ Running the following (slightly adapted) example from the [GLPK manual](http://k
 	x1 = glp_get_col_prim(lp, 1);
 	x2 = glp_get_col_prim(lp, 2);
 	x3 = glp_get_col_prim(lp, 3);
-	print "\nZ = %g; x1 = %g; x2 = %g; x3 = %g\n" % (Z, x1, x2, x3);
+	print("\nZ = %g; x1 = %g; x2 = %g; x3 = %g\n" % (Z, x1, x2, x3))
 	glp_delete_prob(lp);
 
 ... will produce the following output (the example can also be found at examples/example.py):
