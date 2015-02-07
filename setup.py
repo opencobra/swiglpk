@@ -66,6 +66,7 @@ setup(
     keywords='optimization swig glpk',
     url='https://github.com/biosustain/swiglpk',
     long_description=description,
+    test_suite='nose.collector',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Topic :: Utilities',

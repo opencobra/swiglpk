@@ -1,0 +1,12 @@
+language: python
+python:
+  - "2.7"
+virtualenv:
+  system_site_packages: true
+before_install:
+  - sudo apt-get install libglpk-dev swig glpk-utils
+install:
+  - pip install nose
+  - python setup.py install
+# # command to run tests
+script: python setup.py nosetests
