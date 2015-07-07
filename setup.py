@@ -21,9 +21,16 @@ from setuptools.command.install import install
 import subprocess
 
 def copy_glpk_header():
-    glpsol_path = os.path.dirname(subprocess.check_output(['which', 'glpsol']))
-    glpk_header_path = os.path.join(os.path.dirname(glpsol_path).decode("utf-8"), 'include', 'glpk.h')
+    if os.path.isfile('glpk.h'):
+        print('glpk.h found in source directory')
+        glpk_header_path = os.path.join('./', 'glpk.h')
+    else:
+        print('Trying to determine glpk.h location')
+        glpsol_path = os.path.dirname(subprocess.check_output(['which', 'glpsol']))
+        glpk_header_path = os.path.join(os.path.dirname(glpsol_path).decode("utf-8"), 'include', 'glpk.h')
+        print('glpk.h found at {}'.format(glpk_header_path))
     if os.path.exists(glpk_header_path):
+        print('Cleaning glpk.h')
         with open('glpk.h', 'w') as out_handle:
             with open(glpk_header_path) as in_handle:
                 for line in in_handle:
