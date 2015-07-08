@@ -31,6 +31,12 @@ init:
 install:
   - "powershell appveyor\\install.ps1"
   - choco -y install swig
+
+  # Prepend newly installed Python to the PATH of this build (this cannot be
+  # done from inside the powershell script as it would require to restart
+  # the parent CMD process).
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+
   - "%WITH_COMPILER% pip install nose"
   # Download glpk.h and glpk.lib (separate files for 32/64 bit)
   - ps: Start-FileDownload 'https://opencobra.github.io/pypi_cobrapy_travis/glpk.h'
