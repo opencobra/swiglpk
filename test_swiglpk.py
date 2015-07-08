@@ -18,6 +18,7 @@ import nose
 from swiglpk import *
 
 def test_swiglpk():
+    print(glp version())
     ia = intArray(1+1000); ja = intArray(1+1000);
     ar = doubleArray(1+1000);
     lp = glp_create_prob();
