@@ -41,7 +41,7 @@ install:
   # Download glpk.h and glpk.lib (separate files for 32/64 bit)
   - ps: Start-FileDownload 'https://opencobra.github.io/pypi_cobrapy_travis/glpk.h'
   - "appveyor DownloadFile https://opencobra.github.io/pypi_cobrapy_travis/glpk.lib%PYTHON_ARCH% -FileName glpk.lib"
-#  - "%WITH_COMPILER% %PYTHON%/python setup.py build"
+  - "%WITH_COMPILER% %PYTHON%/python setup.py install --user"
 
 build: off
 
@@ -49,7 +49,7 @@ test_script:
   - "%WITH_COMPILER% %PYTHON%/python setup.py test"
 
 after_test:
-  - "%WITH_COMPILER% %PYTHON%/python setup.py bdist_wheel --install-dir='blorgo'"
+  - "%WITH_COMPILER% %PYTHON%/python setup.py bdist_wheel"
 
 artifacts:
   - path: blorgo\*
