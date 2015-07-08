@@ -50,7 +50,7 @@ test_script:
 
 after_test:
 #  - "%WITH_COMPILER% %PYTHON%/python setup.py bdist_wheel"
-  - "%WITH_COMPILER% %PYTHON%/Scripts/pip wheel --wheel-dir=blorgo" swiglpk
+  - "%WITH_COMPILER% %PYTHON%/Scripts/pip wheel --wheel-dir=blorgo swiglpk"
 
 artifacts:
   - path: blorgo\*
