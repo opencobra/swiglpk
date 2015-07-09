@@ -41,7 +41,7 @@ install:
   # Download glpk.h and glpk.lib (separate files for 32/64 bit)
   - ps: Start-FileDownload 'https://opencobra.github.io/pypi_cobrapy_travis/glpk.h'
   - "appveyor DownloadFile https://opencobra.github.io/pypi_cobrapy_travis/glpk.lib%PYTHON_ARCH% -FileName glpk.lib"
-#  - "%WITH_COMPILER% %PYTHON%/python setup.py install --user"
+  - "%WITH_COMPILER% %PYTHON%/python appveyor\\patch_bdist_wheel.py"
 
 build: off
 
@@ -49,9 +49,7 @@ test_script:
   - "%WITH_COMPILER% %PYTHON%/python setup.py test"
 
 after_test:
-#  - "%WITH_COMPILER% %PYTHON%/python setup.py bdist_wheel"
-#  - "%WITH_COMPILER% %PYTHON%/Scripts/pip wheel --wheel-dir=blorgo swiglpk"
-  - "%WITH_COMPILER% %PYTHON%/python setup.py bdist_wininst"
+  - "%WITH_COMPILER% %PYTHON%/python setup.py bdist_wheel"
 
 artifacts:
   - path: dist\*
