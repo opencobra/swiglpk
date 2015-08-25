@@ -43,17 +43,6 @@ def copy_glpk_header():
         raise Exception('Could not find glpk.h! Maybe glpk or glpsol is not installed.')
 
 
-class CustomBuild(build):
-    def run(self):
-        self.run_command('build_ext')
-        build.run(self)
-
-
-class CustomInstall(install):
-    def run(self):
-        self.run_command('build_ext')
-        self.do_egg_install()
-
 # Copy and process glpk.h into current directory
 copy_glpk_header()
 
@@ -86,7 +75,6 @@ setup(
         'License :: OSI Approved :: Apache Software License',
     ],
     py_modules=['swiglpk'],
-    cmdclass={'build': CustomBuild, 'install': CustomInstall},
     ext_modules=[Extension("_swiglpk", sources=["glpk.i"], libraries=['glpk'])],
     include_package_data = True
 )
