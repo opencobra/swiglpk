@@ -25,6 +25,9 @@ environment:
       PYTHON_ARCH: "64"
       WINDOWS_SDK_VERSION: "v7.1"
 
+  password:
+    secure: fAEJDjlDCADoXUIYv64Ufdvta6dvRrj2c6NIgObi3No=
+
 init:
   - "ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%"
 
@@ -53,5 +56,11 @@ after_test:
 artifacts:
   - path: dist\*
 
-#on_success:
-#  - TODO: upload the content of dist/*.whl to a public wheelhouse
+on_success:
+    deploy_script: |
+      if($env:appveyor_repo_tag -eq 'True') {
+        "echo [pypi] > %USERPROFILE%\\.pypirc"
+        "echo username: Nikolaus.Sonnenschein >> %USERPROFILE%\\.pypirc"
+        "echo password: %password% >> %USERPROFILE%\\.pypirc"
+        python setup.py sdist bdist_wheel upload
+      }
