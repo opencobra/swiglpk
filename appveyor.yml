@@ -56,6 +56,5 @@ after_test:
 artifacts:
   - path: dist\*
 
-on_success:
-  deploy_script:
-    - "powershell ./appveyor/pypi_deploy.ps1"
+deploy_script:
+  - "powershell appveyor\\pypi_deploy.ps1"
