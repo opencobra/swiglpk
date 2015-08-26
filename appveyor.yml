@@ -56,5 +56,9 @@ after_test:
 artifacts:
   - path: dist\*
 
+#  - "powershell appveyor\\deploy_to_pypi.ps1"
 deploy_script:
-  - "powershell appveyor\\deploy_to_pypi.ps1"
+     - "echo [pypi] > %USERPROFILE%\\.pypirc"
+     - "echo username: user >> %USERPROFILE%\\.pypirc"
+     - "echo password: %password% >> %USERPROFILE%\\.pypirc"
+     - python setup.py sdist bdist_wheel upload
