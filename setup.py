@@ -21,9 +21,16 @@ from setuptools.command.install import install
 import subprocess
 
 def copy_glpk_header():
-    glpsol_path = os.path.dirname(subprocess.check_output(['which', 'glpsol']))
-    glpk_header_path = os.path.join(os.path.dirname(glpsol_path).decode("utf-8"), 'include', 'glpk.h')
+    if os.path.isfile('glpk.h'):
+        print('glpk.h found in source directory')
+        glpk_header_path = os.path.join('./', 'glpk.h')
+    else:
+        print('Trying to determine glpk.h location')
+        glpsol_path = os.path.dirname(subprocess.check_output(['which', 'glpsol']))
+        glpk_header_path = os.path.join(os.path.dirname(glpsol_path).decode("utf-8"), 'include', 'glpk.h')
+        print('glpk.h found at {}'.format(glpk_header_path))
     if os.path.exists(glpk_header_path):
+        print('Cleaning glpk.h')
         with open('glpk.h', 'w') as out_handle:
             with open(glpk_header_path) as in_handle:
                 for line in in_handle:
@@ -35,17 +42,6 @@ def copy_glpk_header():
     else:
         raise Exception('Could not find glpk.h! Maybe glpk or glpsol is not installed.')
 
-
-class CustomBuild(build):
-    def run(self):
-        self.run_command('build_ext')
-        build.run(self)
-
-
-class CustomInstall(install):
-    def run(self):
-        self.run_command('build_ext')
-        self.do_egg_install()
 
 # Copy and process glpk.h into current directory
 copy_glpk_header()
@@ -60,7 +56,7 @@ except (IOError, ImportError):
 
 setup(
     name='swiglpk',
-    version='1.0.0',
+    version='1.0.10',
     author='Nikolaus Sonnenschein',
     author_email='niko.sonnenschein@gmail.com',
     description='swiglpk - Simple swig bindings for the GNU Linear Programming Kit',
@@ -79,7 +75,6 @@ setup(
         'License :: OSI Approved :: Apache Software License',
     ],
     py_modules=['swiglpk'],
-    cmdclass={'build': CustomBuild, 'install': CustomInstall},
     ext_modules=[Extension("_swiglpk", sources=["glpk.i"], libraries=['glpk'])],
     include_package_data = True
 )
