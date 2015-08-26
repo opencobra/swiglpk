@@ -46,7 +46,7 @@ def copy_glpk_header():
 class Build_ext_first(install):
     def run(self):
         self.run_command("build_ext")
-        install.run()
+        install.run(self)
 
 # Copy and process glpk.h into current directory
 copy_glpk_header()
