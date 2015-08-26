@@ -57,4 +57,4 @@ artifacts:
   - path: dist\*
 
 deploy_script:
-  - "powershell appveyor\\pypi_deploy.ps1"
+  - "powershell appveyor\\deploy_to_pypi.ps1"
