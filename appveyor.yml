@@ -57,10 +57,5 @@ artifacts:
   - path: dist\*
 
 on_success:
-    deploy_script: |
-      if($env:appveyor_repo_tag -eq 'True') {
-        "echo [pypi] > %USERPROFILE%\\.pypirc"
-        "echo username: Nikolaus.Sonnenschein >> %USERPROFILE%\\.pypirc"
-        "echo password: %password% >> %USERPROFILE%\\.pypirc"
-        python setup.py sdist bdist_wheel upload
-      }
+  deploy_script:
+    - "powershell ./appveyor/pypi_deploy.ps1"
