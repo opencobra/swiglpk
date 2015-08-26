@@ -58,7 +58,7 @@ artifacts:
 
 #  - "powershell appveyor\\deploy_to_pypi.ps1"
 deploy_script:
-  - "twine upload --username Nikolaus.Sonnenschein --password %password%"
+  - "%PYTHON%/Scripts/twine upload --username Nikolaus.Sonnenschein --password %password%"
 #     - "echo [pypi] > %USERPROFILE%\\.pypirc"
 #     - "echo username: Nikolaus.Sonnenschein >> %USERPROFILE%\\.pypirc"
 #     - "echo password: %password% >> %USERPROFILE%\\.pypirc"
