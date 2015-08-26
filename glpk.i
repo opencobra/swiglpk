@@ -24,14 +24,17 @@
 
 int wrap_glp_term_hook_cb(void *info, const char *s)
 {
-  PyObject *callback = (PyObject *)info;
-  PyObject *args = Py_BuildValue("(s)", s);
+  PyObject *callback, *args, *r;
+
+  callback = (PyObject *)info;
+
+  args = Py_BuildValue("(s)", s);
   if (args == NULL) {
     PyErr_Print();
     goto out;
   }
 
-  PyObject *r = PyObject_Call(callback, args, NULL);
+  r = PyObject_Call(callback, args, NULL);
   if (r == NULL) {
     PyErr_Print();
     goto out;
