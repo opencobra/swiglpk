@@ -56,7 +56,7 @@ except (IOError, ImportError):
 
 setup(
     name='swiglpk',
-    version='1.0.4',
+    version='1.0.5',
     author='Nikolaus Sonnenschein',
     author_email='niko.sonnenschein@gmail.com',
     description='swiglpk - Simple swig bindings for the GNU Linear Programming Kit',
