@@ -21,41 +21,6 @@
 %{
 #define SWIG_FILE_WITH_INIT
 #include "./glpk.h"
-
-int wrap_glp_term_hook_cb(void *info, const char *s)
-{
-  PyObject *callback = (PyObject *)info;
-  PyObject *args = Py_BuildValue("(s)", s);
-  if (args == NULL) {
-    PyErr_Print();
-    goto out;
-  }
-
-  PyObject *r = PyObject_Call(callback, args, NULL);
-  if (r == NULL) {
-    PyErr_Print();
-    goto out;
-  }
-
-out:
-  Py_XDECREF(r);
-  Py_XDECREF(args);
-  return 1;
-}
-%}
-
-%rename(glp_term_hook) wrap_glp_term_hook;
-%inline %{
-PyObject *wrap_glp_term_hook(PyObject *callback)
-{
-  if (callback == Py_None) {
-    glp_term_hook(NULL, NULL);
-  } else {
-    glp_term_hook(wrap_glp_term_hook_cb, callback);
-  }
-
-  Py_RETURN_NONE;
-}
 %}
 
 %include "carrays.i"
