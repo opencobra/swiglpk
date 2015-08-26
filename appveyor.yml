@@ -59,6 +59,6 @@ artifacts:
 #  - "powershell appveyor\\deploy_to_pypi.ps1"
 deploy_script:
      - "echo [pypi] > %USERPROFILE%\\.pypirc"
-     - "echo username: user >> %USERPROFILE%\\.pypirc"
+     - "echo username: Nikolaus.Sonnenschein >> %USERPROFILE%\\.pypirc"
      - "echo password: %password% >> %USERPROFILE%\\.pypirc"
      - python setup.py sdist bdist_wheel upload
