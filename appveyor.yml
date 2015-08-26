@@ -59,7 +59,7 @@ artifacts:
 deploy_script:
   - ps: >-
       if($env:appveyor_repo_tag -eq 'True') {
-          Invoke-Expression "$env:CMD_IN_ENV twine upload dist/* --username Nikolaus.Sonnenschein --password $env:password"
+          Invoke-Expression "$env:PYTHON/Scripts/twine upload dist/* --username Nikolaus.Sonnenschein --password $env:password"
       }
 
 ##  - "powershell appveyor\\deploy_to_pypi.ps1"
