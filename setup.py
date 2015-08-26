@@ -15,8 +15,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-from setuptools import setup, Extension, find_packages
-from distutils.command.build import build
+# import setuptools
+from setuptools import setup, Extension
+# from distutils.command.build import build
 from setuptools.command.install import install
 import subprocess
 
@@ -30,7 +31,6 @@ def copy_glpk_header():
         glpk_header_path = os.path.join(os.path.dirname(glpsol_path).decode("utf-8"), 'include', 'glpk.h')
         print('glpk.h found at {}'.format(glpk_header_path))
     if os.path.exists(glpk_header_path):
-        print('Cleaning glpk.h')
         with open('glpk.h', 'w') as out_handle:
             with open(glpk_header_path) as in_handle:
                 for line in in_handle:
@@ -42,6 +42,11 @@ def copy_glpk_header():
     else:
         raise Exception('Could not find glpk.h! Maybe glpk or glpsol is not installed.')
 
+
+class Build_ext_first(install):
+    def run(self):
+        self.run_command("build_ext")
+        super(Build_ext_first, self).run()
 
 # Copy and process glpk.h into current directory
 copy_glpk_header()
@@ -75,6 +80,7 @@ setup(
         'License :: OSI Approved :: Apache Software License',
     ],
     py_modules=['swiglpk'],
+    cmdclass = {'install' : Build_ext_first},
     ext_modules=[Extension("_swiglpk", sources=["glpk.i"], libraries=['glpk'])],
     include_package_data = True
 )
