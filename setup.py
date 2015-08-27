@@ -31,7 +31,7 @@ def copy_glpk_header():
         glpk_header_path = os.path.join(os.path.dirname(glpsol_path).decode("utf-8"), 'include', 'glpk.h')
         print('glpk.h found at {}'.format(glpk_header_path))
     if os.path.exists(glpk_header_path):
-        with open('glpk.h', 'w') as out_handle:
+        with open('glpk_clean.h', 'w') as out_handle:
             with open(glpk_header_path) as in_handle:
                 for line in in_handle:
                     if line == 'void glp_vprintf(const char *fmt, va_list arg);\n':

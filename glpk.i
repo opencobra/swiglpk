@@ -20,13 +20,13 @@
 
 %{
 #define SWIG_FILE_WITH_INIT
-#include "./glpk.h"
+#include "./glpk_clean.h"
 %}
 
 %include "carrays.i"
 %array_class(int, intArray);
 %array_class(double, doubleArray);
 
-%include glpk.h
+%include glpk_clean.h
 
 %module swiglpk

@@ -6,6 +6,7 @@ glpk_wrap.c
 swiglpk.py
 _swiglpk.so
 glpk.h
+glpk_clean.h
 .idea
 swiglpk.egg-info/
 dist/
