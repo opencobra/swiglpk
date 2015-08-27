@@ -21,6 +21,30 @@
 %{
 #define SWIG_FILE_WITH_INIT
 #include "./glpk_clean.h"
+
+int wrap_glp_term_hook_cb(void *info, const char *s)
+{
+  PyObject *callback, *args, *r;
+
+  callback = (PyObject *)info;
+
+  args = Py_BuildValue("(s)", s);
+  if (args == NULL) {
+    PyErr_Print();
+    goto out;
+  }
+
+  r = PyObject_Call(callback, args, NULL);
+  if (r == NULL) {
+    PyErr_Print();
+    goto out;
+  }
+
+out:
+  Py_XDECREF(r);
+  Py_XDECREF(args);
+  return 1;
+}
 %}
 
 %include "carrays.i"
