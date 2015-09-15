@@ -15,10 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
-# import setuptools
 from setuptools import setup, Extension
-# from distutils.command.build import build
-from setuptools.command.install import install
 import subprocess
 
 def copy_glpk_header():
@@ -43,11 +40,6 @@ def copy_glpk_header():
         raise Exception('Could not find glpk.h! Maybe glpk or glpsol is not installed.')
 
 
-class Build_ext_first(install):
-    def run(self):
-        self.run_command("build_ext")
-        install.run(self)
-
 # Copy and process glpk.h into current directory
 copy_glpk_header()
 
@@ -61,7 +53,7 @@ except (IOError, ImportError):
 
 setup(
     name='swiglpk',
-    version='1.2.1',
+    version='1.2.2',
     author='Nikolaus Sonnenschein',
     author_email='niko.sonnenschein@gmail.com',
     description='swiglpk - Simple swig bindings for the GNU Linear Programming Kit',
@@ -80,7 +72,6 @@ setup(
         'License :: OSI Approved :: Apache Software License',
     ],
     py_modules=['swiglpk'],
-    cmdclass = {'install' : Build_ext_first},
     ext_modules=[Extension("_swiglpk", sources=["glpk.i"], libraries=['glpk'])],
     include_package_data = True
 )

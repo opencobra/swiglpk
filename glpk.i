@@ -47,6 +47,20 @@ out:
 }
 %}
 
+%rename(glp_term_hook) wrap_glp_term_hook;
+%inline %{
+PyObject *wrap_glp_term_hook(PyObject *callback)
+{
+  if (callback == Py_None) {
+    glp_term_hook(NULL, NULL);
+  } else {
+    glp_term_hook(wrap_glp_term_hook_cb, callback);
+  }
+
+  Py_RETURN_NONE;
+}
+%}
+
 %include "carrays.i"
 %array_class(int, intArray);
 %array_class(double, doubleArray);
