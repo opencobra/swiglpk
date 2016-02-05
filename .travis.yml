@@ -1,6 +1,5 @@
 language: python
 python:
-- '2.6'
 - '2.7'
 - '3.3'
 - '3.4'
@@ -14,6 +13,7 @@ addons:
     - pandoc
 install:
 - pip install nose pypandoc
+- which glpsol  # Check if this fails and why
 - python setup.py install
 script: python setup.py nosetests
 deploy:
