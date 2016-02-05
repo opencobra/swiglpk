@@ -1,12 +1,17 @@
-sudo: required
+sudo: false
 language: python
 python:
 - '2.7'
 - '3.3'
 - '3.4'
 - '3.5'
-before_install:
-- sudo apt-get install libglpk-dev swig glpk-utils pandoc
+addons:
+  apt:
+    packages:
+    - swig
+    - libglpk-dev
+    - glpk-utils
+    - pandoc
 install:
 - pip install nose pypandoc
 - python setup.py install
