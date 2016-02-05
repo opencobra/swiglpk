@@ -21,6 +21,7 @@ deploy:
   user: Nikolaus.Sonnenschein
   password:
     secure: gXJdJKDs69rAOLE4cmCp0dRGY8bI6eYmzIoj2VvGIWK64lJqffv3AfENROxcHCYcKMuRUf6qsm8rY+ZRLrbIm1eMUmdvDszxiXDsOEJTMDUWEov8raAPAN1hIDlgmJcCVNCvI4sdq+uvo6X1o4Ffpi1c1Up5vpVNT+321zUOiV0=
+  distributions: "sdist bdist_wheel"
   on:
     tags: true
     repo: biosustain/swiglpk
