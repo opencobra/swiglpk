@@ -17,6 +17,7 @@
 import os
 from setuptools import setup, Extension
 import subprocess
+import versioneer
 
 def copy_glpk_header():
     if os.path.isfile('glpk.h'):
@@ -53,7 +54,8 @@ except (IOError, ImportError):
 
 setup(
     name='swiglpk',
-    version='1.2.3',
+    version=versioneer.get_version(),
+    cmdclass=versioneer.get_cmdclass(),
     author='Nikolaus Sonnenschein',
     author_email='niko.sonnenschein@gmail.com',
     description='swiglpk - Simple swig bindings for the GNU Linear Programming Kit',
