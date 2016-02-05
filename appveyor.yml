@@ -33,7 +33,7 @@ init:
 
 install:
   - "powershell appveyor\\install.ps1"
-  - cinst swig
+  - choco install swig --version 3.0.5 -y
 
   # Prepend newly installed Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart
