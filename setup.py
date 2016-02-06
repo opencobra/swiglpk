@@ -52,10 +52,30 @@ try:
 except (IOError, ImportError):
     description = ''
 
+
+custom_cmd_class = versioneer.get_cmdclass()
+if os.name != 'nt':
+    from distutils.command.build import build
+    from setuptools.command.install import install
+
+    class CustomBuild(build):
+        def run(self):
+            self.run_command('build_ext')
+            build.run(self)
+
+
+    class CustomInstall(install):
+        def run(self):
+            self.run_command('build_ext')
+            self.do_egg_install()
+        custom_cmd_class.update()
+
+    custom_cmd_class.update({'build': CustomBuild, 'install': CustomInstall})
+
 setup(
     name='swiglpk',
     version=versioneer.get_version(),
-    cmdclass=versioneer.get_cmdclass(),
+    cmdclass=custom_cmd_class,
     author='Nikolaus Sonnenschein',
     author_email='niko.sonnenschein@gmail.com',
     description='swiglpk - Simple swig bindings for the GNU Linear Programming Kit',
