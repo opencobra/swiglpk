@@ -33,8 +33,7 @@ init:
 
 install:
   - "powershell appveyor\\install.ps1"
-  - choco install mongodb
-  - choco install swig
+  - choco install -y swig
 
   # Prepend newly installed Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart
