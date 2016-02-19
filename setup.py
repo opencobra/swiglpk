@@ -54,23 +54,25 @@ except (IOError, ImportError):
 
 
 custom_cmd_class = versioneer.get_cmdclass()
+
 if os.name != 'nt':
     from distutils.command.build import build
-    from setuptools.command.install import install
+    from wheel.bdist_wheel import bdist_wheel
+
+    class CustomBdistWheel(bdist_wheel):
+        def run(self):
+            print('I am actually run!')
+            self.run_command('build_ext')
+            bdist_wheel.run(self)
+
+    custom_cmd_class['bdist_wheel'] = CustomBdistWheel
 
     class CustomBuild(build):
         def run(self):
             self.run_command('build_ext')
             build.run(self)
 
-
-    class CustomInstall(install):
-        def run(self):
-            self.run_command('build_ext')
-            self.do_egg_install()
-        custom_cmd_class.update()
-
-    custom_cmd_class.update({'build': CustomBuild, 'install': CustomInstall})
+    custom_cmd_class['build'] = CustomBuild
 
 setup(
     name='swiglpk',
