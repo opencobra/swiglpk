@@ -57,15 +57,17 @@ custom_cmd_class = versioneer.get_cmdclass()
 
 if os.name != 'nt':
     from distutils.command.build import build
-    from wheel.bdist_wheel import bdist_wheel
+    try:
+        from wheel.bdist_wheel import bdist_wheel
 
-    class CustomBdistWheel(bdist_wheel):
-        def run(self):
-            print('I am actually run!')
-            self.run_command('build_ext')
-            bdist_wheel.run(self)
+        class CustomBdistWheel(bdist_wheel):
+            def run(self):
+                self.run_command('build_ext')
+                bdist_wheel.run(self)
 
-    custom_cmd_class['bdist_wheel'] = CustomBdistWheel
+        custom_cmd_class['bdist_wheel'] = CustomBdistWheel
+    except ImportError:
+        pass  # custom command not needed if wheel is not installed
 
     class CustomBuild(build):
         def run(self):
