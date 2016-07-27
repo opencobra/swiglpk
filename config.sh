@@ -38,7 +38,7 @@ function build_wheel {
 
 function run_tests_in_repo {
     # Run Pillow tests from within source repo
-    tox -e $TOXENV
+    nosetests .
 }
 
 function run_tests {
