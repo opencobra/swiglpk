@@ -73,18 +73,15 @@ matrix:
 
 before_install:
   - (git clone https://github.com/matthew-brett/multibuild.git && cd multibuild && git checkout d7ba4ae)
-  - TEST_DEPENDS="nose tox"
+  - TEST_DEPENDS="nose"
   - source multibuild/common_utils.sh
   - source multibuild/travis_steps.sh
   - before_install
         
 install:
-  - pip install -U tox
   - build_wheel . $PLAT
 
 script:
-  - tox -e ${TOXENV}
-  - tox -e flake8
   - install_run $PLAT
 
 deploy:
