@@ -45,5 +45,5 @@ function run_tests {
     # Runs tests on installed distribution from an empty directory
     export NOSE_PROCESS_TIMEOUT=600
     export NOSE_PROCESSES=0
-    (cd ../swiglpk && run_tests_in_repo)
+    run_tests_in_repo
 }
