@@ -10,3 +10,6 @@ glpk_clean.h
 .idea
 swiglpk.egg-info/
 dist/
+.tox*
+*.so
+*~
