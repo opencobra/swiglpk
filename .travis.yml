@@ -20,31 +20,25 @@ matrix:
     - os: linux
       env:
         - MB_PYTHON_VERSION=2.7
-        - TOXENV=py27
     - os: linux
       env:
         - MB_PYTHON_VERSION=2.7
         - UNICODE_WIDTH=16
-        - TOXENV=py27
     - os: linux
       env:
         - MB_PYTHON_VERSION=2.7
-        - TOXENV=py27
         - PLAT=i686
     - os: linux
       env:
         - MB_PYTHON_VERSION=2.7
         - PLAT=i686
         - UNICODE_WIDTH=16
-        - TOXENV=py27
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.4
-        - TOXENV=py34
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.4
-        - TOXENV=py34
         - PLAT=i686
     - os: linux
       env:
@@ -53,23 +47,19 @@ matrix:
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.5
-        - TOXENV=py35
         - PLAT=i686
     - os: osx
       language: objective-c
       env:
         - MB_PYTHON_VERSION=2.7
-        - TOXENV=py27
     - os: osx
       language: objective-c
       env:
         - MB_PYTHON_VERSION=3.4
-        - TOXENV=py34
     - os: osx
       language: objective-c
       env:
         - MB_PYTHON_VERSION=3.5
-        - TOXENV=py35
 
 before_install:
   - (git clone https://github.com/matthew-brett/multibuild.git && cd multibuild && git checkout d7ba4ae)
@@ -77,8 +67,9 @@ before_install:
   - source multibuild/common_utils.sh
   - source multibuild/travis_steps.sh
   - before_install
-        
+
 install:
+  # why no tox? tox runs in its own virtual env it seems that `which glpsol` doesn't work there 
   - build_wheel . $PLAT
 
 script:
@@ -87,7 +78,7 @@ script:
 deploy:
   provider: script
   skip_cleanup: true
-  script: deploy.sh
+  script: scripts/deploy.sh
   on:
     branch: feature/auto-wheel
 #    tags: true
