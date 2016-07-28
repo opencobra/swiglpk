@@ -7,7 +7,7 @@ sudo: required
 
 env:
   global:
-    - secure: "Upk5dXt/P5ipRba/6cQ9iA4OSyegaIbLRBdlu7ZZjQAgMh+/ICl8rxiFxO8eWXP667i8qu+HpcJoQ2Gnsipc/fXKkatN2MiACzKkoidIfv0m2NzKsZAAOQWem00KY2cg4osB74oi1sPbby5vmKg0NXZt195I0EH+t/SAkkX+0bk="
+    - secure: "OyCxLHV86t/4gTOyXdmQa4ux3GYPPS5PCsr/mAfQkGaRPPwdmuSqt/3DZVB9OuWmVn0I8/7I+jNHiLdW7TkHYeDgJzR3cZM6yy/Ear7igV+zlGJStCpCiBX9kzOxxShtZqTWq48ET8eAhlEF+cBXg1IBKv5orQrhxon8JszFHfM="
     - secure: "Ao68oM4+c+uV3MYAsR3KNpKVpVDOnCoCRhF0CPHh0sYEcFH7EM5wCy5fzYSo8iThcV4pCuzJ/ThMtijNDmVoAH7xPfanJL3IMpq0urp8AVruv5vjKzG40G3BK0nMCKDUBwPSN1e3YCl5tBxutqW7K95CrQ4tY1pL6I1+IU/w5nM="
     - PLAT=x86_64
     - UNICODE_WIDTH=32
