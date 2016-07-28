@@ -9,7 +9,7 @@ function pre_build {
         export CXX=clang++
         brew tap homebrew/science
         brew update
-        brew install glpk swig
+        brew install glpk swig automake
     else
         curl -O http://ftp.gnu.org/gnu/glpk/glpk-4.57.tar.gz
         tar xzf glpk-4.57.tar.gz
@@ -19,19 +19,20 @@ function pre_build {
         && make install)
 
         yum install -y pcre-devel
-
+		yum install automake
         # curl -O -L http://downloads.sourceforge.net/swig/swig-3.0.10.tar.gz
         # tar xvzf swig-3.0.10.tar.gz
         # (cd swig-3.0.10 \
         # && ./configure --prefix=$BUILD_PREFIX \
         # && make \
         # && make install)
-		git clone https://github.com/swig/swig.git
+ 		git clone https://github.com/swig/swig.git
         (cd swig \
-			&& git checkout rel-3.0.10 \
-			&& ./configure --prefix=$BUILD_PREFIX \
-			&& make \
-			&& make install)
+				&& git checkout rel-3.0.10 \
+				&& ./autogen.sh \
+				&& ./configure --prefix=$BUILD_PREFIX \
+				&& make \
+				&& make install)
     fi
 
 
