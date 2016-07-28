@@ -7,8 +7,8 @@ sudo: required
 
 env:
   global:
-    - secure: "meAZ7j4RADKM6Nm9upYOt+klXWDieipJQ4CWrKRYEZzjwq8HUq1+Qb41gJhUThYbbXQdssKVAv8CSS5Ii3Ka+t/y80qGjt6Yp0ZvyJyswJiv4Il0stNe8mNvD3DA95OilwCsx3mxs5WFiCVFmaBe/fpHr4N9jvHIAiLIj3/ytdQ="
-    - secure: "CGG4wmppNXaAD/GWIvhDhq+5F1jp+ecFFv99/RM/vENewb/V8O1Cg0fJ8hM/KAgNbEgAYJVgbShRPMN5UlT7UUgGPg66lVtWItvBMg/2uJaepzA1Mn7Ceuu7vv7/zbzFRZHFdjvbIzGU8kI4rJB++NfZFFezOaC0FhMuOgwcw0g="
+    - secure: "Upk5dXt/P5ipRba/6cQ9iA4OSyegaIbLRBdlu7ZZjQAgMh+/ICl8rxiFxO8eWXP667i8qu+HpcJoQ2Gnsipc/fXKkatN2MiACzKkoidIfv0m2NzKsZAAOQWem00KY2cg4osB74oi1sPbby5vmKg0NXZt195I0EH+t/SAkkX+0bk="
+    - secure: "Ao68oM4+c+uV3MYAsR3KNpKVpVDOnCoCRhF0CPHh0sYEcFH7EM5wCy5fzYSo8iThcV4pCuzJ/ThMtijNDmVoAH7xPfanJL3IMpq0urp8AVruv5vjKzG40G3BK0nMCKDUBwPSN1e3YCl5tBxutqW7K95CrQ4tY1pL6I1+IU/w5nM="
     - PLAT=x86_64
     - UNICODE_WIDTH=32
     - NP_BUILD_DEP="numpy==1.7.1"
