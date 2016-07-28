@@ -76,10 +76,5 @@ install:
 script:
   - install_run $PLAT
 
-deploy:
-  provider: script
-  skip_cleanup: true
-  script: scripts/deploy.sh
-  on:
-    branch: feature/auto-wheel
-    tags: true
+after_success:
+  - scripts/deploy.sh
