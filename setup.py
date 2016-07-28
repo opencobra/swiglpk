@@ -83,7 +83,7 @@ setup(
     author='Nikolaus Sonnenschein',
     author_email='niko.sonnenschein@gmail.com',
     description='swiglpk - Simple swig bindings for the GNU Linear Programming Kit',
-    license='Apache License Version 2.0',
+    license='GPL v3',
     keywords='optimization swig glpk',
     url='https://github.com/biosustain/swiglpk',
     long_description=description,
@@ -95,7 +95,7 @@ setup(
         'Intended Audience :: Science/Research',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.4',
-        'License :: OSI Approved :: Apache Software License',
+        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)'
     ],
     py_modules=['swiglpk'],
     ext_modules=[Extension("_swiglpk", sources=["glpk.i"], libraries=['glpk'])],
