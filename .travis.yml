@@ -82,4 +82,4 @@ deploy:
   script: scripts/deploy.sh
   on:
     branch: feature/auto-wheel
-#    tags: true
+    tags: true
