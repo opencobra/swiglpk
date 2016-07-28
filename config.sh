@@ -20,12 +20,18 @@ function pre_build {
 
         yum install -y pcre-devel
 
-        curl -O -L http://downloads.sourceforge.net/swig/swig-3.0.10.tar.gz
-        tar xvzf swig-3.0.10.tar.gz
-        (cd swig-3.0.10 \
-        && ./configure --prefix=$BUILD_PREFIX \
-        && make \
-        && make install)
+        # curl -O -L http://downloads.sourceforge.net/swig/swig-3.0.10.tar.gz
+        # tar xvzf swig-3.0.10.tar.gz
+        # (cd swig-3.0.10 \
+        # && ./configure --prefix=$BUILD_PREFIX \
+        # && make \
+        # && make install)
+		git clone https://github.com/swig/swig.git
+        (cd swig \
+			&& git checkout rel-3.0.10 \
+			&& ./configure --prefix=$BUILD_PREFIX \
+			&& make \
+			&& make install)
     fi
 
 
