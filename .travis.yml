@@ -73,6 +73,9 @@ install:
   # why no tox? tox runs in its own virtual env it seems that `which glpsol` doesn't work there 
   - build_wheel . $PLAT
 
+before_cache:
+  - set +e
+
 script:
   - install_run $PLAT
 
