@@ -79,5 +79,10 @@ before_cache:
 script:
   - install_run $PLAT
 
-after_success:
-  - scripts/deploy.sh
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: scripts/deploy.sh
+  on:
+    branch: feature/auto-wheel
+    tags: true
