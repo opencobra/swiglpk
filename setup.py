@@ -40,6 +40,11 @@ def copy_glpk_header():
     else:
         raise Exception('Could not find glpk.h! Maybe glpk or glpsol is not installed.')
 
+try:
+    with open('README.rst', 'r') as f:
+        long_description = f.read()
+except:
+    long_description = ''
 
 # Copy and process glpk.h into current directory
 copy_glpk_header()
@@ -78,7 +83,7 @@ setup(
     license='GPL v3',
     keywords='optimization swig glpk',
     url='https://github.com/biosustain/swiglpk',
-    long_description=description,
+    long_description=long_description,
     test_suite='nose.collector',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
