@@ -45,7 +45,7 @@ function build_wheel {
 
 function run_tests_in_repo {
     # Run Pillow tests from within source repo
-    nosetests .
+    (cd .. && nosetests .)
 }
 
 function run_tests {
