@@ -44,14 +44,6 @@ def copy_glpk_header():
 # Copy and process glpk.h into current directory
 copy_glpk_header()
 
-# from https://coderwall.com/p/qawuyq
-try:
-    import pypandoc
-
-    description = pypandoc.convert('README.md', 'rst')
-except (IOError, ImportError):
-    description = ''
-
 
 custom_cmd_class = versioneer.get_cmdclass()
 
