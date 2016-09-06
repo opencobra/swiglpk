@@ -41,6 +41,7 @@ function pre_build {
 function build_wheel {
     # Set default building method to pip
     build_bdist_wheel $@
+    repair_wheelhouse $wheelhouse
 }
 
 function run_tests_in_repo {
