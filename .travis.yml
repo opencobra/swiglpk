@@ -63,7 +63,7 @@ matrix:
         - MB_PYTHON_VERSION=3.5
 
 before_install:
-  - (git clone https://github.com/matthew-brett/multibuild.git && cd multibuild && git checkout d7ba4ae)
+  - (git clone https://github.com/matthew-brett/multibuild.git && cd multibuild && git checkout 06036d5349a)
   - TEST_DEPENDS="nose"
   - source multibuild/common_utils.sh
   - source multibuild/travis_steps.sh
