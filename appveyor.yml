@@ -48,17 +48,6 @@ environment:
 
     # Python versions not pre-installed
 
-    # Python 2.6.6 is the latest Python 2.6 with a Windows installer
-    # See: https://github.com/ogrisel/python-appveyor-demo/issues/10
-
-    - PYTHON: "C:\\Python266"
-      PYTHON_VERSION: "2.6.6"
-      PYTHON_ARCH: "32"
-
-    - PYTHON: "C:\\Python266-x64"
-      PYTHON_VERSION: "2.6.6"
-      PYTHON_ARCH: "64"
-
     - PYTHON: "C:\\Python35"
       PYTHON_VERSION: "3.5.0"
       PYTHON_ARCH: "32"
@@ -120,10 +109,17 @@ install:
   - "powershell appveyor\\install.ps1"
   - choco install -y swig
 
+  - "%CMD_IN_ENV% python appveyor/build_glpk.py"
+#  - conda config --add channels conda-forge
+#  - conda install glpk
+#  - copy %LIBRARY_LIB%\glpk.lib .
+#  - copy %LIBRARY_INC%\glpk.h .
+
   - "%CMD_IN_ENV% pip install nose twine wheel"
-  # Download glpk.h and glpk.lib (separate files for 32/64 bit)
-  - ps: Start-FileDownload 'https://opencobra.github.io/pypi_cobrapy_travis/glpk.h'
-  - "appveyor DownloadFile https://opencobra.github.io/pypi_cobrapy_travis/glpk.lib%PYTHON_ARCH% -FileName glpk.lib"
+
+#  # Download glpk.h and glpk.lib (separate files for 32/64 bit)
+#  - ps: Start-FileDownload 'https://opencobra.github.io/pypi_cobrapy_travis/glpk.h'
+#  - "appveyor DownloadFile https://opencobra.github.io/pypi_cobrapy_travis/glpk.lib%PYTHON_ARCH% -FileName glpk.lib"
 
 build: off
 
