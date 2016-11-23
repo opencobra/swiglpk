@@ -14,7 +14,7 @@ init:
 
 install:
   - choco install -y swig
-  - "%PYTHON%\\python.exe -m pip install -U pip"
+  - "%PYTHON%\\python.exe -m pip install -U pip wheel"
 
   # Prepend newly installed Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart
