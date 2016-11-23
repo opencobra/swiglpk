@@ -48,7 +48,7 @@ install:
 build: off
 
 test_script:
-  - "%WITH_COMPILER% nosetests -v"
+  - "%WITH_COMPILER% %PYTHON%/python -m nose -v"
 
 after_test:
   - "%WITH_COMPILER% %PYTHON%/python setup.py bdist_wheel"
