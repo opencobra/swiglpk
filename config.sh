@@ -21,7 +21,7 @@ function pre_build {
         yum install -y pcre-devel
 		# yum install automake
         curl -O -L http://downloads.sourceforge.net/swig/swig-3.0.10.tar.gz
-        tar xvzf swig-3.0.10.tar.gz
+        tar xzf swig-3.0.10.tar.gz
         (cd swig-3.0.10 \
         && ./configure --prefix=$BUILD_PREFIX \
         && make \
