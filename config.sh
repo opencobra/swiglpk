@@ -50,7 +50,7 @@ function run_tests_in_repo {
        echo "Not running on mac"
     fi
     # Run Pillow tests from within source repo
-    (cd .. && nosetests .)
+    (cd .. && nosetests . -v)
 }
 
 function run_tests {
