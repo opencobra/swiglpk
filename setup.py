@@ -14,8 +14,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# http://stackoverflow.com/questions/12491328/python-distutils-not-include-the-swig-generated-module
+
 import os
-from setuptools import setup, Extension
+from distutils.core import setup, Extension
+from distutils.command.build import build
 import subprocess
 import versioneer
 
@@ -29,7 +32,7 @@ def copy_glpk_header():
         glpk_header_path = os.path.join(os.path.dirname(glpsol_path).decode("utf-8"), 'include', 'glpk.h')
         print('glpk.h found at {}'.format(glpk_header_path))
     if os.path.exists(glpk_header_path):
-        with open('glpk_clean.h', 'w') as out_handle:
+        with open('src/glpk_clean.h', 'w') as out_handle:
             with open(glpk_header_path) as in_handle:
                 for line in in_handle:
                     if line == 'void glp_vprintf(const char *fmt, va_list arg);\n':
@@ -52,31 +55,33 @@ copy_glpk_header()
 
 custom_cmd_class = versioneer.get_cmdclass()
 
-if os.name != 'nt':
-    from distutils.command.build import build
-    try:
-        from wheel.bdist_wheel import bdist_wheel
+class CustomBuild(build):
+    sub_commands = [
+        ('build_ext', build.has_ext_modules),
+        ('build_py', build.has_pure_modules),
+        ('build_clib', build.has_c_libraries),
+        ('build_scripts', build.has_scripts),
+    ]
 
-        class CustomBdistWheel(bdist_wheel):
-            def run(self):
-                self.run_command('build_ext')
-                bdist_wheel.run(self)
+try:
+    from wheel.bdist_wheel import bdist_wheel
 
-        custom_cmd_class['bdist_wheel'] = CustomBdistWheel
-    except ImportError:
-        pass  # custom command not needed if wheel is not installed
-
-    class CustomBuild(build):
+    class CustomBdistWheel(bdist_wheel):
         def run(self):
             self.run_command('build_ext')
-            build.run(self)
+            bdist_wheel.run(self)
 
-    custom_cmd_class['build'] = CustomBuild
+    custom_cmd_class['bdist_wheel'] = CustomBdistWheel
+except ImportError:
+    pass  # custom command not needed if wheel is not installed
+
 
 setup(
     name='swiglpk',
     version=versioneer.get_version(),
     cmdclass=custom_cmd_class,
+    packages=['swiglpk'],
+    package_dir={'swiglpk': 'swiglpk'},
     author='Nikolaus Sonnenschein',
     author_email='niko.sonnenschein@gmail.com',
     description='swiglpk - Simple swig bindings for the GNU Linear Programming Kit',
@@ -94,7 +99,6 @@ setup(
         'Programming Language :: Python :: 3.4',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)'
     ],
-    py_modules=['swiglpk'],
-    ext_modules=[Extension("_swiglpk", sources=["glpk.i"], libraries=['glpk'])],
+    ext_modules=[Extension("_swiglpk", sources=["src/glpk.i"], libraries=['glpk'])],
     include_package_data = True
 )
