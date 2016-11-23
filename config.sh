@@ -47,7 +47,8 @@ function run_tests_in_repo {
     if [ -n "$IS_OSX" ]; then
         brew uninstall -y glpk  # remove glpk to make sure that the OS X wheel works standalone.
     else
-       echo "Not running on mac"
+        cd glpk-4.57 && make uninstall
+        cd ..
     fi
     # Run Pillow tests from within source repo
     (cd .. && nosetests . -v)
