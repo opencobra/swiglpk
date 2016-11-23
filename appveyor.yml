@@ -40,7 +40,7 @@ install:
   # the parent CMD process).
   #- "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
 
-  - "%WITH_COMPILER% %PYTHON%/Scripts/pip install nose twine"
+  - "%WITH_COMPILER% %PYTHON%/Scripts/pip install nose twine nose"
   # Download glpk.h and glpk.lib (separate files for 32/64 bit)
   - ps: Start-FileDownload 'https://opencobra.github.io/pypi_cobrapy_travis/glpk.h'
   - "appveyor DownloadFile https://opencobra.github.io/pypi_cobrapy_travis/glpk.lib%PYTHON_ARCH% -FileName glpk.lib"
@@ -48,7 +48,7 @@ install:
 build: off
 
 test_script:
-  - "%WITH_COMPILER% %PYTHON%/python setup.py test"
+  - "%WITH_COMPILER% nosetests -v"
 
 after_test:
   - "%WITH_COMPILER% %PYTHON%/python setup.py bdist_wheel"
