@@ -32,7 +32,7 @@ def copy_glpk_header():
         glpk_header_path = os.path.join(os.path.dirname(glpsol_path).decode("utf-8"), 'include', 'glpk.h')
         print('glpk.h found at {}'.format(glpk_header_path))
     if os.path.exists(glpk_header_path):
-        with open('src/glpk_clean.h', 'w') as out_handle:
+        with open('swiglpk/glpk_clean.h', 'w') as out_handle:
             with open(glpk_header_path) as in_handle:
                 for line in in_handle:
                     if line == 'void glp_vprintf(const char *fmt, va_list arg);\n':
@@ -63,6 +63,8 @@ class CustomBuild(build):
         ('build_scripts', build.has_scripts),
     ]
 
+custom_cmd_class['build'] = CustomBuild
+
 try:
     from wheel.bdist_wheel import bdist_wheel
 
@@ -74,7 +76,6 @@ try:
     custom_cmd_class['bdist_wheel'] = CustomBdistWheel
 except ImportError:
     pass  # custom command not needed if wheel is not installed
-
 
 setup(
     name='swiglpk',
@@ -99,6 +100,6 @@ setup(
         'Programming Language :: Python :: 3.4',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)'
     ],
-    ext_modules=[Extension("_swiglpk", sources=["src/glpk.i"], libraries=['glpk'])],
+    ext_modules=[Extension("swiglpk._swiglpk", sources=["swiglpk/glpk.i"], libraries=['glpk'])],
     include_package_data = True
 )

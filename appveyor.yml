@@ -1,38 +1,60 @@
 environment:
-
   global:
-    # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
-    # /E:ON and /V:ON options are not enabled in the batch script intepreter
-    # See: http://stackoverflow.com/a/13751649/163740
-    WITH_COMPILER: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_compiler.cmd"
+
+      # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
+      # /E:ON and /V:ON options are not enabled in the batch script intepreter
+      # See: http://stackoverflow.com/a/13751649/163740
+      CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
 
   matrix:
-    - PYTHON: "C:\\Python27"
-      PYTHON_VERSION: "2.7.12"
+
+    # Python 2.7.10 is the latest version and is not pre-installed.
+
+    - PYTHON: "C:\\Python27.10"
+      PYTHON_VERSION: "2.7.10"
       PYTHON_ARCH: "32"
+
+    - PYTHON: "C:\\Python27.10-x64"
+      PYTHON_VERSION: "2.7.10"
+      PYTHON_ARCH: "64"
+
+    # Pre-installed Python versions, which Appveyor may upgrade to
+    # a later point release.
+    # See: http://www.appveyor.com/docs/installed-software#python
+
+    - PYTHON: "C:\\Python27"
+      PYTHON_VERSION: "2.7.x" # currently 2.7.9
+      PYTHON_ARCH: "32"
+
+    - PYTHON: "C:\\Python27-x64"
+      PYTHON_VERSION: "2.7.x" # currently 2.7.9
+      PYTHON_ARCH: "64"
+
+    - PYTHON: "C:\\Python33"
+      PYTHON_VERSION: "3.3.x" # currently 3.3.5
+      PYTHON_ARCH: "32"
+
+    - PYTHON: "C:\\Python33-x64"
+      PYTHON_VERSION: "3.3.x" # currently 3.3.5
+      PYTHON_ARCH: "64"
 
     - PYTHON: "C:\\Python34"
-      PYTHON_VERSION: "3.4.5"
+      PYTHON_VERSION: "3.4.x" # currently 3.4.3
       PYTHON_ARCH: "32"
 
-    - PYTHON: "C:\\Python27-x64"
-      PYTHON_VERSION: "2.7.9"
-      PYTHON_ARCH: "64"
-      WINDOWS_SDK_VERSION: "v7.0"
-
-    - PYTHON: "C:\\Python27-x64"
-      PYTHON_VERSION: "2.7.12"
-      PYTHON_ARCH: "64"
-
     - PYTHON: "C:\\Python34-x64"
-      PYTHON_VERSION: "3.4.5"
+      PYTHON_VERSION: "3.4.x" # currently 3.4.3
       PYTHON_ARCH: "64"
-      WINDOWS_SDK_VERSION: "v7.1"
+
+    # Python versions not pre-installed
+
+    - PYTHON: "C:\\Python35"
+      PYTHON_VERSION: "3.5.0"
+      PYTHON_ARCH: "32"
 
     - PYTHON: "C:\\Python35-x64"
-      PYTHON_VERSION: "3.5.2"
+      PYTHON_VERSION: "3.5.0"
       PYTHON_ARCH: "64"
-      WINDOWS_SDK_VERSION: "v7.1"
 
   password:
     secure: fAEJDjlDCADoXUIYv64Ufdvta6dvRrj2c6NIgObi3No=
@@ -41,26 +63,62 @@ init:
   - "ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%"
 
 install:
-  - "powershell appveyor\\install.ps1"
-  - choco install -y swig
+  # If there is a newer build queued for the same PR, cancel this one.
+  # The AppVeyor 'rollout builds' option is supposed to serve the same
+  # purpose but it is problematic because it tends to cancel builds pushed
+  # directly to master instead of just PR builds (or the converse).
+  # credits: JuliaLang developers.
+  - ps: if ($env:APPVEYOR_PULL_REQUEST_NUMBER -and $env:APPVEYOR_BUILD_NUMBER -ne ((Invoke-RestMethod `
+        https://ci.appveyor.com/api/projects/$env:APPVEYOR_ACCOUNT_NAME/$env:APPVEYOR_PROJECT_SLUG/history?recordsNumber=50).builds | `
+        Where-Object pullRequestId -eq $env:APPVEYOR_PULL_REQUEST_NUMBER)[0].buildNumber) { `
+          throw "There are newer queued builds for this pull request, failing early." }
+  - ECHO "Filesystem root:"
+  - ps: "ls \"C:/\""
+
+  - ECHO "Installed SDKs:"
+  - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
+
+  # Install Python (from the official .msi of http://python.org) and pip when
+  # not already installed.
+  - ps: if (-not(Test-Path($env:PYTHON))) { & appveyor\install.ps1 }
 
   # Prepend newly installed Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart
   # the parent CMD process).
-  #- "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
 
-  - "%WITH_COMPILER% %PYTHON%/Scripts/pip install nose twine nose"
-  # Download glpk.h and glpk.lib (separate files for 32/64 bit)
-  - ps: Start-FileDownload 'https://opencobra.github.io/pypi_cobrapy_travis/glpk.h'
-  - "appveyor DownloadFile https://opencobra.github.io/pypi_cobrapy_travis/glpk.lib%PYTHON_ARCH% -FileName glpk.lib"
+  # Check that we have the expected version and architecture for Python
+  - "python --version"
+  - "python -c \"import struct; print(struct.calcsize('P') * 8)\""
+
+  # Upgrade to the latest version of pip to avoid it displaying warnings
+  # about it being out of date.
+  - "pip install --disable-pip-version-check --user --upgrade pip"
+
+  - "powershell appveyor\\install.ps1"
+  - choco install -y swig
+
+  - "%CMD_IN_ENV% python appveyor/build_glpk.py"
+#  - conda config --add channels conda-forge
+#  - conda install glpk
+#  - copy %LIBRARY_LIB%\glpk.lib .
+#  - copy %LIBRARY_INC%\glpk.h .
+
+  - "%CMD_IN_ENV% pip install nose twine wheel"
+
+#  # Download glpk.h and glpk.lib (separate files for 32/64 bit)
+#  - ps: Start-FileDownload 'https://opencobra.github.io/pypi_cobrapy_travis/glpk.h'
+#  - "appveyor DownloadFile https://opencobra.github.io/pypi_cobrapy_travis/glpk.lib%PYTHON_ARCH% -FileName glpk.lib"
 
 build: off
 
 test_script:
-  - "%WITH_COMPILER% %PYTHON%/python -m nose -v"
+  - "%CMD_IN_ENV% python -m nose -v"
 
 after_test:
-  - "%WITH_COMPILER% %PYTHON%/python setup.py bdist_wheel"
+  - "%CMD_IN_ENV% python setup.py bdist_wheel"
+  - "%CMD_IN_ENV% python setup.py bdist_wininst"
+  - ps: "ls dist"
 
 artifacts:
   - path: dist\*
@@ -70,11 +128,3 @@ deploy_script:
       if($env:appveyor_repo_tag -eq 'True') {
           Invoke-Expression "$env:PYTHON/Scripts/twine upload dist/* --username Nikolaus.Sonnenschein --password $env:password"
       }
-
-##  - "powershell appveyor\\deploy_to_pypi.ps1"
-#deploy_script:
-#  - "%PYTHON%/Scripts/twine upload dist/* --username Nikolaus.Sonnenschein --password %password%"
-##     - "echo [pypi] > %USERPROFILE%\\.pypirc"
-##     - "echo username: Nikolaus.Sonnenschein >> %USERPROFILE%\\.pypirc"
-##     - "echo password: %password% >> %USERPROFILE%\\.pypirc"
-##     - python setup.py sdist bdist_wheel upload
