@@ -109,7 +109,7 @@ build: off
 test_script:
   - "mkdir testdir"
   - "cd testdir"
-  - "copy ..\test_swiglpk.py ."
+  - "copy ..\\test_swiglpk.py ."
   - "%CMD_IN_ENV% python -m nose -v"
 
 after_test:
