@@ -43,19 +43,15 @@ function build_wheel {
     build_bdist_wheel $@
 }
 
-function run_tests_in_repo {
+function run_tests {
+    # Runs tests on installed distribution from an empty directory
+    export NOSE_PROCESS_TIMEOUT=600
+    export NOSE_PROCESSES=0
     if [ -n "$IS_OSX" ]; then
         brew uninstall -y glpk  # remove glpk to make sure that the OS X wheel works standalone.
     else
         rm -f /usr/local/lib/libglpk*
     fi
     # Run Pillow tests from within source repo
-    (cd .. && nosetests . -v)
-}
-
-function run_tests {
-    # Runs tests on installed distribution from an empty directory
-    export NOSE_PROCESS_TIMEOUT=600
-    export NOSE_PROCESSES=0
-    run_tests_in_repo
+    nosetests -v ..
 }
