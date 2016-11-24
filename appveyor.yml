@@ -109,9 +109,12 @@ build: off
 test_script:
   - "mkdir testdir"
   - "copy test_swiglpk.py testdir\\test_swiglpk.py"
+  - "dir"
   - "cd testdir"
   - "dir"
-  - "%CMD_IN_ENV% python -m nose -v"
+  - "%PYTHON%\\python -m nose -v"
+  - "cd .."
+  - "dir"
 
 after_test:
   - "%CMD_IN_ENV% python setup.py bdist_wheel"
