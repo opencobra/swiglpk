@@ -11,9 +11,9 @@ function pre_build {
         brew update
         brew install glpk swig # automake
     else
-        curl -O http://ftp.gnu.org/gnu/glpk/glpk-4.57.tar.gz
-        tar xzf glpk-4.57.tar.gz
-        (cd glpk-4.57 \
+        curl -O http://ftp.gnu.org/gnu/glpk/glpk-4.60.tar.gz
+        tar xzf glpk-4.60.tar.gz
+        (cd glpk-4.60 \
         && ./configure --prefix=$BUILD_PREFIX \
         && make \
         && make install)

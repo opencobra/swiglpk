@@ -99,16 +99,8 @@ install:
   - choco install -y swig
 
   - "%CMD_IN_ENV% python appveyor/build_glpk.py"
-#  - conda config --add channels conda-forge
-#  - conda install glpk
-#  - copy %LIBRARY_LIB%\glpk.lib .
-#  - copy %LIBRARY_INC%\glpk.h .
 
   - "%CMD_IN_ENV% pip install nose twine wheel"
-
-#  # Download glpk.h and glpk.lib (separate files for 32/64 bit)
-#  - ps: Start-FileDownload 'https://opencobra.github.io/pypi_cobrapy_travis/glpk.h'
-#  - "appveyor DownloadFile https://opencobra.github.io/pypi_cobrapy_travis/glpk.lib%PYTHON_ARCH% -FileName glpk.lib"
 
 build: off
 
