@@ -1,1 +1,1 @@
-from swiglpk import *
+from .swiglpk import *
