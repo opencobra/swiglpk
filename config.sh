@@ -53,6 +53,6 @@ function run_tests {
         rm -f /usr/local/lib/libglpk*
     fi
     # Run Pillow tests from within source repo
-    copy ../test_swiglpk.py .
+    cp ../test_swiglpk.py .
     nosetests -v ..
 }
