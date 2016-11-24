@@ -108,7 +108,7 @@ build: off
 
 test_script:
   - "mkdir testdir"
-  - "copy test_swiglpk.py testdir"
+  - "copy test_swiglpk.py testdir\\"
   - "cd testdir"
   - "%CMD_IN_ENV% python -m nose -v"
 
