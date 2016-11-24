@@ -1,6 +1,8 @@
 swiglpk
 =======
 
+|PyPI| |License| |Build Status| |AppVeyor Status|
+
 Why?
 ~~~~
 
@@ -106,3 +108,13 @@ examples/example.py):
     OPTIMAL LP SOLUTION FOUND
 
     Z = 733.333; x1 = 33.3333; x2 = 66.6667; x3 = 0
+
+
+.. |PyPI| image:: https://img.shields.io/pypi/v/swiglpk.svg
+   :target: https://pypi.python.org/pypi/swiglpk
+.. |License| image:: https://img.shields.io/badge/License-GPL%20v3-blue.svg
+   :target: http://www.gnu.org/licenses/gpl-3.0
+.. |Build Status| image:: https://travis-ci.org/biosustain/swiglpk.svg?branch=master
+   :target: https://travis-ci.org/biosustain/swiglpk
+.. |AppVeyor Status| image:: https://ci.appveyor.com/api/projects/status/mhj0r133kx7wy908/branch/master?svg=true
+   :target: https://ci.appveyor.com/project/phantomas1234/swiglpk/branch/master
