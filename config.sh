@@ -56,5 +56,5 @@ function run_tests {
     fi
     # Run Pillow tests from within source repo
     cp ../test_swiglpk.py .
-    nosetests -v ..
+    nosetests -v
 }
