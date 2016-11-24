@@ -102,9 +102,14 @@ install:
 
   - "%CMD_IN_ENV% pip install nose twine wheel"
 
+  - "%CMD_IN_ENV% python setup.py install"
+
 build: off
 
 test_script:
+  - "mkdir testdir"
+  - "cd testdir"
+  - "copy ../test_swiglpk.py ."
   - "%CMD_IN_ENV% python -m nose -v"
 
 after_test:
