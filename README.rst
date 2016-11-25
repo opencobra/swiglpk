@@ -1,6 +1,8 @@
 swiglpk
 =======
 
+Plain python bindings for the GNU Linear Programming Kit (GLPK)
+
 |PyPI| |License| |Build Status| |AppVeyor Status|
 
 Why?
@@ -19,32 +21,16 @@ version agnostic: it will try to guess the location of the glpk.h header
 file (using ``which glpsol``) and then compile the extension for your
 particular GLPK installation.
 
-Dependencies
-~~~~~~~~~~~~
-
--  GLPK (swiglpk has been tested with versions 4.45 and 4.52 on OS X)
--  swig (swiglpk has been tested tested with version 3.0.2 on OS X)
-
-If you're on OS X, swig and GLPK can easily be installed with
-`homebrew <http://brew.sh/>`__.
-
-::
-
-    brew install swig glpk
-
-If you're using ubuntu linux, you can install swig and GLPK using
-``apt-get``.
-
-::
-
-    apt-get install glpk-utils libglpk-dev swig
+Consider staring this repo if you find swiglpk useful. 
 
 Installation
 ~~~~~~~~~~~~
 
 ::
 
-    python setup.py install
+    pip install swiglpk
+
+That's it. swiglpk comes with binary wheels for Windows, Mac, and Linux. No installation of third-party dependencies necessary.
 
 Example
 ~~~~~~~
@@ -109,6 +95,38 @@ examples/example.py):
 
     Z = 733.333; x1 = 33.3333; x2 = 66.6667; x3 = 0
 
+Pretty ugly right? Consider using `optlang <https://github.com/biosustain/optlang>`__ for formulating and solving your optimization problems.
+
+Development
+~~~~~~~~~~~
+
+You still want to install it from source? Then you'll need to install the following
+dependencies first.
+
+-  GLPK
+-  swig
+
+If you're on OS X, swig and GLPK can easily be installed with
+`homebrew <http://brew.sh/>`__.
+
+::
+
+    brew install swig glpk
+
+If you're using ubuntu linux, you can install swig and GLPK using
+``apt-get``.
+
+::
+
+    apt-get install glpk-utils libglpk-dev swig
+
+If you're on Windows, you are on your own (checkout the `appveyor.yml <https://github.com/biosustain/swiglpk/blob/master/appveyor.yml>`_ config file for directions).
+
+Then clone the repo and run the following.
+::
+
+    python setup.py install
+    
 
 .. |PyPI| image:: https://img.shields.io/pypi/v/swiglpk.svg
    :target: https://pypi.python.org/pypi/swiglpk
