@@ -1,7 +1,7 @@
 swiglpk
 =======
 
-Plain python bindings for the GNU Linear Programming Kit (GLPK)
+*Plain python bindings for the GNU Linear Programming Kit (GLPK)*
 
 |PyPI| |License| |Build Status| |AppVeyor Status|
 
