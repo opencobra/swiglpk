@@ -97,6 +97,11 @@ examples/example.py):
 
 Pretty ugly right? Consider using `optlang <https://github.com/biosustain/optlang>`__ for formulating and solving your optimization problems.
 
+Documentation
+~~~~~~~~~~~~~
+
+You can find documentation on GLPK's C API `here <http://kam.mff.cuni.cz/~elias/glpk.pdf>`__
+
 Development
 ~~~~~~~~~~~
 
