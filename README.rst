@@ -21,7 +21,7 @@ version agnostic: it will try to guess the location of the glpk.h header
 file (using ``which glpsol``) and then compile the extension for your
 particular GLPK installation.
 
-Consider staring this repo if you find swiglpk useful. 
+Show us some love by staring this repo if you find swiglpk useful. 
 
 Installation
 ~~~~~~~~~~~~
