@@ -108,7 +108,7 @@ install:
 
   - "%CMD_IN_ENV% pip install nose twine wheel setuptools>=34.0"
 
-  - "%CMD_IN_ENV% python -c 'import setuptools; print(setuptools.__version__)'"
+  - "%CMD_IN_ENV% pip freeze"
 
   - "%CMD_IN_ENV% python appveyor/build_glpk.py"
 
