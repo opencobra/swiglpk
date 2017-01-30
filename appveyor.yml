@@ -56,6 +56,14 @@ environment:
       PYTHON_VERSION: "3.5.0"
       PYTHON_ARCH: "64"
 
+    - PYTHON: "C:\\Python36"
+      PYTHON_VERSION: "3.6.0"
+      PYTHON_ARCH: "32"
+
+    - PYTHON: "C:\\Python36-x64"
+      PYTHON_VERSION: "3.6.0"
+      PYTHON_ARCH: "64"
+
   password:
     secure: fAEJDjlDCADoXUIYv64Ufdvta6dvRrj2c6NIgObi3No=
 
