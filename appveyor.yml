@@ -107,7 +107,6 @@ install:
   - choco install -y swig
 
   - "%PYTHON%/python -m pip install pip setuptools>=34.0 nose twine wheel --upgrade"
-  - "%PYTHON%/pip freeze"
   - "%CMD_IN_ENV% %PYTHON%/python appveyor/build_glpk.py"
   - "%CMD_IN_ENV% python setup.py install"
 
