@@ -47,12 +47,7 @@ function run_tests {
     export NOSE_PROCESS_TIMEOUT=600
     export NOSE_PROCESSES=0
     echo "OS X? $IS_OSX"
-    if [ -n "$IS_OSX" ]; then
-        echo "uninstalling glpk for tests"
-        brew uninstall -y glpk  # remove glpk to make sure that the OS X wheel works standalone.
-    else
-        rm -f /usr/local/lib/libglpk*
-    fi
+    rm -f /usr/local/lib/libglpk*
     # Run Pillow tests from within source repo
     cp ../test_swiglpk.py .
     nosetests -v
