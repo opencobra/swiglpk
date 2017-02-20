@@ -61,11 +61,11 @@ PyObject *wrap_glp_term_hook(PyObject *callback)
 }
 %}
 
+%include glpk_clean.h
+
 %include "carrays.i"
 %array_class(int, intArray);
 %array_class(double, doubleArray);
-
-%include glpk_clean.h
 
 %inline %{
 PyObject* get_col_primals(glp_prob *P) {
@@ -116,7 +116,7 @@ PyObject* get_row_duals(glp_prob *P) {
     return list;
 }
 
-int* as_intArray(PyObject *list) {
+intArray* as_intArray(PyObject *list) {
     /* Check if is a list */
     if (PyList_Check(list)) {
         int size = PyList_Size(list);
@@ -131,13 +131,13 @@ int* as_intArray(PyObject *list) {
                return NULL;
             }
         }
-        return int_arr;
+        return (intArray*)int_arr;
     }
     PyErr_SetString(PyExc_TypeError, "not a list");
     return NULL;
 }
 
-double* as_doubleArray(PyObject *list) {
+doubleArray* as_doubleArray(PyObject *list) {
     /* Check if is a list */
     if (PyList_Check(list)) {
         int size = PyList_Size(list);
@@ -152,7 +152,7 @@ double* as_doubleArray(PyObject *list) {
                return NULL;
             }
         }
-        return double_arr;
+        return (doubleArray*)double_arr;
     }
     PyErr_SetString(PyExc_TypeError, "not a list");
     return NULL;
