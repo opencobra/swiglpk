@@ -67,4 +67,96 @@ PyObject *wrap_glp_term_hook(PyObject *callback)
 
 %include glpk_clean.h
 
+%inline %{
+PyObject* get_col_primals(glp_prob *P) {
+    int n = glp_get_num_cols(P);
+    PyObject* list = PyList_New(n);
+    double prim = 0.0;
+    for(int i=1; i<=n; i++){
+        prim = glp_get_col_prim(P, i);
+        PyList_SetItem(list, i-1, PyFloat_FromDouble(prim));
+    }
+
+    return list;
+}
+
+PyObject* get_col_duals(glp_prob *P) {
+    int n = glp_get_num_cols(P);
+    PyObject* list = PyList_New(n);
+    double prim = 0.0;
+    for(int i=1; i<=n; i++){
+        prim = glp_get_col_dual(P, i);
+        PyList_SetItem(list, i-1, PyFloat_FromDouble(prim));
+    }
+
+    return list;
+}
+
+PyObject* get_row_primals(glp_prob *P) {
+    int n = glp_get_num_rows(P);
+    PyObject* list = PyList_New(n);
+    double prim = 0.0;
+    for(int i=1; i<=n; i++){
+        prim = glp_get_row_prim(P, i);
+        PyList_SetItem(list, i-1, PyFloat_FromDouble(prim));
+    }
+
+    return list;
+}
+
+PyObject* get_row_duals(glp_prob *P) {
+    int n = glp_get_num_rows(P);
+    PyObject* list = PyList_New(n);
+    double prim = 0.0;
+    for(int i=1; i<=n; i++){
+        prim = glp_get_row_dual(P, i);
+        PyList_SetItem(list, i-1, PyFloat_FromDouble(prim));
+    }
+
+    return list;
+}
+
+int* as_intArray(PyObject *list) {
+    /* Check if is a list */
+    if (PyList_Check(list)) {
+        int size = PyList_Size(list);
+        int *int_arr = (int *) malloc((size+1) * sizeof(int));
+        for (int i = 0; i < size; i++) {
+            PyObject *o = PyList_GetItem(list, i);
+            if (PyInt_Check(o))
+               int_arr[i+1] = PyInt_AsLong(o);
+            else {
+               PyErr_SetString(PyExc_TypeError, "list must contain integers");
+               free(int_arr);
+               return NULL;
+            }
+        }
+        return int_arr;
+    }
+    PyErr_SetString(PyExc_TypeError, "not a list");
+    return NULL;
+}
+
+double* as_doubleArray(PyObject *list) {
+    /* Check if is a list */
+    if (PyList_Check(list)) {
+        int size = PyList_Size(list);
+        int *double_arr = (int *) malloc((size+1) * sizeof(double));
+        for (int i = 0; i < size; i++) {
+            PyObject *o = PyList_GetItem(list, i);
+            if (PyFloat_Check(o))
+               double_arr[i+1] = PyFloat_AsDouble(o);
+            else {
+               PyErr_SetString(PyExc_TypeError, "list must contain floats");
+               free(double_arr);
+               return NULL;
+            }
+        }
+        return double_arr;
+    }
+    PyErr_SetString(PyExc_TypeError, "not a list");
+    return NULL;
+}
+%}
+
 %module swiglpk
