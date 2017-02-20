@@ -72,7 +72,8 @@ PyObject* get_col_primals(glp_prob *P) {
     int n = glp_get_num_cols(P);
     PyObject* list = PyList_New(n);
     double prim = 0.0;
-    for(int i=1; i<=n; i++){
+    int i=0;
+    for(i=1; i<=n; i++){
         prim = glp_get_col_prim(P, i);
         PyList_SetItem(list, i-1, PyFloat_FromDouble(prim));
     }
@@ -83,10 +84,11 @@ PyObject* get_col_primals(glp_prob *P) {
 PyObject* get_col_duals(glp_prob *P) {
     int n = glp_get_num_cols(P);
     PyObject* list = PyList_New(n);
-    double prim = 0.0;
-    for(int i=1; i<=n; i++){
-        prim = glp_get_col_dual(P, i);
-        PyList_SetItem(list, i-1, PyFloat_FromDouble(prim));
+    double dual = 0.0;
+    int i=0;
+    for(i=1; i<=n; i++){
+        dual = glp_get_col_dual(P, i);
+        PyList_SetItem(list, i-1, PyFloat_FromDouble(dual));
     }
 
     return list;
@@ -96,7 +98,8 @@ PyObject* get_row_primals(glp_prob *P) {
     int n = glp_get_num_rows(P);
     PyObject* list = PyList_New(n);
     double prim = 0.0;
-    for(int i=1; i<=n; i++){
+    int i=0;
+    for(i=1; i<=n; i++){
         prim = glp_get_row_prim(P, i);
         PyList_SetItem(list, i-1, PyFloat_FromDouble(prim));
     }
@@ -107,10 +110,11 @@ PyObject* get_row_primals(glp_prob *P) {
 PyObject* get_row_duals(glp_prob *P) {
     int n = glp_get_num_rows(P);
     PyObject* list = PyList_New(n);
-    double prim = 0.0;
-    for(int i=1; i<=n; i++){
-        prim = glp_get_row_dual(P, i);
-        PyList_SetItem(list, i-1, PyFloat_FromDouble(prim));
+    double dual = 0.0;
+    int i=0;
+    for(i=1; i<=n; i++){
+        dual = glp_get_row_dual(P, i);
+        PyList_SetItem(list, i-1, PyFloat_FromDouble(dual));
     }
 
     return list;
@@ -121,7 +125,8 @@ intArray* as_intArray(PyObject *list) {
     if (PyList_Check(list)) {
         int size = PyList_Size(list);
         int *int_arr = (int *) malloc((size+1) * sizeof(int));
-        for (int i = 0; i < size; i++) {
+        int i=0;
+        for (i=0; i<size; i++) {
             PyObject *o = PyList_GetItem(list, i);
             if (PyInt_Check(o))
                int_arr[i+1] = PyInt_AsLong(o);
@@ -141,8 +146,9 @@ doubleArray* as_doubleArray(PyObject *list) {
     /* Check if is a list */
     if (PyList_Check(list)) {
         int size = PyList_Size(list);
-        int *double_arr = (int *) malloc((size+1) * sizeof(double));
-        for (int i = 0; i < size; i++) {
+        double *double_arr = (double *) malloc((size+1) * sizeof(double));
+        int i=0;
+        for (i=0; i<size; i++) {
             PyObject *o = PyList_GetItem(list, i);
             if (PyFloat_Check(o))
                double_arr[i+1] = PyFloat_AsDouble(o);
