@@ -113,7 +113,7 @@ install:
   - "powershell appveyor\\install.ps1"
 
   # Use newer version of swig
-  - "7z x appveyor\\swigwin-%%SWIG_VERSION.zip"
+  - "7z x appveyor\\swigwin-%SWIG_VERSION%.zip"
   - "SET PATH=swigwin-%SWIG_VERSION%;%PATH%"
 
   - "%PYTHON%/python -m pip install pip setuptools>=34.0 nose twine wheel --upgrade"
