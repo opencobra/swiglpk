@@ -11,6 +11,7 @@ environment:
       # /E:ON and /V:ON options are not enabled in the batch script intepreter
       # See: http://stackoverflow.com/a/13751649/163740
       CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
+      SWIG_VERSION: "3.0.12"
 
   matrix:
 
@@ -110,7 +111,10 @@ install:
   - "pip install --disable-pip-version-check --user --upgrade pip"
 
   - "powershell appveyor\\install.ps1"
-  - choco install -y swig
+
+  # Use newer version of swig
+  - "7z x appveyor\\swigwin-%SWIG_VERSION%.zip"
+  - "SET PATH=swigwin-%SWIG_VERSION%;%PATH%"
 
   - "%PYTHON%/python -m pip install pip setuptools>=34.0 nose twine wheel --upgrade"
   - "%CMD_IN_ENV% %PYTHON%/python appveyor/build_glpk.py"
