@@ -102,7 +102,6 @@ setup(
     ],
     ext_modules=[Extension("swiglpk._swiglpk",
                            sources=["swiglpk/glpk.i"],
-                           libraries=['glpk'],
-                           swig_opts=['-builtin'])],
-    include_package_data = True
+                           libraries=['glpk'])],
+    include_package_data=True
 )
