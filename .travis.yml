@@ -20,76 +20,82 @@ branches:
     
 matrix:
   exclude:
-  - python: 3.5
+    - python: 3.5
   include:
-  - os: linux
-    env:
-    - MB_PYTHON_VERSION=2.7
-  - os: linux
-    env:
-    - MB_PYTHON_VERSION=2.7
-    - UNICODE_WIDTH=16
-  - os: linux
-    env:
-    - MB_PYTHON_VERSION=2.7
-    - PLAT=i686
-  - os: linux
-    env:
-    - MB_PYTHON_VERSION=2.7
-    - PLAT=i686
-    - UNICODE_WIDTH=16
-  - os: linux
-    env:
-    - MB_PYTHON_VERSION=3.4
-  - os: linux
-    env:
-    - MB_PYTHON_VERSION=3.4
-    - PLAT=i686
-  - os: linux
-    env:
-    - MB_PYTHON_VERSION=3.5
-    - TOXENV=py35
-  - os: linux
-    env:
-    - MB_PYTHON_VERSION=3.5
-    - PLAT=i686
-  - os: linux
-    env:
-    - MB_PYTHON_VERSION=3.6
-    - TOXENV=py36
-  - os: linux
-    env:
-    - MB_PYTHON_VERSION=3.6
-    - PLAT=i686
-  - os: osx
-    language: objective-c
-    env:
-    - MB_PYTHON_VERSION=2.7
-  - os: osx
-    language: objective-c
-    env:
-    - MB_PYTHON_VERSION=3.4
-  - os: osx
-    language: objective-c
-    env:
-    - MB_PYTHON_VERSION=3.5
-  - os: osx
-    language: objective-c
-    env:
-    - MB_PYTHON_VERSION=3.6
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=2.7
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=2.7
+        - UNICODE_WIDTH=16
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=2.7
+        - PLAT=i686
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=2.7
+        - PLAT=i686
+        - UNICODE_WIDTH=16
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.4
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.4
+        - PLAT=i686
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.5
+        - TOXENV=py35
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.5
+        - PLAT=i686
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.6
+        - TOXENV=py36
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.6
+        - PLAT=i686
+    - os: osx
+      language: objective-c
+      env:
+        - MB_PYTHON_VERSION=2.7
+    - os: osx
+      language: objective-c
+      env:
+        - MB_PYTHON_VERSION=3.4
+    - os: osx
+      language: objective-c
+      env:
+        - MB_PYTHON_VERSION=3.5
+    - os: osx
+      language: objective-c
+      env:
+        - MB_PYTHON_VERSION=3.6
+
 before_install:
-- "(git clone https://github.com/matthew-brett/multibuild.git && cd multibuild &&
-  git checkout e6ebbfa)"
-- TEST_DEPENDS="nose"
-- source multibuild/common_utils.sh
-- source multibuild/travis_steps.sh
-- before_install
+  - "(git clone https://github.com/matthew-brett/multibuild.git && cd multibuild &&
+     git checkout e6ebbfa)"
+  - TEST_DEPENDS="nose"
+  - source multibuild/common_utils.sh
+  - source multibuild/travis_steps.sh
+  - before_install
+
 install:
-- build_wheel . $PLAT
+  - build_wheel . $PLAT
+
 before_cache:
-- set +e
+  - set +e
+
 script:
-- install_run $PLAT
+  - install_run $PLAT
+  - ls ${TRAVIS_BUILD_DIR}/wheelhouse/
+
 deploy:
   provider: script
   skip_cleanup: true
