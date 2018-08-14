@@ -12,12 +12,6 @@ env:
   - secure: hd1Pl8/9iiweqYM0WjDzeQOM5JcqYUfhEmmD3PkDF4ff45xEJhAbalRZByzSPuqXoXIGZx7aJdlc/SSIyIptkOzY0k0r/VuB8MY8auCR8qifvE5YdRtgYDc3ni6mT4GXWWADWbd/5lrgSq+HSEFew89lct+Kk609vDpcFxxZpLc=
   - secure: laA/davmLILdmA6OthPaSQKMJslm9wkVmAmb8sxc/jmS3RiExFO5/yq7j30TCHRf2r43Sv1/Bswzgrcd4xY5AGbLSWZBQ3NB0kQYHBtbUsV5mtVy9kNIUcpUnWoDYDXN4Tx1AEg5sDiv+b06BW2IYDDvpt+87eH9kt1nOt3OnVs=
 
-branches:
-  only:
-  - master
-  - devel
-  - /^[0-9]+\.[0-9]+\.[0-9]+[.0-9ab]*$/
-    
 matrix:
   exclude:
     - python: 3.5
@@ -61,6 +55,10 @@ matrix:
       env:
         - MB_PYTHON_VERSION=3.6
         - PLAT=i686
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.7
+        - PLAT=i686
     - os: osx
       language: objective-c
       env:
@@ -77,10 +75,13 @@ matrix:
       language: objective-c
       env:
         - MB_PYTHON_VERSION=3.6
+    - os: osx
+      language: objective-c
+      env:
+        - MB_PYTHON_VERSION=3.7
 
 before_install:
-  - "(git clone https://github.com/matthew-brett/multibuild.git && cd multibuild &&
-     git checkout e6ebbfa)"
+  - "(git clone https://github.com/matthew-brett/multibuild.git && cd multibuild)"
   - TEST_DEPENDS="nose"
   - source multibuild/common_utils.sh
   - source multibuild/travis_steps.sh
