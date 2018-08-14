@@ -17,7 +17,7 @@ branches:
   - master
   - devel
   - /^[0-9]+\.[0-9]+\.[0-9]+[.0-9ab]*$/
-    
+
 matrix:
   exclude:
     - python: 3.5
@@ -61,6 +61,10 @@ matrix:
       env:
         - MB_PYTHON_VERSION=3.6
         - PLAT=i686
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.7
+        - PLAT=i686
     - os: osx
       language: objective-c
       env:
@@ -77,10 +81,13 @@ matrix:
       language: objective-c
       env:
         - MB_PYTHON_VERSION=3.6
+    - os: osx
+      language: objective-c
+      env:
+        - MB_PYTHON_VERSION=3.7
 
 before_install:
-  - "(git clone https://github.com/matthew-brett/multibuild.git && cd multibuild &&
-     git checkout e6ebbfa)"
+  - "(git clone https://github.com/matthew-brett/multibuild.git && cd multibuild)"
   - TEST_DEPENDS="nose"
   - source multibuild/common_utils.sh
   - source multibuild/travis_steps.sh

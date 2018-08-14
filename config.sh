@@ -8,7 +8,6 @@ function pre_build {
         export CC=clang
         export CXX=clang++
         export CFLAGS="-fPIC -O3 -arch i386 -arch x86_64 -g -DNDEBUG -mmacosx-version-min=10.6"
-        brew tap homebrew/science
         brew update
         brew install swig # automake
     else
