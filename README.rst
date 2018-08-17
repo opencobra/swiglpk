@@ -19,7 +19,10 @@ underlying C library. In constrast to other GLPK wrappers for python
 `ecyglpki <https://github.com/equaeghe/ecyglpki>`__ etc.) it is fairly
 version agnostic: it will try to guess the location of the glpk.h header
 file (using ``which glpsol``) and then compile the extension for your
-particular GLPK installation.
+particular GLPK installation. Furthermore, swiglpk provides binary wheels
+for all major platforms, which are always up-to-date with the most
+recent GLPK version (swiglpk versions follow GLPK versioning in the major
+and minor version digits to emphasize that).
 
 Please show us some love by staring this repo if you find swiglpk useful!
 
