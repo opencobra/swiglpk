@@ -91,6 +91,7 @@ matrix:
         - MB_PYTHON_VERSION=3.7
 
 before_install:
+  - pip install -r requirements_ci.txt
   - export SWIGLPK_VERSION=$(python scripts/find_swiglpk_version.py)
   - echo $SWIGLPK_VERSION
   - export NEW_GLPK_VERSION=$(python scripts/find_newest_glpk_release.py)
@@ -100,7 +101,6 @@ before_install:
   - source multibuild/common_utils.sh
   - source multibuild/travis_steps.sh
   - before_install
-  - pip install -r requirements_ci.txt
 
 install:
   - build_wheel . $PLAT

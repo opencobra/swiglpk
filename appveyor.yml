@@ -124,7 +124,9 @@ install:
 
   - "%PYTHON%/python -m pip install pip setuptools>=34.0 nose twine wheel --upgrade"
   - "%PYTHON%/python -m pip install -r requirements_ci.txt"
+  - "%CMD_IN_ENV% %PYTHON%/python scripts/find_newest_glpk_release.py"
   - "%CMD_IN_ENV% %PYTHON%/python scripts/find_newest_glpk_release.py > tmpFile"
+  - "type tmpFile"
   - "SET /p NEW_GLPK_VERSION= < tmpFile"
   - "DEL tmpFile"
   - "echo NEW_GLPK_VESION: %NEW_GLPK_VERSION%"
