@@ -91,12 +91,16 @@ matrix:
         - MB_PYTHON_VERSION=3.7
 
 before_install:
+  - export SWIGLPK_VERSION=$(python scripts/find_swiglpk_version.py)
+  - echo $SWIGLPK_VERSION
+  - export NEW_GLPK_VERSION=$(python scripts/find_newest_glpk_release.py)
+  - echo $NEW_GLPK_VERSION
   - "(git clone https://github.com/matthew-brett/multibuild.git && cd multibuild)"
   - TEST_DEPENDS="nose"
   - source multibuild/common_utils.sh
   - source multibuild/travis_steps.sh
   - before_install
-  - pip install requests gitpython
+  - pip install -r requirements_ci.txt
 
 install:
   - build_wheel . $PLAT
@@ -109,9 +113,15 @@ script:
   - ls ${TRAVIS_BUILD_DIR}/wheelhouse/
 
 deploy:
-  provider: script
-  skip_cleanup: true
-  script: scripts/deploy.sh
-  on:
-    branch: master
-    tags: true
+  - provider: script
+    skip_cleanup: true
+    script: scripts/deploy.sh
+    on:
+      branch: master
+      tags: true
+  - provider: script
+    skip_cleanup: true
+    script: scripts/release.sh
+    on:
+      condition: type == 'cron'
+

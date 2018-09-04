@@ -13,7 +13,7 @@ except ImportError:  # python 3
     import urllib.request as urllib2
 
 # these need to be set to the latest glpk version
-glpk_version = "4.60"
+glpk_version = os.getenv('NEW_GLPK_VERSION')
 glpk_md5 = "eda7965907f6919ffc69801646f13c3e"
 
 glpk_build_dir = "glpk_build/glpk-%s" % glpk_version
