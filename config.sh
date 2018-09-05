@@ -20,9 +20,10 @@ function pre_build {
 				&& make \
 				&& make install)
 	fi
-    curl -O http://ftp.gnu.org/gnu/glpk/glpk-$NEW_GLPK_VERSION.tar.gz
-    tar xzf glpk-$NEW_GLPK_VERSION.tar.gz
-    (cd glpk-$NEW_GLPK_VERSION \
+	echo "Downloading http://ftp.gnu.org/gnu/glpk/glpk-$NEW_GLPK_VERSION.tar.gz"
+    curl -O "http://ftp.gnu.org/gnu/glpk/glpk-$NEW_GLPK_VERSION.tar.gz"
+    tar xzf "glpk-$NEW_GLPK_VERSION.tar.gz"
+    (cd "glpk-$NEW_GLPK_VERSION" \
             && ./configure --disable-reentrant --prefix=$BUILD_PREFIX \
             && make \
             && make install)
