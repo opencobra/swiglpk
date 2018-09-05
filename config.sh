@@ -10,7 +10,9 @@ function pre_build {
         export CFLAGS="-fPIC -O3 -arch i386 -arch x86_64 -g -DNDEBUG -mmacosx-version-min=10.6"
         brew update
         brew install swig # automake
+        brew install gmp
     else
+        pip install requests
         yum install -y pcre-devel
 		# yum install automake
         curl -O -L http://downloads.sourceforge.net/swig/swig-3.0.10.tar.gz
@@ -19,13 +21,19 @@ function pre_build {
 				&& ./configure --prefix=$BUILD_PREFIX \
 				&& make \
 				&& make install)
+		curl -O https://gmplib.org/download/gmp/gmp-6.1.2.tar.xz
+		tar xzf gmp-6.1.2.tar.xz
+		(cd gmp-6.1.2 \
+		        && ./configure \
+		        && make \
+		        && make install)
 	fi
 	export NEW_GLPK_VERSION=$(python scripts/find_newest_glpk_release.py)
 	echo "Downloading http://ftp.gnu.org/gnu/glpk/glpk-$NEW_GLPK_VERSION.tar.gz"
     curl -O "http://ftp.gnu.org/gnu/glpk/glpk-$NEW_GLPK_VERSION.tar.gz"
     tar xzf "glpk-$NEW_GLPK_VERSION.tar.gz"
     (cd "glpk-$NEW_GLPK_VERSION" \
-            && ./configure --disable-reentrant --prefix=$BUILD_PREFIX \
+            && ./configure --disable-reentrant --prefix=$BUILD_PREFIX --with-gmp\
             && make \
             && make install)
 
