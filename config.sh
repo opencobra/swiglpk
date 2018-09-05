@@ -20,12 +20,6 @@ function pre_build {
 				&& ./configure --prefix=$BUILD_PREFIX \
 				&& make \
 				&& make install)
-		curl -O https://gmplib.org/download/gmp/gmp-6.1.2.tar.bz2
-		# untar gmp-6.1.2.tar.bz2
-		# (cd gmp-6.1.2 \
-		#        && ./configure \
-		#        && make \
-		#        && make install)
 		pip install requests
         export NEW_GLPK_VERSION=$(python scripts/find_newest_glpk_release.py)
 	fi
