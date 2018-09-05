@@ -96,6 +96,7 @@ before_install:
   - echo $SWIGLPK_VERSION
   - export NEW_GLPK_VERSION=$(python scripts/find_newest_glpk_release.py)
   - echo $NEW_GLPK_VERSION
+  - echo "Test http://ftp.gnu.org/gnu/glpk/glpk-$NEW_GLPK_VERSION.tar.gz"
   - "(git clone https://github.com/matthew-brett/multibuild.git && cd multibuild)"
   - TEST_DEPENDS="nose"
   - source multibuild/common_utils.sh

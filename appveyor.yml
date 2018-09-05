@@ -126,6 +126,7 @@ install:
   - "%PYTHON%/python -m pip install -r requirements_ci.txt"
   - "%CMD_IN_ENV% %PYTHON%/python scripts/find_newest_glpk_release.py"
   - "%CMD_IN_ENV% %PYTHON%/python scripts/find_newest_glpk_release.py > tmpFile"
+  - "more +2 tmpFile > tmpFile"
   - "type tmpFile"
   - "SET /p NEW_GLPK_VERSION= < tmpFile"
   - "DEL tmpFile"
