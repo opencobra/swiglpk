@@ -20,6 +20,7 @@ function pre_build {
 				&& make \
 				&& make install)
 	fi
+	export NEW_GLPK_VERSION=$(python scripts/find_newest_glpk_release.py)
 	echo "Downloading http://ftp.gnu.org/gnu/glpk/glpk-$NEW_GLPK_VERSION.tar.gz"
     curl -O "http://ftp.gnu.org/gnu/glpk/glpk-$NEW_GLPK_VERSION.tar.gz"
     tar xzf "glpk-$NEW_GLPK_VERSION.tar.gz"
