@@ -12,7 +12,7 @@ function pre_build {
         brew install swig # automake
         brew install gmp
     else
-        yum install -y pcre-devel
+        yum install -y pcre-devel gmp
 		# yum install automake
         curl -O -L http://downloads.sourceforge.net/swig/swig-3.0.10.tar.gz
         tar xzf swig-3.0.10.tar.gz
@@ -21,11 +21,11 @@ function pre_build {
 				&& make \
 				&& make install)
 		curl -O https://gmplib.org/download/gmp/gmp-6.1.2.tar.bz2
-		untar gmp-6.1.2.tar.bz2
-		(cd gmp-6.1.2 \
-		        && ./configure \
-		        && make \
-		        && make install)
+		# untar gmp-6.1.2.tar.bz2
+		# (cd gmp-6.1.2 \
+		#        && ./configure \
+		#        && make \
+		#        && make install)
 		pip install requests
         export NEW_GLPK_VERSION=$(python scripts/find_newest_glpk_release.py)
 	fi
