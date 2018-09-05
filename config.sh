@@ -12,7 +12,7 @@ function pre_build {
         brew install swig # automake
         brew install gmp
     else
-        yum install -y pcre-devel gmp
+        yum install -y pcre-devel gmp-devel
 		# yum install automake
         curl -O -L http://downloads.sourceforge.net/swig/swig-3.0.10.tar.gz
         tar xzf swig-3.0.10.tar.gz
