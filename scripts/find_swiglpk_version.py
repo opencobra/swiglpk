@@ -1,4 +1,4 @@
-
+from __future__ import print_function
 import requests
 
 try:
@@ -26,4 +26,4 @@ def get_version(package, url_pattern=URL_PATTERN):
 
 version = get_version('swiglpk')
 major, minor, patch = version.base_version.split('.')
-print('{}.{}'.format(major, minor))
+print('{}.{}'.format(major, minor), end='')

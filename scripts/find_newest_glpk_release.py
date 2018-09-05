@@ -1,3 +1,4 @@
+from __future__ import print_function
 import re
 import requests
 
@@ -14,7 +15,7 @@ if response.ok:
         if new_minor > minor:
             minor = new_minor
 
-    print('{}.{}'.format(major, minor))
+    print('{}.{}'.format(major, minor), end='')
 else:
     print("Couldn't reaction GNU FTP server. Status code {}".format(response.status))
 
