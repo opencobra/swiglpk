@@ -20,8 +20,8 @@ function pre_build {
 				&& ./configure --prefix=$BUILD_PREFIX \
 				&& make \
 				&& make install)
-		curl -O https://gmplib.org/download/gmp/gmp-6.1.2.tar.xz
-		untar gmp-6.1.2.tar.xz
+		curl -O https://gmplib.org/download/gmp/gmp-6.1.2.tar.bz2
+		untar gmp-6.1.2.tar.bz2
 		(cd gmp-6.1.2 \
 		        && ./configure \
 		        && make \
