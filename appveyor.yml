@@ -123,6 +123,12 @@ install:
   - "SET PATH=swigwin-%SWIG_VERSION%;%PATH%"
 
   - "%PYTHON%/python -m pip install pip setuptools>=34.0 nose twine wheel --upgrade"
+  - "%PYTHON%/python -m pip install -r requirements_ci.txt"
+  - "python scripts/find_newest_glpk_release.py > tmpFile"
+  - "type tmpFile"
+  - "SET /p NEW_GLPK_VERSION= < tmpFile"
+  - "DEL tmpFile"
+  - "echo NEW_GLPK_VESION: %NEW_GLPK_VERSION%"
   - "%CMD_IN_ENV% %PYTHON%/python appveyor/build_glpk.py"
   - "%CMD_IN_ENV% python setup.py install"
 
