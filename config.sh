@@ -21,7 +21,7 @@ function pre_build {
 				&& make \
 				&& make install)
 		curl -O https://gmplib.org/download/gmp/gmp-6.1.2.tar.xz
-		unxz -c gmp-6.1.2.tar.xz | tar -xf
+		untar gmp-6.1.2.tar.xz
 		(cd gmp-6.1.2 \
 		        && ./configure \
 		        && make \
