@@ -124,5 +124,5 @@ deploy:
     skip_cleanup: true
     script: scripts/release.sh
     on:
-      condition: type == 'cron'
+      condition: type = cron and env(MB_PYTHON_VERSION) = 3.7
 
