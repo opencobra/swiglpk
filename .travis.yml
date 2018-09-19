@@ -126,5 +126,5 @@ deploy:
     script: scripts/release.sh
     on:
       branch: master
-      condition: type = cron
+      condition: '$TRAVIS_EVENT_TYPE = cron && $MB_PYTHON_VERSION = 3.7 && $TRAVIS_OS_NAME = osx'
 
