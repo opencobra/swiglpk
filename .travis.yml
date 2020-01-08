@@ -69,6 +69,14 @@ matrix:
       env:
         - MB_PYTHON_VERSION=3.7
         - PLAT=i686
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.8
+        - TOXENV=py38
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.8
+        - PLAT=i686
     - os: osx
       language: objective-c
       env:
@@ -89,6 +97,10 @@ matrix:
       language: objective-c
       env:
         - MB_PYTHON_VERSION=3.7
+    - os: osx
+      language: objective-c
+      env:
+        - MB_PYTHON_VERSION=3.8
 
 before_install:
   - pip install -r requirements_ci.txt
