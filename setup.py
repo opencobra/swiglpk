@@ -24,10 +24,9 @@ import subprocess
 import versioneer
 
 EXCLUDE = [
-    r'void glp_vprintf(.+);',
-    r'^.+rmfgen.+\n*.+;',
-    r'^.+netgen.+\n*.+;',
-    r'^.+gridgen.+\n*.+;',
+    r'void glp_vprintf\(.+\);',
+    # see https://lists.gnu.org/archive/html/bug-glpk/2021-01/msg00002.html
+    r'void glp_netgen_prob\(.+\n*.+;',
 ]
 
 
@@ -50,8 +49,7 @@ def copy_glpk_header():
                     content = re.sub(
                         ex,
                         "// This line was removed by swiglpk",
-                        content,
-                        flags=re.MULTILINE)
+                        content)
                 out_handle.write(content)
     else:
         raise Exception('Could not find glpk.h! Maybe glpk or glpsol is not installed.')
