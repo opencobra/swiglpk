@@ -53,7 +53,6 @@ def copy_glpk_header():
                         content,
                         flags=re.MULTILINE)
                 out_handle.write(content)
-                print(content)
     else:
         raise Exception('Could not find glpk.h! Maybe glpk or glpsol is not installed.')
 
