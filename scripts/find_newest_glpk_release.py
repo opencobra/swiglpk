@@ -12,6 +12,7 @@ if response.ok:
         new_major, new_minor = int(match[0][0]), int(match[0][1])
         if new_major > major:
             major = new_major
+            minor = new_minor
         if new_major >= major and new_minor > minor:
             minor = new_minor
 
