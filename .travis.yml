@@ -40,21 +40,6 @@ matrix:
         - UNICODE_WIDTH=16
     - os: linux
       env:
-        - MB_PYTHON_VERSION=3.4
-    - os: linux
-      env:
-        - MB_PYTHON_VERSION=3.4
-        - PLAT=i686
-    - os: linux
-      env:
-        - MB_PYTHON_VERSION=3.5
-        - TOXENV=py35
-    - os: linux
-      env:
-        - MB_PYTHON_VERSION=3.5
-        - PLAT=i686
-    - os: linux
-      env:
         - MB_PYTHON_VERSION=3.6
         - TOXENV=py36
     - os: linux
@@ -77,18 +62,18 @@ matrix:
       env:
         - MB_PYTHON_VERSION=3.8
         - PLAT=i686
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.9
+        - TOXENV=py39
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.9
+        - PLAT=i686
     - os: osx
       language: objective-c
       env:
         - MB_PYTHON_VERSION=2.7
-#     - os: osx
-#       language: objective-c
-#       env:
-#         - MB_PYTHON_VERSION=3.4
-    - os: osx
-      language: objective-c
-      env:
-        - MB_PYTHON_VERSION=3.5
     - os: osx
       language: objective-c
       env:
@@ -101,6 +86,10 @@ matrix:
       language: objective-c
       env:
         - MB_PYTHON_VERSION=3.8
+    - os: osx
+      language: objective-c
+      env:
+        - MB_PYTHON_VERSION=3.9
 
 before_install:
   - pip install -r requirements_ci.txt
