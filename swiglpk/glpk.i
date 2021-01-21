@@ -16,6 +16,10 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+%ignore glp_vprintf;
+%ignore glp_netgen;
+%ignore glp_netgen_prob;
+
 %module swiglpk
 
 %{
