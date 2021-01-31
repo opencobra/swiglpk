@@ -24,12 +24,32 @@ import subprocess
 import versioneer
 
 
+def find_glpk_header():
+    if os.path.isfile('glpk.h'):
+        print('glpk.h found in source directory')
+        glpk_header_path = os.path.join('./', 'glpk.h')
+    elif "GLPK_HEADER_PATH" in os.environ:
+        glpk_header_path = os.path.join(os.environ["GLPK_HEADER_PATH"], 'glpk.h')
+    else:
+        print('Trying to determine glpk.h location')
+        glpsol_path = os.path.dirname(subprocess.check_output(['which', 'glpsol']))
+        glpk_header_path = os.path.join(os.path.dirname(glpsol_path).decode("utf-8"), 'include', 'glpk.h')
+        print('glpk.h found at {}'.format(glpk_header_path))
+    if os.path.exists(glpk_header_path):
+        return os.path.dirname(glpk_header_path)
+    else:
+        raise Exception('Could not find glpk.h! Maybe glpk or glpsol is not installed.')
+
+
 try:
     with open('README.rst', 'r') as f:
         long_description = f.read()
 except Exception:
     long_description = ''
 
+
+# Copy and process glpk.h into current directory
+glpk_header_path = find_glpk_header()
 
 custom_cmd_class = versioneer.get_cmdclass()
 
@@ -82,6 +102,7 @@ setup(
     ],
     ext_modules=[Extension("swiglpk._swiglpk",
                            sources=["swiglpk/glpk.i"],
+                           swig_opts=["-I"+glpk_header_path],
                            libraries=['glpk'])],
     include_package_data=True
 )
