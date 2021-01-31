@@ -17,14 +17,13 @@
 */
 
 %ignore glp_vprintf;
-%ignore glp_netgen;
 %ignore glp_netgen_prob;
 
 %module swiglpk
 
 %{
 #define SWIG_FILE_WITH_INIT
-#include "./glpk_clean.h"
+#include "glpk.h"
 
 int wrap_glp_term_hook_cb(void *info, const char *s)
 {
@@ -65,7 +64,7 @@ PyObject *wrap_glp_term_hook(PyObject *callback)
 }
 %}
 
-%include glpk_clean.h
+%include glpk.h
 
 %include "carrays.i"
 %array_class(int, intArray);
