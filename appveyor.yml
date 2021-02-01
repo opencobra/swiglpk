@@ -106,7 +106,7 @@ install:
 
   # Upgrade to the latest version of pip to avoid it displaying warnings
   # about it being out of date.
-  - "python -m pip install --disable-pip-version-check --user --upgrade pip"
+  - "python -m pip install --upgrade pip"
 
   - "powershell appveyor\\install.ps1"
 
@@ -114,7 +114,7 @@ install:
   - "7z x appveyor\\swigwin-%SWIG_VERSION%.zip"
   - "SET PATH=swigwin-%SWIG_VERSION%;%PATH%"
 
-  - "%PYTHON%/python -m pip install pip setuptools>=34.0 nose twine wheel --upgrade"
+  - "%PYTHON%/python -m pip install setuptools>=34.0 nose twine wheel --upgrade"
   - "%PYTHON%/python -m pip install -r requirements_ci.txt"
   - "python scripts/find_newest_glpk_release.py > tmpFile"
   - "type tmpFile"
