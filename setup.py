@@ -30,7 +30,7 @@ def find_glpk_header():
         glpk_header_path = os.path.join(os.environ.get("GLPK_HEADER_PATH", None), 'glpk.h')
     elif os.path.isfile('glpk.h'):
         print('glpk.h found in source directory')
-        glpk_header_path = os.path.join(getcwd(), 'glpk.h')
+        glpk_header_path = os.path.join(os.getcwd(), 'glpk.h')
     else:
         print('Trying to determine glpk.h location')
         glpsol_dirname = os.path.dirname(subprocess.check_output(['which', 'glpsol']))
