@@ -50,9 +50,10 @@ except Exception:
 
 
 
-ext_kwargs = {}
-if not sys.platform.startswith('win'):
-    ext_kwargs = { 'swig_opts': ["-I"+find_glpk_header()] }
+#ext_kwargs = {}
+#if not sys.platform.startswith('win'):
+#    ext_kwargs = { 'swig_opts': ["-I"+find_glpk_header()] }
+ext_kwargs = { 'swig_opts': ["-I"+find_glpk_header()] }
 
 custom_cmd_class = versioneer.get_cmdclass()
 
