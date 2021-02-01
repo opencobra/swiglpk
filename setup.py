@@ -16,10 +16,9 @@
 
 # http://stackoverflow.com/questions/12491328/python-distutils-not-include-the-swig-generated-module
 
-import sys, os
+import os
 from distutils.core import setup, Extension
 from distutils.command.build import build
-import re
 import subprocess
 import versioneer
 
@@ -50,10 +49,7 @@ except Exception:
 
 
 
-#ext_kwargs = {}
-#if not sys.platform.startswith('win'):
-#    ext_kwargs = { 'swig_opts': ["-I"+find_glpk_header()] }
-ext_kwargs = { 'swig_opts': ["-I"+find_glpk_header()] }
+glpk_header_dirname = find_glpk_header()
 
 custom_cmd_class = versioneer.get_cmdclass()
 
@@ -106,6 +102,8 @@ setup(
     ],
     ext_modules=[Extension("swiglpk._swiglpk",
                            sources=["swiglpk/glpk.i"],
-                           libraries=['glpk'], **ext_kwargs)],
+                           include_dirs=[glpk_header_dirname],
+                           swig_opts=["-I"+glpk_header_dirname],
+                           libraries=['glpk'])],
     include_package_data=True
 )
