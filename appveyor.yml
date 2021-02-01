@@ -111,7 +111,7 @@ install:
   # done from inside the powershell script as it would require to restart
   # the parent CMD process).
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-  - "SET PIP_DISABLE_PIP_STRING_CHECK=1"
+  - "SET PIP_DISABLE_PIP_VERSION_CHECK=1"
 
   # Check that we have the expected version and architecture for Python
   - "python --version"
