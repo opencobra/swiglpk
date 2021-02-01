@@ -16,7 +16,7 @@
 
 # http://stackoverflow.com/questions/12491328/python-distutils-not-include-the-swig-generated-module
 
-import os
+import sys, os
 from distutils.core import setup, Extension
 from distutils.command.build import build
 import re
@@ -25,18 +25,19 @@ import versioneer
 
 
 def find_glpk_header():
-    if os.path.isfile('glpk.h'):
+    if os.environ.get("GLPK_HEADER_PATH", None) and os.path.isdir(os.environ.get("GLPK_HEADER_PATH", None)):
+        print('glpk.h found in GLPK_HEADER_PATH environment variable')
+        glpk_header_path = os.path.join(os.environ.get("GLPK_HEADER_PATH", None), 'glpk.h')
+    elif os.path.isfile('glpk.h'):
         print('glpk.h found in source directory')
-        glpk_header_path = os.path.join('./', 'glpk.h')
-    elif "GLPK_HEADER_PATH" in os.environ:
-        glpk_header_path = os.path.join(os.environ["GLPK_HEADER_PATH"], 'glpk.h')
+        glpk_header_path = os.path.join(getcwd(), 'glpk.h')
     else:
         print('Trying to determine glpk.h location')
-        glpsol_path = os.path.dirname(subprocess.check_output(['which', 'glpsol']))
-        glpk_header_path = os.path.join(os.path.dirname(glpsol_path).decode("utf-8"), 'include', 'glpk.h')
-        print('glpk.h found at {}'.format(glpk_header_path))
+        glpsol_dirname = os.path.dirname(subprocess.check_output(['which', 'glpsol']))
+        glpk_header_path = os.path.join(os.path.dirname(glpsol_dirname).decode("utf-8"), 'include', 'glpk.h')
     if os.path.exists(glpk_header_path):
-        return os.path.dirname(glpk_header_path)
+        print('glpk.h found at {}'.format(glpk_header_path))
+        return os.path.dirname(os.path.abspath(glpk_header_path))
     else:
         raise Exception('Could not find glpk.h! Maybe glpk or glpsol is not installed.')
 
@@ -48,8 +49,10 @@ except Exception:
     long_description = ''
 
 
-# Copy and process glpk.h into current directory
-glpk_header_path = find_glpk_header()
+
+ext_kwargs = {}
+if not sys.platform.startswith('win'):
+    ext_kwargs = { 'swig_opts': ["-I"+find_glpk_header()] }
 
 custom_cmd_class = versioneer.get_cmdclass()
 
@@ -102,7 +105,6 @@ setup(
     ],
     ext_modules=[Extension("swiglpk._swiglpk",
                            sources=["swiglpk/glpk.i"],
-                           swig_opts=["-I"+glpk_header_path],
-                           libraries=['glpk'])],
+                           libraries=['glpk'], **ext_kwargs)],
     include_package_data=True
 )
