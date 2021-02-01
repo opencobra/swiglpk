@@ -20,12 +20,12 @@ environment:
     - PYTHON: "C:\\Python27.10"
       PYTHON_VERSION: "2.7.10"
       PYTHON_ARCH: "32"
-      PIP_VERSION: "pip<21.0"
+      PIP_STRING: "pip<21.0"
 
     - PYTHON: "C:\\Python27.10-x64"
       PYTHON_VERSION: "2.7.10"
       PYTHON_ARCH: "64"
-      PIP_VERSION: "pip<21.0"
+      PIP_STRING: "pip<21.0"
 
     # Pre-installed Python versions, which Appveyor may upgrade to
     # a later point release.
@@ -34,54 +34,54 @@ environment:
     - PYTHON: "C:\\Python27"
       PYTHON_VERSION: "2.7.x" # currently 2.7.9
       PYTHON_ARCH: "32"
-      PIP_VERSION: "pip<21.0"
+      PIP_STRING: "pip<21.0"
 
     - PYTHON: "C:\\Python27-x64"
       PYTHON_VERSION: "2.7.x" # currently 2.7.9
       PYTHON_ARCH: "64"
-      PIP_VERSION: "pip<21.0"
+      PIP_STRING: "pip<21.0"
 
     - PYTHON: "C:\\Python36"
       PYTHON_VERSION: "3.6.x"
       PYTHON_ARCH: "32"
-      PIP_VERSION: "pip>20.0"
+      PIP_STRING: "pip>20.0"
 
     - PYTHON: "C:\\Python36-x64"
       PYTHON_VERSION: "3.6.x"
       PYTHON_ARCH: "64"
-      PIP_VERSION: "pip>20.0"
+      PIP_STRING: "pip>20.0"
 
     - PYTHON: "C:\\Python37"
       PYTHON_VERSION: "3.7.x"
       PYTHON_ARCH: "32"
-      PIP_VERSION: "pip>20.0"
+      PIP_STRING: "pip>20.0"
 
     - PYTHON: "C:\\Python37-x64"
       PYTHON_VERSION: "3.7.x"
       PYTHON_ARCH: "64"
-      PIP_VERSION: "pip>20.0"
+      PIP_STRING: "pip>20.0"
 
     - PYTHON: "C:\\Python38"
       PYTHON_VERSION: "3.8.x"
       PYTHON_ARCH: "32"
-      PIP_VERSION: "pip>20.0"
+      PIP_STRING: "pip>20.0"
 
     - PYTHON: "C:\\Python38-x64"
       PYTHON_VERSION: "3.8.x"
       PYTHON_ARCH: "64"
-      PIP_VERSION: "pip>20.0"
+      PIP_STRING: "pip>20.0"
 
     - PYTHON: "C:\\Python39"
       PYTHON_VERSION: "3.9.x"
       PYTHON_ARCH: "32"
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-      PIP_VERSION: "pip>20.0"
+      PIP_STRING: "pip>20.0"
 
     - PYTHON: "C:\\Python39-x64"
       PYTHON_VERSION: "3.9.x"
       PYTHON_ARCH: "64"
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-      PIP_VERSION: "pip>20.0"
+      PIP_STRING: "pip>20.0"
 
   password:
     secure: fAEJDjlDCADoXUIYv64Ufdvta6dvRrj2c6NIgObi3No=
@@ -111,7 +111,7 @@ install:
   # done from inside the powershell script as it would require to restart
   # the parent CMD process).
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
-  - "SET PIP_DISABLE_PIP_VERSION_CHECK=1"
+  - "SET PIP_DISABLE_PIP_STRING_CHECK=1"
 
   # Check that we have the expected version and architecture for Python
   - "python --version"
@@ -119,7 +119,7 @@ install:
 
   # Upgrade to the latest version of pip to avoid it displaying warnings
   # about it being out of date.
-  - 'python -m pip install --upgrade "%PIP_VERSION%"'
+  - 'python -m pip install --upgrade "%PIP_STRING%"'
 
   - "powershell appveyor\\install.ps1"
 
