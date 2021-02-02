@@ -22,38 +22,37 @@ from distutils.command.build import build
 import subprocess
 import versioneer
 
-def copy_glpk_header():
-    if os.path.isfile('glpk.h'):
+
+def find_glpk_header():
+    if os.environ.get("GLPK_HEADER_PATH", None) and os.path.isdir(os.environ.get("GLPK_HEADER_PATH", None)):
+        print('glpk.h found in GLPK_HEADER_PATH environment variable')
+        glpk_header_path = os.path.join(os.environ.get("GLPK_HEADER_PATH", None), 'glpk.h')
+    elif os.path.isfile('glpk.h'):
         print('glpk.h found in source directory')
-        glpk_header_path = os.path.join('./', 'glpk.h')
+        glpk_header_path = os.path.join(os.getcwd(), 'glpk.h')
     else:
         print('Trying to determine glpk.h location')
-        glpsol_path = os.path.dirname(subprocess.check_output(['which', 'glpsol']))
-        glpk_header_path = os.path.join(os.path.dirname(glpsol_path).decode("utf-8"), 'include', 'glpk.h')
-        print('glpk.h found at {}'.format(glpk_header_path))
+        glpsol_dirname = os.path.dirname(subprocess.check_output(['which', 'glpsol']))
+        glpk_header_path = os.path.join(os.path.dirname(glpsol_dirname).decode("utf-8"), 'include', 'glpk.h')
     if os.path.exists(glpk_header_path):
-        with open('swiglpk/glpk_clean.h', 'w') as out_handle:
-            with open(glpk_header_path) as in_handle:
-                for line in in_handle:
-                    if line == 'void glp_vprintf(const char *fmt, va_list arg);\n':
-                        out_handle.write('// The following line is commented out because it is causing problems with swig\n')
-                        out_handle.write('// void glp_vprintf(const char *fmt, va_list arg);')
-                    else:
-                        out_handle.write(line)
+        print('glpk.h found at {}'.format(glpk_header_path))
+        return os.path.dirname(os.path.abspath(glpk_header_path))
     else:
         raise Exception('Could not find glpk.h! Maybe glpk or glpsol is not installed.')
+
 
 try:
     with open('README.rst', 'r') as f:
         long_description = f.read()
-except:
+except Exception:
     long_description = ''
 
-# Copy and process glpk.h into current directory
-copy_glpk_header()
 
+
+glpk_header_dirname = find_glpk_header()
 
 custom_cmd_class = versioneer.get_cmdclass()
+
 
 class CustomBuild(build):
     sub_commands = [
@@ -62,6 +61,7 @@ class CustomBuild(build):
         ('build_clib', build.has_c_libraries),
         ('build_scripts', build.has_scripts),
     ]
+
 
 custom_cmd_class['build'] = CustomBuild
 
@@ -102,6 +102,8 @@ setup(
     ],
     ext_modules=[Extension("swiglpk._swiglpk",
                            sources=["swiglpk/glpk.i"],
+                           include_dirs=[glpk_header_dirname],
+                           swig_opts=["-I"+glpk_header_dirname],
                            libraries=['glpk'])],
     include_package_data=True
 )

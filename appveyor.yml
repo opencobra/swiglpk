@@ -11,7 +11,7 @@ environment:
       # /E:ON and /V:ON options are not enabled in the batch script intepreter
       # See: http://stackoverflow.com/a/13751649/163740
       CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
-      SWIG_VERSION: "3.0.12"
+      SWIG_VERSION: "4.0.2"
 
   matrix:
 
@@ -20,10 +20,12 @@ environment:
     - PYTHON: "C:\\Python27.10"
       PYTHON_VERSION: "2.7.10"
       PYTHON_ARCH: "32"
+      PIP_STRING: "pip<21.0"
 
     - PYTHON: "C:\\Python27.10-x64"
       PYTHON_VERSION: "2.7.10"
       PYTHON_ARCH: "64"
+      PIP_STRING: "pip<21.0"
 
     # Pre-installed Python versions, which Appveyor may upgrade to
     # a later point release.
@@ -32,58 +34,54 @@ environment:
     - PYTHON: "C:\\Python27"
       PYTHON_VERSION: "2.7.x" # currently 2.7.9
       PYTHON_ARCH: "32"
+      PIP_STRING: "pip<21.0"
 
     - PYTHON: "C:\\Python27-x64"
       PYTHON_VERSION: "2.7.x" # currently 2.7.9
       PYTHON_ARCH: "64"
-
-    - PYTHON: "C:\\Python33"
-      PYTHON_VERSION: "3.3.x" # currently 3.3.5
-      PYTHON_ARCH: "32"
-
-    - PYTHON: "C:\\Python33-x64"
-      PYTHON_VERSION: "3.3.x" # currently 3.3.5
-      PYTHON_ARCH: "64"
-
-    - PYTHON: "C:\\Python34"
-      PYTHON_VERSION: "3.4.x" # currently 3.4.3
-      PYTHON_ARCH: "32"
-
-    - PYTHON: "C:\\Python34-x64"
-      PYTHON_VERSION: "3.4.x" # currently 3.4.3
-      PYTHON_ARCH: "64"
-
-    - PYTHON: "C:\\Python35"
-      PYTHON_VERSION: "3.5.x"
-      PYTHON_ARCH: "32"
-
-    - PYTHON: "C:\\Python35-x64"
-      PYTHON_VERSION: "3.5.x"
-      PYTHON_ARCH: "64"
+      PIP_STRING: "pip<21.0"
 
     - PYTHON: "C:\\Python36"
       PYTHON_VERSION: "3.6.x"
       PYTHON_ARCH: "32"
+      PIP_STRING: "pip>20.0"
 
     - PYTHON: "C:\\Python36-x64"
       PYTHON_VERSION: "3.6.x"
       PYTHON_ARCH: "64"
+      PIP_STRING: "pip>20.0"
 
     - PYTHON: "C:\\Python37"
       PYTHON_VERSION: "3.7.x"
       PYTHON_ARCH: "32"
+      PIP_STRING: "pip>20.0"
 
     - PYTHON: "C:\\Python37-x64"
       PYTHON_VERSION: "3.7.x"
       PYTHON_ARCH: "64"
-    
+      PIP_STRING: "pip>20.0"
+
     - PYTHON: "C:\\Python38"
       PYTHON_VERSION: "3.8.x"
       PYTHON_ARCH: "32"
+      PIP_STRING: "pip>20.0"
 
     - PYTHON: "C:\\Python38-x64"
       PYTHON_VERSION: "3.8.x"
       PYTHON_ARCH: "64"
+      PIP_STRING: "pip>20.0"
+
+    - PYTHON: "C:\\Python39"
+      PYTHON_VERSION: "3.9.x"
+      PYTHON_ARCH: "32"
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      PIP_STRING: "pip>20.0"
+
+    - PYTHON: "C:\\Python39-x64"
+      PYTHON_VERSION: "3.9.x"
+      PYTHON_ARCH: "64"
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+      PIP_STRING: "pip>20.0"
 
   password:
     secure: fAEJDjlDCADoXUIYv64Ufdvta6dvRrj2c6NIgObi3No=
@@ -104,8 +102,6 @@ install:
   - ECHO "Filesystem root:"
   - ps: "ls \"C:/\""
 
-  - ECHO "Installed SDKs:"
-  - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
 
   # Install Python (from the official .msi of http://python.org) and pip when
   # not already installed.
@@ -115,6 +111,7 @@ install:
   # done from inside the powershell script as it would require to restart
   # the parent CMD process).
   - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  - "SET PIP_DISABLE_PIP_VERSION_CHECK=1"
 
   # Check that we have the expected version and architecture for Python
   - "python --version"
@@ -122,7 +119,7 @@ install:
 
   # Upgrade to the latest version of pip to avoid it displaying warnings
   # about it being out of date.
-  - "python -m pip install --disable-pip-version-check --user --upgrade pip"
+  - 'python -m pip install --upgrade "%PIP_STRING%"'
 
   - "powershell appveyor\\install.ps1"
 
@@ -130,7 +127,7 @@ install:
   - "7z x appveyor\\swigwin-%SWIG_VERSION%.zip"
   - "SET PATH=swigwin-%SWIG_VERSION%;%PATH%"
 
-  - "%PYTHON%/python -m pip install pip setuptools>=34.0 nose twine wheel --upgrade"
+  - "%PYTHON%/python -m pip install setuptools>=34.0 nose twine wheel --upgrade"
   - "%PYTHON%/python -m pip install -r requirements_ci.txt"
   - "python scripts/find_newest_glpk_release.py > tmpFile"
   - "type tmpFile"
