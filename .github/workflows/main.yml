@@ -6,8 +6,8 @@ jobs:
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    fail-fast: false
     strategy:
+      fail-fast: false
       matrix:
         # windows is tested on azure for now
         os: [ubuntu-latest, macos-latest]
