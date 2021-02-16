@@ -1,8 +1,8 @@
 language: python
 python: 3.8
-os: linux
 dist: focal
 services: docker
+osx_image: xcode12.2
 env:
   global:
   - PLAT=x86_64
@@ -73,19 +73,18 @@ jobs:
       env:
         - MB_PYTHON_VERSION=2.7
     - os: osx
-      language: objective-c
       env:
         - MB_PYTHON_VERSION=3.6
     - os: osx
-      language: objective-c
+      language: generic
       env:
         - MB_PYTHON_VERSION=3.7
     - os: osx
-      language: objective-c
+      language: generic
       env:
         - MB_PYTHON_VERSION=3.8
     - os: osx
-      language: objective-c
+      language: generic
       env:
         - MB_PYTHON_VERSION=3.9
 
