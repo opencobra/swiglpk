@@ -1,7 +1,7 @@
 language: python
-python: 3.5
-sudo: required
-dist: trusty
+python: 3.8
+os: linux
+dist: focal
 services: docker
 env:
   global:
@@ -18,9 +18,7 @@ branches:
   - devel
   - /^[0-9]+\.[0-9]+\.[0-9]+[.0-9ab]*$/
 
-matrix:
-  exclude:
-    - python: 3.5
+jobs:
   include:
     - os: linux
       env:
@@ -117,15 +115,14 @@ script:
 
 deploy:
   - provider: script
-    skip_cleanup: true
+    cleanup: false
     script: scripts/deploy.sh
     on:
       branch: master
       tags: true
   - provider: script
-    skip_cleanup: true
+    cleanup: false
     script: scripts/release.sh
     on:
       branch: master
       condition: '$TRAVIS_EVENT_TYPE = cron && $MB_PYTHON_VERSION = 3.7 && $TRAVIS_OS_NAME = osx'
-
