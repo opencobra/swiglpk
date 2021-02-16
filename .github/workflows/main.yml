@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   build_wheels:
-    name: Build wheels on ${{ matrix.os }}
+    name: Build wheels on ${{ matrix.os }}/${{ matrix.python }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -22,7 +22,6 @@ jobs:
           - os: macos-latest
             platform_id: macosx_x86_64
         exclude:
-          - os: macos-latest
           # Remove manylinux1 from the osx build matrix since
           # manylinux_image is not used for these platforms
           - os: macos-latest
