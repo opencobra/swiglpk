@@ -11,7 +11,6 @@ function pre_build {
         brew update
         brew install swig # automake
         brew install gmp
-        cat config.log
     else
         yum install -y pcre-devel gmp-devel
 		# yum install automake
@@ -30,8 +29,7 @@ function pre_build {
     (cd "glpk-$NEW_GLPK_VERSION" \
             && ./configure --disable-reentrant --prefix=$BUILD_PREFIX --with-gmp\
             && make \
-            && make install)
-
+            && make install) || cat config.log
  	# git clone https://github.com/swig/swig.git
     # (cd swig \
 	# 		&& git checkout rel-3.0.10 \
