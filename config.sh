@@ -7,10 +7,11 @@ function pre_build {
     if [ -n "$IS_OSX" ]; then
         export CC=clang
         export CXX=clang++
-        export CFLAGS="-fPIC -O3 -arch i386 -arch x86_64 -g -DNDEBUG"
+        export CFLAGS="-fPIC -O3 -arch i386 -arch x86_64 -g -DNDEBUG -mmacosx-version-min=10.6"
         brew update
         brew install swig # automake
         brew install gmp
+        xcode-select -switch /Applications/Xcode.app
     else
         yum install -y pcre-devel gmp-devel
 		# yum install automake
