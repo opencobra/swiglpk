@@ -39,6 +39,7 @@ jobs:
       - name: Get versions
         id: version
         run: |
+          python -m pip install requests
           echo "::set-output name=glpk_version::$(python scripts/find_newest_glpk_release.py)"
           echo "::set-output name=swigplk_version::$(python scripts/find_swiglpk_version.py)"
 
