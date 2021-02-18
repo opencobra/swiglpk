@@ -11,7 +11,7 @@ function pre_build {
         brew update
         brew install swig # automake
         brew install gmp
-        xcode-select -switch /Applications/Xcode.app
+        cat config.log
     else
         yum install -y pcre-devel gmp-devel
 		# yum install automake
