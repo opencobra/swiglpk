@@ -39,7 +39,7 @@ jobs:
       - name: Build and test wheels
         run: python -m cibuildwheel --output-dir wheelhouse
         env:
-          NEW_GLPK_VERSION: python {project}/scripts/find_newest_glpk_release.py
+          NEW_GLPK_VERSION: $(python {project}/scripts/find_newest_glpk_release.py)
           # install swig before build in each python environment
           # each job runs a python environment so this is equivalent to CIBW_BEFORE_ALL
           CIBW_BEFORE_BUILD_LINUX: source {project}/config.sh && pre_build
