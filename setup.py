@@ -105,7 +105,7 @@ setup(
             "swiglpk._swiglpk",
             sources=["swiglpk/glpk.i"],
             include_dirs=[glpk_header_dirname],
-            library_dirs=[os.path.join(glpk_header_dirname, "..", "lib")],
+            library_dirs=[os.path.join(glpk_header_dirname, ".libs")],
             swig_opts=["-I"+glpk_header_dirname],
             libraries=['glpk'])
     ],
