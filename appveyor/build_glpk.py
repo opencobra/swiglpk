@@ -55,7 +55,7 @@ if not os.path.isdir(glpk_build_dir):
 os.chdir("%s/w%d" % (glpk_build_dir, bitness))
 if not os.path.isfile("glpk.lib"):
     shutil.copy2("config_VC", "config.h")
-    os.system("nmake /f Makefile_VC")
+    os.system(get_vcvarsall_cmd() + "& nmake /f Makefile_VC")
 shutil.copy2("glpk.lib", "../../..")
 os.chdir("../../..")
 shutil.copy2(glpk_build_dir + "/src/glpk.h", ".")
