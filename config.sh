@@ -33,14 +33,3 @@ function pre_build {
             && make install) || cat "glpk-$NEW_GLPK_VERSION/config.log"
     echo "Installed to $BUILD_PREFIX"
 }
-
-
-function run_tests {
-    # Runs tests on installed distribution from an empty directory
-    export NOSE_PROCESS_TIMEOUT=600
-    export NOSE_PROCESSES=0
-    echo "OS X? $IS_OSX"
-    rm -f /usr/local/lib/libglpk*
-    # Run Pillow tests from within source repo
-    python ../test_swiglpk.py
-}
