@@ -11,7 +11,7 @@ jobs:
       matrix:
         # windows is tested on azure for now
         os: [ubuntu-latest, macos-10.15, windows-latest]
-        python: [27, 36, 37, 38, 39]
+        python: 38 # [27, 36, 37, 38, 39]
         manylinux_image: [manylinux1, manylinux2010]
         include:
           # Run 32 and 64 bit version in parallel for Linux and Windows
