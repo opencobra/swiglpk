@@ -54,8 +54,7 @@ jobs:
           CIBW_BEFORE_BUILD_MACOS: source {project}/config.sh && IS_OSX=true pre_build
           CIBW_BUILD: cp${{ matrix.python }}-${{ matrix.platform_id }}
           # install before tests
-          CIBW_TEST_REQUIRES: nose requests
-          CIBW_TEST_COMMAND: cp {project}/test_swiglpk.py . && nosetests -v
+          CIBW_TEST_COMMAND: cp {project}/test_swiglpk.py . && python test_swiglpk.py
           CIBW_MANYLINUX_X86_64_IMAGE: ${{ matrix.manylinux_image }}
           CIBW_MANYLINUX_I686_IMAGE: ${{ matrix.manylinux_image }}
 
