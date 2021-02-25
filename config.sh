@@ -30,6 +30,9 @@ function pre_build {
             && ./configure --disable-reentrant --prefix=$BUILD_PREFIX --with-gmp\
             && make \
             && make install) || cat "glpk-$NEW_GLPK_VERSION/config.log"
+  if [ -n "$IS_OSX" ]; then
+    cp "glpk-$NEW_GLPK_VERSION/src/glpk.h" .
+  fi
  	# git clone https://github.com/swig/swig.git
     # (cd swig \
 	# 		&& git checkout rel-3.0.10 \
