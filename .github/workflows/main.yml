@@ -58,7 +58,7 @@ jobs:
           # each job runs a python environment so this is equivalent to CIBW_BEFORE_ALL
           CIBW_BEFORE_BUILD_LINUX: source {project}/config.sh && pre_build
           CIBW_BEFORE_BUILD_MACOS: source {project}/config.sh && IS_OSX=true pre_build
-          CIBW_BEFORE_BUILD_WINDOWS: python appveyor/build_glpk.py && choco install swig
+          CIBW_BEFORE_BUILD_WINDOWS: python appveyor/build_glpk.py && choco install swig vcpython27
           CIBW_BUILD: cp${{ matrix.python }}-${{ matrix.platform_id }}
           # install before tests
           CIBW_TEST_COMMAND: cp {project}/test_swiglpk.py . && python test_swiglpk.py
