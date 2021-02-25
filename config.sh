@@ -7,7 +7,7 @@ function pre_build {
     if [ -n "$IS_OSX" ]; then
         export CC=clang
         export CXX=clang++
-        export BUILD_PREFIX="${BUILD_PREFIX:-/}"
+        export BUILD_PREFIX="${BUILD_PREFIX:-/usr/local}"
         # export CFLAGS="-fPIC -O3 -arch i386 -arch x86_64 -g -DNDEBUG -mmacosx-version-min=10.6"
         brew update
         brew install swig # automake
@@ -31,7 +31,7 @@ function pre_build {
             && ./configure --disable-reentrant --prefix=$BUILD_PREFIX --with-gmp\
             && make \
             && make install) || cat "glpk-$NEW_GLPK_VERSION/config.log"
-    ls -lh glpk-$NEW_GLPK_VERSION
+    echo "$BUILD_PREFIX"
  	# git clone https://github.com/swig/swig.git
     # (cd swig \
 	# 		&& git checkout rel-3.0.10 \
