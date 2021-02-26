@@ -39,7 +39,7 @@ def get_vcvarsall_cmd():
         vc_ver = 9
     vc_path = setuptools.msvc.msvc9_find_vcvarsall(vc_ver)
     assert vc_path is not None
-    return '"%s" %s' % (vc_path, " amd64" if bitness == 64 else "")
+    return '"%s" %s' % (vc_path, " x86_amd64" if bitness == 64 else "")
 
 
 if not os.path.isdir("glpk_build/"):
