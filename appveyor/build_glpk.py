@@ -12,6 +12,7 @@ try:
 except ImportError:  # python 3
     import urllib.request as urllib2
 
+
 # these need to be set to the latest glpk version
 glpk_version = os.getenv('NEW_GLPK_VERSION')
 # glpk_md5 = "eda7965907f6919ffc69801646f13c3e"
@@ -39,7 +40,21 @@ def get_vcvarsall_cmd():
         vc_ver = 9
     vc_path = setuptools.msvc.msvc9_find_vcvarsall(vc_ver)
     assert vc_path is not None
-    return '"%s" %s' % (vc_path, " x86_amd64" if bitness == 64 else "")
+    command = '"%s"' % vc_path
+
+    if py_ver.major == 2:
+        from distutils.msvc9compiler import Reg, WINSDK_BASE
+        WIN_SDK_71_PATH = Reg.get_value(os.path.join(WINSDK_BASE, 'v7.1'),
+                                        'installationfolder')
+        WIN_SDK_71_BAT_PATH = os.path.join(
+            WIN_SDK_71_PATH, 'Bin', 'SetEnv.cmd')
+        if bitness == 64:
+            command = (
+                'call "%s" /Release /x64 ' % WIN_SDK_71_BAT_PATH +
+                command + ' amd64'
+            )
+
+    return command
 
 
 if not os.path.isdir("glpk_build/"):
