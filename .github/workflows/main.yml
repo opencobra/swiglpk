@@ -35,6 +35,7 @@ jobs:
           CIBW_BEFORE_BUILD_LINUX: source {project}/config.sh && pre_build
           CIBW_BEFORE_BUILD_MACOS: source {project}/config.sh && IS_OSX=true pre_build
           CIBW_BEFORE_BUILD_WINDOWS: python appveyor/build_glpk.py
+          CIBW_SKIP: cp27-win_amd64
           # install before tests
           CIBW_TEST_COMMAND: cp {project}/test_swiglpk.py . && python test_swiglpk.py
 
