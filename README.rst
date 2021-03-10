@@ -3,7 +3,7 @@ swiglpk
 
 *Plain python bindings for the GNU Linear Programming Kit (GLPK)*
 
-|PyPI| |License| |Build Status| |AppVeyor Status|
+|PyPI| |License| |Build Status|
 
 Why?
 ~~~~
@@ -134,13 +134,11 @@ Then clone the repo and run the following.
 ::
 
     python setup.py install
-    
+
 
 .. |PyPI| image:: https://img.shields.io/pypi/v/swiglpk.svg
    :target: https://pypi.python.org/pypi/swiglpk
 .. |License| image:: https://img.shields.io/badge/License-GPL%20v3-blue.svg
    :target: http://www.gnu.org/licenses/gpl-3.0
-.. |Build Status| image:: https://travis-ci.org/biosustain/swiglpk.svg?branch=master
-   :target: https://travis-ci.org/biosustain/swiglpk
-.. |AppVeyor Status| image:: https://ci.appveyor.com/api/projects/status/mhj0r133kx7wy908/branch/master?svg=true
-   :target: https://ci.appveyor.com/project/phantomas1234/swiglpk/branch/master
+.. |Build Status| image:: https://github.com/biosustain/swiglpk/actions/workflows/main.yml/badge.svg
+   :target: https://github.com/biosustain/swiglpk/actions/workflows/main.yml
