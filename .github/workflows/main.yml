@@ -89,7 +89,7 @@ jobs:
         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
       run:
-        twine upload --skip-existing --non-interactive ./wheelhouse
+        twine upload --skip-existing --non-interactive ./wheelhouse/*
     - name: Create GitHub release
       uses: actions/create-release@v1
       if: steps.version.outputs.glpk_version != steps.version.outputs.swigplk_version
