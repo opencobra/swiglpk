@@ -100,10 +100,13 @@ setup(
         'Programming Language :: Python :: 3.4',
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)'
     ],
-    ext_modules=[Extension("swiglpk._swiglpk",
-                           sources=["swiglpk/glpk.i"],
-                           include_dirs=[glpk_header_dirname],
-                           swig_opts=["-I"+glpk_header_dirname],
-                           libraries=['glpk'])],
+    ext_modules=[
+        Extension(
+            "swiglpk._swiglpk",
+            sources=["swiglpk/glpk.i"],
+            include_dirs=[glpk_header_dirname],
+            swig_opts=["-I"+glpk_header_dirname],
+            libraries=['glpk'])
+    ],
     include_package_data=True
 )

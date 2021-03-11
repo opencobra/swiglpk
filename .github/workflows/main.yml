@@ -1,0 +1,105 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+      - devel
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+      - '[0-9]+.[0-9]+.[0-9]+a[0-9]+'
+  pull_request:
+    branches:
+      - master
+      - devel
+  schedule:
+    # https://crontab.guru/#0_8_*_*_1
+    - cron: '0 8 * * 1'
+
+jobs:
+  build_wheels:
+    name: Build wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # windows is tested on azure for now
+        os: [ubuntu-20.04, windows-2019, macos-10.15]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Visual C++ for Python 2.7 and SWIG
+        if: runner.os == 'Windows'
+        run: choco install vcpython27 swig -f -y
+
+      - name: Get versions
+        id: version
+        run: |
+          python -m pip install requests
+          echo "::set-output name=glpk_version::$(python scripts/find_newest_glpk_release.py)"
+          echo "::set-output name=swigplk_version::$(python scripts/find_swiglpk_version.py)"
+
+      - name: Build wheels
+        uses: joerick/cibuildwheel@v1.10.0
+        env:
+          NEW_GLPK_VERSION: ${{ steps.version.outputs.glpk_version }}
+          GLPK_HEADER_PATH: glpk-${{ steps.version.outputs.glpk_version }}/src
+          # install swig before build in each python environment
+          # each job runs a python environment so this is equivalent to CIBW_BEFORE_ALL
+          CIBW_BEFORE_BUILD_LINUX: source {project}/config.sh && pre_build
+          CIBW_BEFORE_BUILD_MACOS: source {project}/config.sh && IS_OSX=true pre_build
+          CIBW_BEFORE_BUILD_WINDOWS: rm -rf glpk_build && python scripts/build_glpk.py
+          CIBW_SKIP: cp35* pp*-win*
+          # install before tests
+          CIBW_TEST_COMMAND: cp {project}/test_swiglpk.py . && python test_swiglpk.py
+
+      - uses: actions/upload-artifact@v2
+        with:
+          path: ./wheelhouse/*.whl
+
+  deploy:
+    name: Release to Github and deploy to PyPI
+    needs: build_wheels
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags')
+    # alternatively, to publish when a GitHub Release is created, use the following rule:
+    # if: github.event_name == 'release' && github.event.action == 'published'
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Get versions
+      id: version
+      run: |
+        echo "::set-output name=glpk_version::$(python scripts/find_newest_glpk_release.py)"
+        echo "::set-output name=swigplk_version::$(python scripts/find_swiglpk_version.py)"
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip setuptools wheel
+        python -m pip install twine
+    - uses: actions/download-artifact@v2
+      with:
+        name: artifact
+        path: wheelhouse
+
+    - name: Publish to PyPI
+      env:
+        TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
+        TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+      run:
+        twine upload --skip-existing --non-interactive ./wheelhouse
+    - name: Create GitHub release
+      uses: actions/create-release@v1
+      if: steps.version.outputs.glpk_version != steps.version.outputs.swigplk_version
+      env:
+        # This token is set by gh actions
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: ${{ github.ref }}
+        body_path: "Release of version ${{ steps.version.glpk_version }}"
+        draft: false
+        prerelease: false
+
