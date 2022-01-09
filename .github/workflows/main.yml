@@ -29,9 +29,15 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install Visual C++ for Python 2.7 and SWIG
+      - name: Install SWIG
         if: runner.os == 'Windows'
         run: choco install swig -f -y
+
+      - name: Set up QEMU
+        if: runner.os == 'Linux'
+        uses: docker/setup-qemu-action@v1
+        with:
+          platforms: all
 
       - name: Get versions
         id: version
@@ -51,7 +57,7 @@ jobs:
           CIBW_BEFORE_BUILD_LINUX: source {project}/config.sh && pre_build
           CIBW_BEFORE_BUILD_MACOS: source {project}/config.sh && IS_OSX=true pre_build
           CIBW_BEFORE_BUILD_WINDOWS: rm -rf glpk_build && python scripts/build_glpk.py
-          CIBW_ARCHS_MACOS: "x86_64 universal2"
+          CIBW_ARCHS_MACOS: "x86_64"  # GLPK will not compile on silicon
           CIBW_ARCHS_LINUX: "auto aarch64"
           CIBW_SKIP: pp*-win* *-musllinux*
           # install before tests
