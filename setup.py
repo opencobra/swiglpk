@@ -17,41 +17,21 @@
 # http://stackoverflow.com/questions/12491328/python-distutils-not-include-the-swig-generated-module
 
 import os
+import warnings
 from distutils.core import setup, Extension
 from distutils.command.build import build
 import subprocess
 import versioneer
 
 
-def find_glpk_header():
-    if os.environ.get("GLPK_HEADER_PATH", None) and os.path.isdir(os.environ.get("GLPK_HEADER_PATH", None)):
-        print('glpk.h found in GLPK_HEADER_PATH environment variable')
-        glpk_header_path = os.path.join(os.environ.get("GLPK_HEADER_PATH", None), 'glpk.h')
-    elif os.path.isfile('glpk.h'):
-        print('glpk.h found in source directory')
-        glpk_header_path = os.path.join(os.getcwd(), 'glpk.h')
-    else:
-        print('Trying to determine glpk.h location')
-        glpsol_dirname = os.path.dirname(subprocess.check_output(['which', 'glpsol']))
-        glpk_header_path = os.path.join(os.path.dirname(glpsol_dirname).decode("utf-8"), 'include', 'glpk.h')
-    if os.path.exists(glpk_header_path):
-        print('glpk.h found at {}'.format(glpk_header_path))
-        return os.path.dirname(os.path.abspath(glpk_header_path))
-    else:
-        raise Exception('Could not find glpk.h! Maybe glpk or glpsol is not installed.')
-
-
-try:
-    with open('README.rst', 'r') as f:
-        long_description = f.read()
-except Exception:
-    long_description = ''
-
-
-
-glpk_header_dirname = find_glpk_header()
-
-custom_cmd_class = versioneer.get_cmdclass()
+ENV_GLPK_HEADER_PATH = 'GLPK_HEADER_PATH'
+GLPK_HEADER_NAME = 'glpk.h'
+GLPSOL_BINARY_NAME = 'glpsol'
+INCLUDE_DIRS = (
+    '/usr/local/include',
+    '/usr/include',
+    '/include',
+)
 
 
 class CustomBuild(build):
@@ -63,6 +43,112 @@ class CustomBuild(build):
     ]
 
 
+def find_glpk_header():
+    # If a path is provded by the environment, expect the GLPK header there.
+    given_path = os.environ.get(ENV_GLPK_HEADER_PATH, None)
+    if given_path:
+        if os.path.isfile(given_path):
+            if os.path.basename(given_path) == GLPK_HEADER_NAME:
+                return os.path.abspath(os.path.dirname(given_path))
+            else:
+                warnings.warn(
+                    'The environment variable {}="{}" points to a file not '
+                    'named {}.'.format(ENV_GLPK_HEADER_PATH, given_path,
+                    GLPK_HEADER_NAME), stacklevel=2
+                )
+        elif os.path.isdir(given_path):
+            header = os.path.join(given_path, GLPK_HEADER_NAME)
+
+            if os.path.isfile(header):
+                return os.path.abspath(given_path)
+            else:
+                warnings.warn(
+                    'The environment variable {}="{}" is set to a directory '
+                    'that does not contain {}.'.format(ENV_GLPK_HEADER_PATH,
+                    given_path, GLPK_HEADER_NAME), stacklevel=2
+                )
+        else:
+            warnings.warn(
+                'The environment variable {}="{}" does not point to a '
+                'directory or file.'.format(ENV_GLPK_HEADER_PATH, given_path),
+                stacklevel=2
+            )
+
+    # Look for a drop-in header file next.
+    if os.path.isfile(GLPK_HEADER_NAME):
+        return os.getcwd()
+
+    include_dirs = list(INCLUDE_DIRS)
+
+    # If glpsol is found, look for an include directory in its vicinity.
+    try:
+        from shutil import which
+    except ImportError:  # Python < 3.3.
+        pass
+    else:
+        glpsol = which(GLPSOL_BINARY_NAME)
+
+        if glpsol:
+            glpsol_path = os.path.dirname(glpsol)
+            glpsol_root = os.path.dirname(glpsol_path)
+            glpsol_include_path = os.path.join(glpsol_root, "include")
+            include_dirs.insert(0, glpsol_include_path)
+
+    # Look at common places.
+    for path in include_dirs:
+        if os.path.isdir(path):
+            header = os.path.join(path, GLPK_HEADER_NAME)
+
+            if os.path.isfile(header):
+                return os.path.abspath(path)
+
+    raise FileNotFoundError('Failed to locate {}.'.format(GLPK_HEADER_NAME))
+
+
+# Warn users installing via pip that this is a source build.
+print(
+    '='*30,
+    'BUILDING SWIGLPK FROM SOURCE.',
+    'If you are installing SWIGLPK via pip, this means that no wheels are'
+    ' offered for your platform or Python version yet.',
+    'This can be the case if you adopt a new Python version early.',
+    'A source build requires GLPK, SWIG, and GMP (Linux/Mac) to be installed!',
+    '='*30,
+    sep='\n'
+)
+
+# Find the GLPK header.
+try:
+    print('Looking for {}...'.format(GLPK_HEADER_NAME))
+
+    glpk_header_dirname = find_glpk_header()
+except FileNotFoundError as error:
+    raise RuntimeError(
+        'A source build of SWIGLPK requires GLPK to be installed but we could'
+        ' not find {0}. You may put {0} inside the current directory or link'
+        ' to its parent folder via {1}.'
+        .format(GLPK_HEADER_NAME, ENV_GLPK_HEADER_PATH)
+    ) from error
+else:
+    print('Found {} in {}.'.format(GLPK_HEADER_NAME, glpk_header_dirname))
+
+# Make sure SWIG is available.
+try:
+    from shutil import which
+except ImportError:
+    pass  # This check is not critical given the warning above.
+else:
+    print('Making sure SWIG is available...')
+
+    if which('swig'):
+        print('Found the swig executable.')
+    else:
+        raise RuntimeError(
+            'A source build of SWIGLPK requires SWIG to be installed but we '
+            'could not find the swig executable.')
+
+# Assemble custom_cmd_class.
+custom_cmd_class = versioneer.get_cmdclass()
 custom_cmd_class['build'] = CustomBuild
 
 try:
@@ -75,8 +161,16 @@ try:
 
     custom_cmd_class['bdist_wheel'] = CustomBdistWheel
 except ImportError:
-    pass  # custom command not needed if wheel is not installed
+    pass  # Custom command not needed if wheel is not installed.
 
+# Read long description from README.rst.
+try:
+    with open('README.rst', 'r') as f:
+        long_description = f.read()
+except Exception:
+    long_description = ''
+
+# Run setup.
 setup(
     name='swiglpk',
     version=versioneer.get_version(),
