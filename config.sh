@@ -12,7 +12,7 @@ function pre_build {
         brew install swig # automake
         brew install gmp
         export CFLAGS="-I`brew --prefix gmp`/include -L /usr/local/include $CFLAGS"
-        export LDFLAGS="-L`brew --prefix gmp`/lib -L /usr/local/lib $LDFLAGS"
+        export LDFLAGS="-L`brew --prefix gmp`/lib -L/usr/local/lib $LDFLAGS"
     else
         yum install -y pcre-devel gmp-devel
 		# yum install automake
