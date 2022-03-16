@@ -51,7 +51,7 @@ jobs:
           NEW_GLPK_VERSION: ${{ steps.version.outputs.glpk_version }}
           GLPK_HEADER_PATH: glpk-${{ steps.version.outputs.glpk_version }}/src
           CIBW_ENVIRONMENT_LINUX: GLPK_HEADER_PATH=/include
-          CIBW_ENVIRONMENT_MACOS: PATH=$PATH:/usr/local/bin LDFLAGS="-L /usr/local/lib $LDFLAGS"
+          CIBW_ENVIRONMENT_MACOS: PATH=$PATH:/usr/local/bin LDFLAGS="-L /usr/local/lib $LDFLAGS" LD_LIBRARY_PATH="/usr/local/lib"
           # install swig before build in each python environment
           # each job runs a python environment so this is equivalent to CIBW_BEFORE_ALL
           CIBW_BEFORE_BUILD_LINUX: source {project}/config.sh && pre_build
