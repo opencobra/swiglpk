@@ -8,10 +8,10 @@ function pre_build {
         export CC=clang
         export CXX=clang++
         export BUILD_PREFIX="${BUILD_PREFIX:-/usr/local}"
-        # export CFLAGS="-fPIC -O3 -arch i386 -arch x86_64 -g -DNDEBUG -mmacosx-version-min=10.6"
         brew update
         brew install swig # automake
         brew install gmp
+        CFLAGS="-I`brew --prefix gmp`/include LDFLAGS=-L`brew --prefix gmp`/lib"
     else
         yum install -y pcre-devel gmp-devel
 		# yum install automake
