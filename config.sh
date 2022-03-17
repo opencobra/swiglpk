@@ -11,8 +11,8 @@ function pre_build {
         export BUILD_PREFIX="${BUILD_PREFIX:-/usr/local}"
         brew update
         brew install swig
-        export CFLAGS="-I`brew --prefix gmp`/include -I/usr/local/include --target=arm64-apple-macos $CFLAGS"
-        export LDFLAGS="-L`brew --prefix gmp`/lib -L/usr/local/lib -arch arm64 $LDFLAGS"
+        export CFLAGS="-I/usr/local/include --target=arm64-apple-macos $CFLAGS"
+        export LDFLAGS="-L/usr/local/lib -arch arm64 $LDFLAGS"
         echo "Downloading GMP"
         curl -O https://gmplib.org/download/gmp/gmp-6.2.1.tar.lz
         tar xzf gmp-6.2.1.tar.lz
