@@ -12,8 +12,8 @@ function pre_build {
         brew update
         brew install swig # automake
         brew install gmp
-        export CFLAGS="-I`brew --prefix gmp`/include -I/usr/local/include --target=arm64-apple-macos $CFLAGS"
-        export LDFLAGS="-L`brew --prefix gmp`/lib -L/usr/local/lib --target=arm64-apple-macos $LDFLAGS"
+        export CFLAGS="-I`brew --prefix gmp`/include -I/usr/local/include -target=arm64-apple-macos $CFLAGS"
+        export LDFLAGS="-L`brew --prefix gmp`/lib -L/usr/local/lib -target=arm64-apple-macos $LDFLAGS"
     else
         yum install -y pcre-devel gmp-devel
 		# yum install automake
@@ -30,7 +30,7 @@ function pre_build {
     curl -O "http://ftp.gnu.org/gnu/glpk/glpk-$NEW_GLPK_VERSION.tar.gz"
     tar xzf "glpk-$NEW_GLPK_VERSION.tar.gz"
     (cd "glpk-$NEW_GLPK_VERSION" \
-            && ./configure --disable-reentrant --prefix=$BUILD_PREFIX --with-gmp --host=aarch64-apple-darwin\
+            && ./configure --disable-reentrant --prefix=$BUILD_PREFIX --with-gmp --host=aarch64-apple-darwin --build=x86_64-apple-darwin\
             && make \
             && make install) || cat "glpk-$NEW_GLPK_VERSION/config.log"
     echo "Installed to $BUILD_PREFIX"
