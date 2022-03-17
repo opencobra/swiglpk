@@ -5,13 +5,14 @@ function pre_build {
     # Any stuff that you need to do before you start building the wheels
     # Runs in the root directory of this repository.
     if [ -n "$IS_OSX" ]; then
+        printenv
         export CC=clang
         export CXX=clang++
         export BUILD_PREFIX="${BUILD_PREFIX:-/usr/local}"
         brew update
         brew install swig # automake
         brew install gmp
-        export CFLAGS="-I`brew --prefix gmp`/include -I/usr/local/include $CFLAGS -arch arm64"
+        export CFLAGS="-I`brew --prefix gmp`/include -I/usr/local/include $CFLAGS --host=aarch64-apple-darwin --target=arm64-apple-macos"
         export LDFLAGS="-L`brew --prefix gmp`/lib -L/usr/local/lib $LDFLAGS"
     else
         yum install -y pcre-devel gmp-devel
