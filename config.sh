@@ -12,8 +12,8 @@ function pre_build {
         brew update
         brew install swig # automake
         brew install gmp
-        export CFLAGS="-I`brew --prefix gmp`/include -I/usr/local/include $CFLAGS --target=arm64-apple-macos"
-        export LDFLAGS="-L`brew --prefix gmp`/lib -L/usr/local/lib $LDFLAGS"
+        export CFLAGS="-I`brew --prefix gmp`/include -I/usr/local/include --target=arm64-apple-macos $CFLAGS"
+        export LDFLAGS="-L`brew --prefix gmp`/lib -L/usr/local/lib --target=arm64-apple-macos $LDFLAGS"
     else
         yum install -y pcre-devel gmp-devel
 		# yum install automake
