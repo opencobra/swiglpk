@@ -30,7 +30,7 @@ function pre_build {
     curl -O "http://ftp.gnu.org/gnu/glpk/glpk-$NEW_GLPK_VERSION.tar.gz"
     tar xzf "glpk-$NEW_GLPK_VERSION.tar.gz"
     (cd "glpk-$NEW_GLPK_VERSION" \
-            && ./configure --disable-reentrant --prefix=$BUILD_PREFIX --with-gmp --host=-host=aarch64-apple-darwin\
+            && ./configure --disable-reentrant --prefix=$BUILD_PREFIX --with-gmp --host=aarch64-apple-darwin\
             && make \
             && make install) || cat "glpk-$NEW_GLPK_VERSION/config.log"
     echo "Installed to $BUILD_PREFIX"
