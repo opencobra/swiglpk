@@ -5,6 +5,7 @@ on:
     branches:
       - master
       - devel
+      - feature/silicon
     tags:
       - '[0-9]+.[0-9]+.[0-9]+'
       - '[0-9]+.[0-9]+.[0-9]+a[0-9]+'
