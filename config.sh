@@ -16,7 +16,7 @@ function pre_build {
         echo "Downloading GMP"
         curl -O https://gmplib.org/download/gmp/gmp-6.2.1.tar.lz
         tar xzf gmp-6.2.1.tar.lz
-        (cd gmp-6.2.1.tar.lz \
+        (cd gmp-6.2.1 \
             && ./configure --disable-reentrant --prefix=$BUILD_PREFIX --with-gmp --host=aarch64-apple-darwin --build=x86_64-apple-darwin \
             && make install -j 2
         )
