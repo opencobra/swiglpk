@@ -4,23 +4,28 @@
 function pre_build {
     # Any stuff that you need to do before you start building the wheels
     # Runs in the root directory of this repository.
+    ADD_CFLAGS=""
+    ADD_CONFIG_FLAGS=""
+    GMP_VERSION="6.2.1"  # hasn't changed in 2 years
     if [ -n "$IS_OSX" ]; then
-        printenv
         export CC=clang
         export CXX=clang++
         export BUILD_PREFIX="${BUILD_PREFIX:-/usr/local}"
         brew update
         brew install swig
-        export CFLAGS="-I/usr/local/include --target=arm64-apple-macos $CFLAGS"
-        export LDFLAGS="-L/usr/local/lib -arch arm64 $LDFLAGS"
+        if [[ "$ARCHFLAGS" == *"amd64"* ]]; then
+            ADD_CFLAGS="--target=arm64-apple-macos"
+            ADD_CONFIG_FLAGS="--host=aarch64-apple-darwin --build=x86_64-apple-darwin"
+        fi
+        export CFLAGS="-I/usr/local/include $ADD_CFLAGS $CFLAGS"
+        export LDFLAGS="-L/usr/local/lib $ARCHFLAGS"
         echo "Downloading GMP"
-        curl -O https://gmplib.org/download/gmp/gmp-6.2.1.tar.lz
-        tar xzf gmp-6.2.1.tar.lz
-        (cd gmp-6.2.1 \
-            && ./configure --disable-reentrant --prefix=$BUILD_PREFIX --with-gmp --host=aarch64-apple-darwin --build=x86_64-apple-darwin \
+        curl -O https://gmplib.org/download/gmp/gmp-$GMP_VERSION.tar.lz
+        tar xzf gmp-$GMP_VERSION.tar.lz
+        (cd gmp-$GMP_VERSION \
+            && ./configure --disable-reentrant --prefix=$BUILD_PREFIX --with-gmp $ADD_CONFIG_FLAGS \
             && make install -j 2
         )
-
     else
         yum install -y pcre-devel gmp-devel
 		# yum install automake
@@ -31,16 +36,17 @@ function pre_build {
 				&& make \
 				&& make install)
 		pip install requests
+
+    # Check for latest GLP and compile it for the target platform
     export NEW_GLPK_VERSION=$(python scripts/find_newest_glpk_release.py)
 	fi
 	echo "Downloading http://ftp.gnu.org/gnu/glpk/glpk-$NEW_GLPK_VERSION.tar.gz"
     curl -O "http://ftp.gnu.org/gnu/glpk/glpk-$NEW_GLPK_VERSION.tar.gz"
     tar xzf "glpk-$NEW_GLPK_VERSION.tar.gz"
     (cd "glpk-$NEW_GLPK_VERSION" \
-            && ./configure --disable-reentrant --prefix=$BUILD_PREFIX --with-gmp --host=aarch64-apple-darwin --build=x86_64-apple-darwin\
-            && make -j 2 \
-            && make install) || cat "glpk-$NEW_GLPK_VERSION/config.log"
+            && ./configure --disable-reentrant --prefix=$BUILD_PREFIX --with-gmp $ADD_CONFIG_FLAGS \
+            && make install -j 2) || cat "glpk-$NEW_GLPK_VERSION/config.log"
     echo "Installed to $BUILD_PREFIX"
     ls -ls /include
-    ls -ls .
+    ls -ls /usr/local/lib
 }

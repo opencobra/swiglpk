@@ -5,7 +5,6 @@ on:
     branches:
       - master
       - devel
-      - feature/silicon
     tags:
       - '[0-9]+.[0-9]+.[0-9]+'
       - '[0-9]+.[0-9]+.[0-9]+a[0-9]+'
@@ -58,11 +57,12 @@ jobs:
           CIBW_BEFORE_BUILD_LINUX: source {project}/config.sh && pre_build
           CIBW_BEFORE_BUILD_MACOS: source {project}/config.sh && IS_OSX=true pre_build
           CIBW_BEFORE_BUILD_WINDOWS: rm -rf glpk_build && python scripts/build_glpk.py
-          CIBW_ARCHS_MACOS: "arm64"
+          CIBW_ARCHS_MACOS: "x86_64 arm64"
           CIBW_ARCHS_LINUX: "auto"
           CIBW_SKIP: pp*-win* *-musllinux*
           # install before tests
           CIBW_TEST_COMMAND: cp {project}/test_swiglpk.py . && python test_swiglpk.py
+          CIBW_TEST_SKIP: "*_arm64"
 
       - uses: actions/upload-artifact@v2
         with:
