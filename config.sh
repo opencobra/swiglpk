@@ -13,6 +13,7 @@ function pre_build {
         export BUILD_PREFIX="${BUILD_PREFIX:-/usr/local}"
         brew update
         brew install swig
+        # Avoid mixing compiled files from different archs.
         rm -rf glpk-* /usr/local/lib/libgmp*.*
         rm -rf gmp-* /usr/local/lib/libglpk*.*
         if [[ "$ARCHFLAGS" == *"arm64"* ]]; then
@@ -50,6 +51,4 @@ function pre_build {
             && ./configure --disable-reentrant --prefix=$BUILD_PREFIX --with-gmp $ADD_CONFIG_FLAGS \
             && make install -j 2) || cat "glpk-$NEW_GLPK_VERSION/config.log"
     echo "Installed to $BUILD_PREFIX"
-    ls -ls /include
-    ls -ls /usr/local/lib/libg*
 }
