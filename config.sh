@@ -14,6 +14,7 @@ function pre_build {
         brew update
         brew install swig
         if [[ "$ARCHFLAGS" == *"amd64"* ]]; then
+            echo "Looks like we are cross-compiling, adjusting compiler flags."
             export ADD_CFLAGS="--target=arm64-apple-macos"
             export ADD_CONFIG_FLAGS="--host=aarch64-apple-darwin --build=x86_64-apple-darwin"
         fi
@@ -23,7 +24,7 @@ function pre_build {
         curl -O https://gmplib.org/download/gmp/gmp-$GMP_VERSION.tar.lz
         tar xzf gmp-$GMP_VERSION.tar.lz
         (cd gmp-$GMP_VERSION \
-            && ./configure --disable-reentrant --prefix=$BUILD_PREFIX --with-gmp $ADD_CONFIG_FLAGS \
+            && ./configure --prefix=$BUILD_PREFIX $ADD_CONFIG_FLAGS \
             && make install -j 2
         )
     else
@@ -48,5 +49,5 @@ function pre_build {
             && make install -j 2) || cat "glpk-$NEW_GLPK_VERSION/config.log"
     echo "Installed to $BUILD_PREFIX"
     ls -ls /include
-    ls -ls /usr/local/lib
+    ls -ls /usr/local/lib/libg*
 }
