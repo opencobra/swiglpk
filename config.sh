@@ -14,8 +14,8 @@ function pre_build {
         brew update
         brew install swig
         if [[ "$ARCHFLAGS" == *"amd64"* ]]; then
-            ADD_CFLAGS="--target=arm64-apple-macos"
-            ADD_CONFIG_FLAGS="--host=aarch64-apple-darwin --build=x86_64-apple-darwin"
+            export ADD_CFLAGS="--target=arm64-apple-macos"
+            export ADD_CONFIG_FLAGS="--host=aarch64-apple-darwin --build=x86_64-apple-darwin"
         fi
         export CFLAGS="-I/usr/local/include $ADD_CFLAGS $CFLAGS"
         export LDFLAGS="-L/usr/local/lib $ARCHFLAGS"
