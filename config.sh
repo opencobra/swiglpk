@@ -13,6 +13,8 @@ function pre_build {
         export BUILD_PREFIX="${BUILD_PREFIX:-/usr/local}"
         brew update
         brew install swig
+        rm -rf glpk-* /usr/local/lib/libgmp*.*
+        rm -rf gmp-* /usr/local/lib/libglpk*.*
         if [[ "$ARCHFLAGS" == *"arm64"* ]]; then
             echo "Looks like we are cross-compiling, adjusting compiler flags."
             export ADD_CFLAGS="--target=arm64-apple-macos"
