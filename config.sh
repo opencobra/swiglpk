@@ -13,7 +13,7 @@ function pre_build {
         export BUILD_PREFIX="${BUILD_PREFIX:-/usr/local}"
         brew update
         brew install swig
-        if [[ "$ARCHFLAGS" == *"amd64"* ]]; then
+        if [[ "$ARCHFLAGS" == *"arm64"* ]]; then
             echo "Looks like we are cross-compiling, adjusting compiler flags."
             export ADD_CFLAGS="--target=arm64-apple-macos"
             export ADD_CONFIG_FLAGS="--host=aarch64-apple-darwin --build=x86_64-apple-darwin"
