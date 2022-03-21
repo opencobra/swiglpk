@@ -51,16 +51,18 @@ jobs:
           NEW_GLPK_VERSION: ${{ steps.version.outputs.glpk_version }}
           GLPK_HEADER_PATH: glpk-${{ steps.version.outputs.glpk_version }}/src
           CIBW_ENVIRONMENT_LINUX: GLPK_HEADER_PATH=/include
+          CIBW_ENVIRONMENT_MACOS: PATH=$PATH:/usr/local/bin LDFLAGS="-L/usr/local/lib $LDFLAGS" LD_LIBRARY_PATH="/usr/local/lib"
           # install swig before build in each python environment
           # each job runs a python environment so this is equivalent to CIBW_BEFORE_ALL
           CIBW_BEFORE_BUILD_LINUX: source {project}/config.sh && pre_build
           CIBW_BEFORE_BUILD_MACOS: source {project}/config.sh && IS_OSX=true pre_build
           CIBW_BEFORE_BUILD_WINDOWS: rm -rf glpk_build && python scripts/build_glpk.py
-          CIBW_ARCHS_MACOS: "x86_64"  # GLPK will not compile on silicon
+          CIBW_ARCHS_MACOS: "arm64 x86_64"
           CIBW_ARCHS_LINUX: "auto"
           CIBW_SKIP: pp*-win* *-musllinux*
           # install before tests
           CIBW_TEST_COMMAND: cp {project}/test_swiglpk.py . && python test_swiglpk.py
+          CIBW_TEST_SKIP: "*_arm64"
 
       - uses: actions/upload-artifact@v2
         with:
