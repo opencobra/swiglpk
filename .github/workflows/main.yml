@@ -66,7 +66,12 @@ jobs:
 
       - name: Add source distribution
         if: runner.os == 'Linux'
-        run: python setup.py sdist --dist-dir=./wheelhouse
+        env:
+          GLPK_HEADER_PATH: "/include"
+        run: |
+          sudo apt install -y swig gmp-devel
+          alias yum=apt && source config.sh && pre_build
+          python setup.py sdist --dist-dir=./wheelhouse
 
       - uses: actions/upload-artifact@v2
         with:
