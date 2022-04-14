@@ -64,9 +64,15 @@ jobs:
           CIBW_TEST_COMMAND: cp {project}/test_swiglpk.py . && python test_swiglpk.py
           CIBW_TEST_SKIP: "*_arm64"
 
+      - name: Add source distribution
+        if: runner.os == 'Linux'
+        run: python setup.py sdist --dist-dir=./wheelhouse
+
       - uses: actions/upload-artifact@v2
         with:
-          path: ./wheelhouse/*.whl
+          path: |
+            ./wheelhouse/*.whl
+            ./wheelhouse/*.tar.gz
 
   deploy:
     name: Release to Github and deploy to PyPI
@@ -102,6 +108,7 @@ jobs:
         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
       run:
         twine upload --skip-existing --non-interactive ./wheelhouse/*
+
     - name: Create GitHub release
       uses: actions/create-release@v1
       if: steps.version.outputs.glpk_version != steps.version.outputs.swigplk_version
