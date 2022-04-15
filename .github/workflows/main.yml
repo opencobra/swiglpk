@@ -65,12 +65,9 @@ jobs:
           CIBW_TEST_SKIP: "*_arm64"
 
       - name: Add source distribution
-        if: runner.os == 'Linux'
-        env:
-          GLPK_HEADER_PATH: "/include"
+        if: runner.os == 'macOS'
         run: |
-          sudo apt install -y swig gmp-devel
-          alias yum=apt && source config.sh && pre_build
+          source config.sh && IS_OSX=true pre_build
           python setup.py sdist --dist-dir=./wheelhouse
 
       - uses: actions/upload-artifact@v2
