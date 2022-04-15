@@ -98,7 +98,7 @@ jobs:
       - name: Build source distribution
         env:
           NEW_GLPK_VERSION: ${{ steps.version.outputs.glpk_version}}
-        run: GLPK_HEADER_PATH=$NEW_GLPK_VERSION/src setup.py sdist --dist-dir=./wheelhouse
+        run: GLPK_HEADER_PATH=$NEW_GLPK_VERSION/src python setup.py sdist --dist-dir=./wheelhouse
 
       - uses: actions/upload-artifact@v2
         name: sdist
