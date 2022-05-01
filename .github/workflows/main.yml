@@ -64,7 +64,7 @@ jobs:
           CIBW_TEST_COMMAND: cp {project}/test_swiglpk.py . && python test_swiglpk.py
           CIBW_TEST_SKIP: "*_arm64"
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         name: wheels
         with:
           path: ./wheelhouse/*.whl
@@ -100,7 +100,7 @@ jobs:
           NEW_GLPK_VERSION: ${{ steps.version.outputs.glpk_version}}
         run: GLPK_HEADER_PATH=glpk-$NEW_GLPK_VERSION/src python setup.py sdist --dist-dir=./wheelhouse
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         name: sdist
         with:
           path: ./wheelhouse/*.tar.gz
