@@ -131,11 +131,11 @@ jobs:
       run: |
         python -m pip install --upgrade pip setuptools wheel
         python -m pip install twine
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v3
       with:
         name: wheel
         path: wheelhouse
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v3
       with:
         name: sdist
         path: wheelhouse
