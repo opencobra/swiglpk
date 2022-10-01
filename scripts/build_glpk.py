@@ -19,6 +19,7 @@ glpk_version = os.getenv('NEW_GLPK_VERSION')
 glpk_build_dir = "glpk_build/glpk-%s" % glpk_version
 url = "http://ftp.gnu.org/gnu/glpk/glpk-%s.tar.gz" % glpk_version
 bitness = struct.calcsize("P") * 8
+arch = "x86_amd64" if bitness == 64 else "x86"
 
 
 # def md5(fname):
@@ -55,7 +56,8 @@ if not os.path.isdir(glpk_build_dir):
 os.chdir("%s/w%d" % (glpk_build_dir, bitness))
 if not os.path.isfile("glpk.lib"):
     shutil.copy2("config_VC", "config.h")
-    os.system(get_vcvarsall_cmd() + "& nmake /f Makefile_VC")
+    os.environ.update(setuptools.msvc.msvc14_get_vc_env(arch))
+    os.system("nmake /f Makefile_VC")
 shutil.copy2("glpk.lib", "../../..")
 os.chdir("../../..")
 shutil.copy2(glpk_build_dir + "/src/glpk.h", ".")
