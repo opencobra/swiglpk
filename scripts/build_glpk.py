@@ -7,10 +7,8 @@ import tarfile
 import struct
 import shutil
 import setuptools.msvc
-try:
-    import urllib2
-except ImportError:  # python 3
-    import urllib.request as urllib2
+import urllib.request as urllib2
+import subprocess
 
 # these need to be set to the latest glpk version
 glpk_version = os.getenv('NEW_GLPK_VERSION')
@@ -56,8 +54,11 @@ if not os.path.isdir(glpk_build_dir):
 os.chdir("%s/w%d" % (glpk_build_dir, bitness))
 if not os.path.isfile("glpk.lib"):
     shutil.copy2("config_VC", "config.h")
-    os.environ.update(setuptools.msvc.msvc14_get_vc_env(arch))
-    subprocess.run(["nmake", "/f", "Makefile_VC"], check=True)
+    subprocess.run(
+        ["nmake", "/f", "Makefile_VC"],
+        check=True,
+        env=setuptools.msvc.msvc14_get_vc_env(arch)
+    )
 shutil.copy2("glpk.lib", "../../..")
 os.chdir("../../..")
 shutil.copy2(glpk_build_dir + "/src/glpk.h", ".")
