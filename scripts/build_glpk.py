@@ -57,7 +57,7 @@ os.chdir("%s/w%d" % (glpk_build_dir, bitness))
 if not os.path.isfile("glpk.lib"):
     shutil.copy2("config_VC", "config.h")
     os.environ.update(setuptools.msvc.msvc14_get_vc_env(arch))
-    os.system("nmake /f Makefile_VC")
+    subprocess.run(["nmake", "/f", "Makefile_VC"], check=True)
 shutil.copy2("glpk.lib", "../../..")
 os.chdir("../../..")
 shutil.copy2(glpk_build_dir + "/src/glpk.h", ".")
