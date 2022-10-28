@@ -133,7 +133,7 @@ jobs:
         python -m pip install twine
     - uses: actions/download-artifact@v3
       with:
-        name: wheel
+        name: wheels
         path: wheelhouse
     - uses: actions/download-artifact@v3
       with:
