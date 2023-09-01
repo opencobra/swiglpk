@@ -19,7 +19,7 @@
 import os
 import warnings
 from setuptools import setup, Extension
-from setuptools.command.build import build
+from distutils.command.build import build
 import versioneer
 
 
