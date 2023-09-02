@@ -18,9 +18,8 @@
 
 import os
 import warnings
-from distutils.core import setup, Extension
+from setuptools import setup, Extension
 from distutils.command.build import build
-import subprocess
 import versioneer
 
 
