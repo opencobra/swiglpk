@@ -6,7 +6,7 @@ function pre_build {
     # Runs in the root directory of this repository.
     ADD_CFLAGS=""
     ADD_CONFIG_FLAGS=""
-    GMP_VERSION="6.3.0"  # hasn't changed in 2 years
+    GMP_VERSION="6.3.0"
     if [ -n "$IS_OSX" ]; then
         export CC=clang
         export CXX=clang++
