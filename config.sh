@@ -24,7 +24,7 @@ function pre_build {
         export CFLAGS="-I/usr/local/include $ADD_CFLAGS $CFLAGS"
         export LDFLAGS="-L/usr/local/lib $ARCHFLAGS"
         echo "Downloading GMP"
-        curl -O https://ftp.gnu.org/gnu/gmp/gmp-${GMP_VERSION}.tar.lz
+        curl -O ftp://ftp.gnu.org/gnu/gmp/gmp-${GMP_VERSION}.tar.lz
         tar xzf gmp-$GMP_VERSION.tar.lz
         (cd gmp-$GMP_VERSION \
             && ./configure --prefix=$BUILD_PREFIX $ADD_CONFIG_FLAGS \
