@@ -46,7 +46,7 @@ jobs:
           echo "::set-output name=swigplk_version::$(python scripts/find_swiglpk_version.py)"
 
       - name: Build wheels
-        uses: joerick/cibuildwheel@v2.16.1
+        uses: joerick/cibuildwheel@v2.16.2
         env:
           NEW_GLPK_VERSION: ${{ steps.version.outputs.glpk_version }}
           GLPK_HEADER_PATH: glpk-${{ steps.version.outputs.glpk_version }}/src
@@ -78,7 +78,7 @@ jobs:
 
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: '3.11'
 
       - name: Get GLPK version
         id: version
