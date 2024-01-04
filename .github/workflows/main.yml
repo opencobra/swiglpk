@@ -59,7 +59,7 @@ jobs:
           CIBW_BEFORE_BUILD_WINDOWS: rm -rf glpk_build && python scripts/build_glpk.py
           CIBW_ARCHS_MACOS: "arm64 x86_64"
           CIBW_ARCHS_LINUX: "auto aarch64"
-          CIBW_SKIP: pp*-win* *-musllinux* cp36-*_aarch64 cp37-*_aarch64 pp*-*_aarch64
+          CIBW_SKIP: pp*-win* *-musllinux* cp36-* cp37-* pp*-*_aarch64 pp37* pp38*
           # install before tests
           CIBW_TEST_COMMAND: cp {project}/test_swiglpk.py . && python test_swiglpk.py
           CIBW_TEST_SKIP: "*_arm64"
