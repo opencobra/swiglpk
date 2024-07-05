@@ -51,5 +51,4 @@ function pre_build {
             && ./configure --disable-reentrant --prefix=$BUILD_PREFIX --with-gmp $ADD_CONFIG_FLAGS \
             && make install -j 2) || cat "glpk-$NEW_GLPK_VERSION/config.log"
     echo "Installed to $BUILD_PREFIX"
-    pip install setuptools
 }
