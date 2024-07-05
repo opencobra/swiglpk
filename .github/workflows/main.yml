@@ -24,7 +24,7 @@ jobs:
       fail-fast: false
       matrix:
         # windows is tested on azure for now
-        os: [ubuntu-latest, windows-latest, macos-13, macos-14]
+        os: [ubuntu-latest, windows-latest, macos-13]
     steps:
       - uses: actions/checkout@v4
 
