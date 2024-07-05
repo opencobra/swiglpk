@@ -24,7 +24,7 @@ jobs:
       fail-fast: false
       matrix:
         # windows is tested on azure for now
-        os: [ubuntu-20.04, windows-2019, macos-11]
+        os: [ubuntu-latest, windows-latest, macos-13]
     steps:
       - uses: actions/checkout@v4
 
@@ -46,7 +46,7 @@ jobs:
           echo "::set-output name=swigplk_version::$(python scripts/find_swiglpk_version.py)"
 
       - name: Build wheels
-        uses: joerick/cibuildwheel@v2.17.0
+        uses: joerick/cibuildwheel@v2.19.2
         env:
           NEW_GLPK_VERSION: ${{ steps.version.outputs.glpk_version }}
           GLPK_HEADER_PATH: glpk-${{ steps.version.outputs.glpk_version }}/src
@@ -56,13 +56,12 @@ jobs:
           # each job runs a python environment so this is equivalent to CIBW_BEFORE_ALL
           CIBW_BEFORE_BUILD_LINUX: source {project}/config.sh && pre_build
           CIBW_BEFORE_BUILD_MACOS: source {project}/config.sh && IS_OSX=true pre_build
-          CIBW_BEFORE_BUILD_WINDOWS: rm -rf glpk_build && python scripts/build_glpk.py
+          CIBW_BEFORE_BUILD_WINDOWS: rm -rf glpk_build && python -m pip install setuptools && python scripts/build_glpk.py
           CIBW_ARCHS_MACOS: "arm64 x86_64"
           CIBW_ARCHS_LINUX: "auto aarch64"
           CIBW_SKIP: pp*-win* *-musllinux* cp36-* cp37-* pp*-*_aarch64 pp37* pp38*
           # install before tests
           CIBW_TEST_COMMAND: cp {project}/test_swiglpk.py . && python test_swiglpk.py
-          CIBW_TEST_SKIP: "*_arm64"
 
       - uses: actions/upload-artifact@v3
         name: wheels
