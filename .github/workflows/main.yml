@@ -24,7 +24,7 @@ jobs:
       fail-fast: false
       matrix:
         # windows is tested on azure for now
-        os: [ubuntu-20.04, windows-2019, macos-11]
+        os: [ubuntu-latest, windows-latest, macos-13, macos-14]
     steps:
       - uses: actions/checkout@v4
 
@@ -62,7 +62,6 @@ jobs:
           CIBW_SKIP: pp*-win* *-musllinux* cp36-* cp37-* pp*-*_aarch64 pp37* pp38*
           # install before tests
           CIBW_TEST_COMMAND: cp {project}/test_swiglpk.py . && python test_swiglpk.py
-          CIBW_TEST_SKIP: "*_arm64"
 
       - uses: actions/upload-artifact@v3
         name: wheels
