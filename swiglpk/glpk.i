@@ -142,47 +142,159 @@ PyObject* get_row_duals(glp_prob *P) {
 }
 
 intArray* as_intArray(PyObject *list) {
-    /* Check if is a list */
-    if (PyList_Check(list)) {
-        int size = PyList_Size(list);
-        int *int_arr = (int *) malloc((size+1) * sizeof(int));
-        int i = 0;
-        for (i=0; i<size; i++) {
-            PyObject *o = PyList_GetItem(list, i);
-            if (PyInt_Check(o))
-               int_arr[i+1] = PyInt_AsLong(o);
-            else {
-               PyErr_SetString(PyExc_TypeError, "list must contain integers");
-               free(int_arr);
-               return NULL;
-            }
-        }
-        return (intArray*)int_arr;
+    if (!PyList_Check(list))
+    {
+        PyErr_SetString(PyExc_TypeError, "not a list");
+        return NULL;
     }
-    PyErr_SetString(PyExc_TypeError, "not a list");
-    return NULL;
+
+    PyObject *pmod   = PyImport_ImportModule("swiglpk");
+    if (!pmod)
+    {
+        PyErr_SetString(PyExc_ImportError, "swiglpk could not be imported");
+        return NULL;
+    }
+
+    PyObject *pclass = PyObject_GetAttrString(pmod, "intArray");
+    Py_DECREF(pmod);
+    if (!pclass)
+    {
+        PyErr_SetString(PyExc_AttributeError, "swiglpk does not contain intArray");
+        return NULL;
+    }
+
+    // Call doubleArray constructor with size + 1.
+    Py_ssize_t size = PyList_Size(list);
+    PyObject *pargs  = Py_BuildValue("(i)", size + 1);
+    if (!pargs)
+    {
+        Py_DECREF(pclass);
+        PyErr_SetString(PyExc_RuntimeError, "building arguments list for intArray constructor failed");
+        return NULL;
+    }
+
+    PyObject *pinst  = PyEval_CallObject(pclass, pargs);
+    Py_DECREF(pclass);
+    Py_DECREF(pargs);
+    if (!pinst)
+    {
+        PyErr_SetString(PyExc_RuntimeError, "creating intArray failed");
+        return NULL;
+    }
+
+    PyObject* pthis = PyObject_GetAttrString(pinst, "this");
+    if (!pthis)
+    {
+        Py_DECREF(pinst);
+        PyErr_SetString(PyExc_AttributeError, "intArray 'this' attribute not found");
+        return NULL;
+    }
+
+    // Convert 'this' to a C-style pointer.
+    intArray* int_arr = 0;
+    int res = SWIG_ConvertPtr(pthis, (void**)&int_arr, SWIGTYPE_p_intArray, 0);
+    Py_DECREF(pthis);
+    if (!SWIG_IsOK(res))
+    {
+        Py_DECREF(pinst);
+        PyErr_SetString(PyExc_RuntimeError, "SWIG_ConvertPtr failed");
+        return NULL;
+    }
+
+    PyObject *item;
+    for (Py_ssize_t idx=0; idx<size; idx++)
+    {
+        item = PyList_GetItem(list, idx);
+
+        if (!PyInt_Check(item))
+        {
+            Py_DECREF(pinst);
+            PyErr_SetString(PyExc_TypeError, "list must contain only integers");
+            return NULL;
+        }
+
+        int_arr[idx+1] = PyInt_AsLong(item);
+    }
+
+    return pinst;
 }
 
 doubleArray* as_doubleArray(PyObject *list) {
-    /* Check if is a list */
-    if (PyList_Check(list)) {
-        int size = PyList_Size(list);
-        double *double_arr = (double *) malloc((size+1) * sizeof(double));
-        int i = 0;
-        for (i=0; i<size; i++) {
-            PyObject *o = PyList_GetItem(list, i);
-            if (PyFloat_Check(o))
-               double_arr[i+1] = PyFloat_AsDouble(o);
-            else {
-               PyErr_SetString(PyExc_TypeError, "list must contain floats");
-               free(double_arr);
-               return NULL;
-            }
-        }
-        return (doubleArray*)double_arr;
+    if (!PyList_Check(list))
+    {
+        PyErr_SetString(PyExc_TypeError, "not a list");
+        return NULL;
     }
-    PyErr_SetString(PyExc_TypeError, "not a list");
-    return NULL;
+
+    PyObject *pmod   = PyImport_ImportModule("swiglpk");
+    if (!pmod)
+    {
+        PyErr_SetString(PyExc_ImportError, "swiglpk could not be imported");
+        return NULL;
+    }
+
+    PyObject *pclass = PyObject_GetAttrString(pmod, "doubleArray");
+    Py_DECREF(pmod);
+    if (!pclass)
+    {
+        PyErr_SetString(PyExc_AttributeError, "swiglpk does not contain doubleArray");
+        return NULL;
+    }
+
+    // Call doubleArray constructor with size + 1.
+    Py_ssize_t size = PyList_Size(list);
+    PyObject *pargs  = Py_BuildValue("(i)", size + 1);
+    if (!pargs)
+    {
+        Py_DECREF(pclass);
+        PyErr_SetString(PyExc_RuntimeError, "building arguments list for doubleArray constructor failed");
+        return NULL;
+    }
+
+    PyObject *pinst  = PyEval_CallObject(pclass, pargs);
+    Py_DECREF(pclass);
+    Py_DECREF(pargs);
+    if (!pinst)
+    {
+        PyErr_SetString(PyExc_RuntimeError, "creating doubleArray failed");
+        return NULL;
+    }
+
+    PyObject* pthis = PyObject_GetAttrString(pinst, "this");
+    if (!pthis)
+    {
+        Py_DECREF(pinst);
+        PyErr_SetString(PyExc_AttributeError, "doubleArray 'this' attribute not found");
+        return NULL;
+    }
+
+    // Convert 'this' to a C-style pointer.
+    doubleArray* double_arr = 0;
+    int res = SWIG_ConvertPtr(pthis, (void**)&double_arr, SWIGTYPE_p_doubleArray, 0);
+    Py_DECREF(pthis);
+    if (!SWIG_IsOK(res))
+    {
+        Py_DECREF(pinst);
+        PyErr_SetString(PyExc_RuntimeError, "SWIG_ConvertPtr failed");
+        return NULL;
+    }
+
+    PyObject *item;
+    for (Py_ssize_t idx=0; idx<size; idx++)
+    {
+        item = PyList_GetItem(list, idx);
+
+        if (!PyFloat_Check(item))
+        {
+            Py_DECREF(pinst);
+            PyErr_SetString(PyExc_TypeError, "list must contain only floats");
+            return NULL;
+        }
+
+        double_arr[idx+1] = PyFloat_AsDouble(item);
+    }
+
+    return pinst;
 }
 %}
 
