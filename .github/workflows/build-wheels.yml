@@ -39,7 +39,7 @@ jobs:
           platforms: all
 
       - name: Build wheels
-        uses: joerick/cibuildwheel@v2.19.2
+        uses: pypa/cibuildwheel@v2.20.0
         env:
           NEW_GLPK_VERSION: ${{ inputs.glpk_version }}
           GLPK_HEADER_PATH: glpk-${{ inputs.glpk_version }}/src
@@ -56,8 +56,7 @@ jobs:
           # install before tests
           CIBW_TEST_COMMAND: cp {project}/test_swiglpk.py . && python test_swiglpk.py
 
-      - uses: actions/upload-artifact@v3
-        name: wheels
+      - uses: actions/upload-artifact@v4
         with:
-          name: wheels
+          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: ./wheelhouse/*.whl

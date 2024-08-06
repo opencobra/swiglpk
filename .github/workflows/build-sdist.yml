@@ -39,18 +39,17 @@ jobs:
 
       - name: Download and unpack GLPK
         env:
-          NEW_GLPK_VERSION: ${{ steps.version.outputs.glpk_version }}
+          NEW_GLPK_VERSION: ${{ inputs.glpk_version }}
         run: |
           wget "http://ftp.gnu.org/gnu/glpk/glpk-$NEW_GLPK_VERSION.tar.gz"
           tar -xf glpk-$NEW_GLPK_VERSION.tar.gz
 
       - name: Build source distribution
         env:
-          NEW_GLPK_VERSION: ${{ steps.version.outputs.glpk_version}}
+          NEW_GLPK_VERSION: ${{ inputs.glpk_version}}
         run: GLPK_HEADER_PATH=glpk-$NEW_GLPK_VERSION/src python setup.py sdist --dist-dir=./wheelhouse
 
-      - uses: actions/upload-artifact@v3
-        name: sdist
+      - uses: actions/upload-artifact@v4
         with:
           name: sdist
           path: ./wheelhouse/*.tar.gz
