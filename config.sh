@@ -11,6 +11,8 @@ function pre_build {
         export CC=clang
         export CXX=clang++
         export BUILD_PREFIX="${BUILD_PREFIX:-/usr/local}"
+        brew update
+        brew install swig
         # Avoid mixing compiled files from different archs.
         rm -rf glpk-* /usr/local/lib/libgmp*.*
         rm -rf gmp-* /usr/local/lib/libglpk*.*
