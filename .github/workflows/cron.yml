@@ -1,14 +1,9 @@
-name: CI
+name: Cron
 
 on:
-  push:
-    branches:
-      - master
-      - devel
-  pull_request:
-    branches:
-      - master
-      - devel
+  schedule:
+  # Run every Monday at 08:30.
+  - cron: "30 8 * * 1"
 
 jobs:
   versions:

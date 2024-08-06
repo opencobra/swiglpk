@@ -1,0 +1,56 @@
+name: Build Source Distribution
+
+on:
+  workflow_dispatch:
+    inputs:
+      glpk_version:
+        required: true
+        description: "The latest released GLPK (Major.Minor) version."
+        type: string
+
+  workflow_call:
+    inputs:
+      glpk_version:
+        required: true
+        description: "The latest released GLPK (Major.Minor) version."
+        type: string
+
+jobs:
+  build_sdist:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python: ["3.11"]
+
+    name: Build the source distribution
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        name: Set up Python ${{ matrix.python }}
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install systems dependencies
+        run: sudo apt install libgmp-dev swig wget
+
+      - name: Download and unpack GLPK
+        env:
+          NEW_GLPK_VERSION: ${{ steps.version.outputs.glpk_version }}
+        run: |
+          wget "http://ftp.gnu.org/gnu/glpk/glpk-$NEW_GLPK_VERSION.tar.gz"
+          tar -xf glpk-$NEW_GLPK_VERSION.tar.gz
+
+      - name: Build source distribution
+        env:
+          NEW_GLPK_VERSION: ${{ steps.version.outputs.glpk_version}}
+        run: GLPK_HEADER_PATH=glpk-$NEW_GLPK_VERSION/src python setup.py sdist --dist-dir=./wheelhouse
+
+      - uses: actions/upload-artifact@v3
+        name: sdist
+        with:
+          name: sdist
+          path: ./wheelhouse/*.tar.gz
