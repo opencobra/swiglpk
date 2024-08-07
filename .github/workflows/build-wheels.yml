@@ -1,0 +1,62 @@
+name: Build & Test Wheels
+
+on:
+  workflow_dispatch:
+    inputs:
+      glpk_version:
+        required: true
+        description: "The latest released GLPK (Major.Minor) version."
+        type: string
+
+  workflow_call:
+    inputs:
+      glpk_version:
+        required: true
+        description: "The latest released GLPK (Major.Minor) version."
+        type: string
+
+jobs:
+  build_wheels:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-13]
+
+    name: Build wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install SWIG
+        if: runner.os == 'Windows'
+        run: choco install swig -f -y
+
+      - name: Set up QEMU
+        if: runner.os == 'Linux'
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: all
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.20.0
+        env:
+          NEW_GLPK_VERSION: ${{ inputs.glpk_version }}
+          GLPK_HEADER_PATH: glpk-${{ inputs.glpk_version }}/src
+          CIBW_ENVIRONMENT_LINUX: GLPK_HEADER_PATH=/include
+          CIBW_ENVIRONMENT_MACOS: PATH=$PATH:/usr/local/bin LDFLAGS="-L/usr/local/lib $LDFLAGS" LD_LIBRARY_PATH="/usr/local/lib"
+          # install swig before build in each python environment
+          # each job runs a python environment so this is equivalent to CIBW_BEFORE_ALL
+          CIBW_BEFORE_BUILD_LINUX: source {project}/config.sh && pre_build
+          CIBW_BEFORE_BUILD_MACOS: source {project}/config.sh && IS_OSX=true pre_build
+          CIBW_BEFORE_BUILD_WINDOWS: rm -rf glpk_build && python -m pip install setuptools && python scripts/build_glpk.py
+          CIBW_ARCHS_MACOS: "arm64 x86_64"
+          CIBW_ARCHS_LINUX: "auto aarch64"
+          CIBW_SKIP: pp* *-musllinux* cp36-* cp37-*
+          # install before tests
+          CIBW_TEST_COMMAND: cp {project}/test_swiglpk.py . && python test_swiglpk.py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
+          path: ./wheelhouse/*.whl

@@ -1,0 +1,56 @@
+name: CD
+
+on:
+  push:
+    tags:
+    - '[0-9]+.[0-9]+.[0-9]+'
+    - '[0-9]+.[0-9]+.[0-9]+(a|b|rc|post|dev)[0-9]+'
+
+jobs:
+  versions:
+    uses: ./.github/workflows/versions.yml
+
+  build_sdist:
+    needs: versions
+    uses: ./.github/workflows/build-sdist.yml
+    with:
+      glpk_version: ${{ needs.versions.outputs.glpk_version }}
+
+  build_wheels:
+    needs: versions
+    uses: ./.github/workflows/build-wheels.yml
+    with:
+      glpk_version: ${{ needs.versions.outputs.glpk_version }}
+
+  release:
+    needs: [versions, build_sdist, build_wheels]
+    runs-on: ubuntu-latest
+    permissions:
+      # Write permissions are needed to create OIDC tokens.
+      id-token: write
+      # Write permissions are needed to make GitHub releases.
+      contents: write
+
+    steps:
+    - uses: actions/checkout@v4
+
+    # Download all artifacts to the same directory (sdist and wheels).
+    - uses: actions/download-artifact@v4
+      with:
+        path: ./wheelhouse
+        merge-multiple: true
+
+    # We rely on a trusted publisher configuration being present on PyPI,
+    # see https://docs.pypi.org/trusted-publishers/.
+    - name: Publish to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+
+    - name: Create GitHub release
+      if: needs.versions.outputs.glpk_version != needs.versions.outputs.swigplk_version
+      uses: softprops/action-gh-release@v2
+      with:
+        body: >
+          Release of GLPK version ${{ needs.versions.outputs.glpk_version }}.
+        draft: false
+        prerelease: false
+

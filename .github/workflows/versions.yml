@@ -1,0 +1,48 @@
+name: Get Latest Versions
+
+on:
+  workflow_dispatch: {}
+  workflow_call:
+    outputs:
+        glpk_version:
+          description: "The latest released GLPK (Major.Minor) version."
+          value: ${{ jobs.versions.outputs.glpk_version }}
+
+        swigplk_version:
+          description: "The latest published swiglpk (Major.Minor) version."
+          value: ${{ jobs.versions.outputs.swigplk_version }}
+
+jobs:
+  versions:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ["3.11"]
+
+    runs-on: ${{ matrix.os }}
+    outputs:
+      glpk_version: ${{ steps.glpk.outputs.glpk_version }}
+      swigplk_version: ${{ steps.swiglpk.outputs.swigplk_version }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          python -m pip install requests
+
+      - name: Get latest GLPK version
+        id: glpk
+        run: |
+          echo "glpk_version=$(python scripts/find_newest_glpk_release.py)" >> $GITHUB_OUTPUT
+
+      - name: Get latest SWIGLPK version
+        id: swiglpk
+        run: |
+          echo "swiglpk_version=$(python scripts/find_swiglpk_version.py)" >> $GITHUB_OUTPUT
