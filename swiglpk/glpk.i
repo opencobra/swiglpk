@@ -173,7 +173,7 @@ intArray* as_intArray(PyObject *list) {
         return NULL;
     }
 
-    PyObject *pinst  = PyEval_CallObject(pclass, pargs);
+    PyObject *pinst  = PyObject_Call(pclass, pargs);
     Py_DECREF(pclass);
     Py_DECREF(pargs);
     if (!pinst)
@@ -251,7 +251,7 @@ doubleArray* as_doubleArray(PyObject *list) {
         return NULL;
     }
 
-    PyObject *pinst  = PyEval_CallObject(pclass, pargs);
+    PyObject *pinst  = PyObject_Call(pclass, pargs);
     Py_DECREF(pclass);
     Py_DECREF(pargs);
     if (!pinst)
