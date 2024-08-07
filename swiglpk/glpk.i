@@ -173,7 +173,7 @@ intArray* as_intArray(PyObject *list) {
         return NULL;
     }
 
-    PyObject *pinst  = PyObject_Call(pclass, pargs);
+    PyObject *pinst  = PyObject_CallObject(pclass, pargs);
     Py_DECREF(pclass);
     Py_DECREF(pargs);
     if (!pinst)
@@ -216,7 +216,7 @@ intArray* as_intArray(PyObject *list) {
         int_arr[idx+1] = PyInt_AsLong(item);
     }
 
-    return pinst;
+    return (intArray*)pinst;
 }
 
 doubleArray* as_doubleArray(PyObject *list) {
@@ -251,7 +251,7 @@ doubleArray* as_doubleArray(PyObject *list) {
         return NULL;
     }
 
-    PyObject *pinst  = PyObject_Call(pclass, pargs);
+    PyObject *pinst  = PyObject_CallObject(pclass, pargs);
     Py_DECREF(pclass);
     Py_DECREF(pargs);
     if (!pinst)
@@ -294,7 +294,7 @@ doubleArray* as_doubleArray(PyObject *list) {
         double_arr[idx+1] = PyFloat_AsDouble(item);
     }
 
-    return pinst;
+    return (doubleArray*)pinst;
 }
 %}
 
