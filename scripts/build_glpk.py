@@ -40,9 +40,9 @@ if not os.path.isdir(glpk_build_dir):
 os.chdir("%s/w%d" % (glpk_build_dir, bitness))
 if not os.path.isfile("glpk.lib"):
     shutil.copy2("config_VC", "config.h")
-    env = EnvironmentInfo(arch).return_env()
+    env = EnvironmentInfo(arch, vc_ver=14).return_env()
     print(env)
-    os.environ.update(env, vc_ver=14)
+    os.environ.update(env)
     subprocess.run(
         ["nmake", "/f", "Makefile_VC"],
         check=True,
