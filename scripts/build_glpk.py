@@ -17,7 +17,7 @@ glpk_version = os.getenv('NEW_GLPK_VERSION')
 glpk_build_dir = "glpk_build/glpk-%s" % glpk_version
 url = "http://ftp.gnu.org/gnu/glpk/glpk-%s.tar.gz" % glpk_version
 bitness = struct.calcsize("P") * 8
-arch = "x86_amd64" if bitness == 64 else "x86"
+arch = "amd64" if bitness == 64 else ""
 
 
 # def md5(fname):
@@ -40,12 +40,12 @@ if not os.path.isdir(glpk_build_dir):
 os.chdir("%s/w%d" % (glpk_build_dir, bitness))
 if not os.path.isfile("glpk.lib"):
     shutil.copy2("config_VC", "config.h")
-    env = EnvironmentInfo(arch, vc_ver=14).return_env()
+    env = EnvironmentInfo(arch).return_env()
     print(env)
-    os.environ.update(env)
+    vcvars = f"C:\Program Files (x86)\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat {arch}"
     subprocess.run(
-        ["nmake", "/f", "Makefile_VC"],
-        check=True,
+        f"{vcvars} & nmake /f Makefile_VC",
+        check=True, shell=True
     )
 shutil.copy2("glpk.lib", "../../..")
 os.chdir("../../..")
