@@ -6,7 +6,7 @@ import sys
 import tarfile
 import struct
 import shutil
-import setuptools.msvc
+from setuptools.msvc import EnvironmentInfo
 import urllib.request as urllib2
 import subprocess
 
@@ -27,20 +27,6 @@ arch = "x86_amd64" if bitness == 64 else "x86"
 #             hash.update(chunk)
 #     return hash.hexdigest()
 
-
-def get_vcvarsall_cmd():
-    py_ver = sys.version_info
-    if py_ver.major == 3 and py_ver.minor >= 5:
-        vc_ver = 14
-    elif py_ver.major == 3 and py_ver.minor >= 3:
-        vc_ver = 10
-    else:
-        vc_ver = 9
-    vc_path = setuptools.msvc.msvc9_find_vcvarsall(vc_ver)
-    assert vc_path is not None
-    return '"%s" %s' % (vc_path, " amd64" if bitness == 64 else "")
-
-
 if not os.path.isdir("glpk_build/"):
     os.mkdir("glpk_build")
 if not os.path.isdir(glpk_build_dir):
@@ -54,7 +40,8 @@ if not os.path.isdir(glpk_build_dir):
 os.chdir("%s/w%d" % (glpk_build_dir, bitness))
 if not os.path.isfile("glpk.lib"):
     shutil.copy2("config_VC", "config.h")
-    os.environ.update(setuptools.msvc.msvc14_get_vc_env(arch))
+    env = EnvironmentInfo(arch).return_env()
+    os.environ.update(env)
     subprocess.run(
         ["nmake", "/f", "Makefile_VC"],
         check=True,
