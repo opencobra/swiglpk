@@ -42,7 +42,7 @@ if not os.path.isfile("glpk.lib"):
     shutil.copy2("config_VC", "config.h")
     env = EnvironmentInfo(arch).return_env()
     print(env)
-    os.environ.update(env)
+    os.environ.update(env, vc_ver=14)
     subprocess.run(
         ["nmake", "/f", "Makefile_VC"],
         check=True,
