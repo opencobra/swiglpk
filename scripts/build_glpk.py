@@ -17,7 +17,7 @@ glpk_version = os.getenv('NEW_GLPK_VERSION')
 glpk_build_dir = "glpk_build/glpk-%s" % glpk_version
 url = "http://ftp.gnu.org/gnu/glpk/glpk-%s.tar.gz" % glpk_version
 bitness = struct.calcsize("P") * 8
-arch = "amd64" if bitness == 64 else ""
+arch = "x86_amd64" if bitness == 64 else "x86"
 
 
 # def md5(fname):
@@ -26,6 +26,14 @@ arch = "amd64" if bitness == 64 else ""
 #         for chunk in iter(lambda: f.read(4096), b""):
 #             hash.update(chunk)
 #     return hash.hexdigest()
+
+def find_vcvbarsall():
+    candidates = []
+    for root, dirs, files in os.walk("/directory_to_search"):
+        for file in files:
+            if file.endswith(".txt"):
+                txt_files.append(os.path.join(root, file))
+
 
 if not os.path.isdir("glpk_build/"):
     os.mkdir("glpk_build")
