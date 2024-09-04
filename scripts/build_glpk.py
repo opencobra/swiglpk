@@ -29,9 +29,9 @@ arch = "x86_amd64" if bitness == 64 else "x86"
 
 def find_vcvarsall():
     candidates = []
-    for root, directory, files in os.walk("C:\\Program Files\\Microsoft Visual Studio\\"):
+    for root, dirs, files in os.walk("C:\\Program Files\\Microsoft Visual Studio\\"):
         found = [
-            os.path.join(root, directory, f)
+            os.path.join(root, *dirs, f)
             for f in files
             if f == "vcvarsall.bat"
         ]
