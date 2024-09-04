@@ -4,7 +4,6 @@ import os
 import tarfile
 import struct
 import shutil
-from setuptools.msvc import EnvironmentInfo
 import urllib.request as urllib2
 import subprocess
 
@@ -27,7 +26,7 @@ def find_vcvarsall():
     for root, dirs, files in os.walk("C:\\Program Files\\Microsoft Visual Studio\\"):
         for f in files:
             if f == "vcvarsall.bat":
-                return(os.path.join(root, *dirs, f)
+                return(os.path.join(root, *dirs, f))
     raise RuntimeError("Could not find vcvarsall.bat :(")
 
 
@@ -46,7 +45,7 @@ if not os.path.isfile("glpk.lib"):
     shutil.copy2("config_VC", "config.h")
     vc_setup = find_vcvarsall()
     subprocess.run(
-        f'"{vcvars}" {arch} & nmake /f Makefile_VC',
+        f'"{vc_setup}" {arch} & nmake /f Makefile_VC',
         check=True, shell=True
     )
 shutil.copy2("glpk.lib", "../../..")
