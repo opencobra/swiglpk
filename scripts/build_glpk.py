@@ -42,7 +42,8 @@ if not os.path.isfile("glpk.lib"):
     shutil.copy2("config_VC", "config.h")
     env = EnvironmentInfo(arch).return_env()
     print(env)
-    vcvars = f'"C:\\Program Files (x86)\\Microsoft Visual Studio\\2022\\Community\\VC\\Auxiliary\\Build\\vcvarsall.bat" {arch}'
+    vcvars = f'"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" {arch}'
+    subprocess.run(vcvars, check=True, shell=True)
     subprocess.run(
         f"{vcvars} & nmake /f Makefile_VC",
         check=True, shell=True
