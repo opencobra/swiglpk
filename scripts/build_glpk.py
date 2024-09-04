@@ -27,12 +27,16 @@ arch = "x86_amd64" if bitness == 64 else "x86"
 #             hash.update(chunk)
 #     return hash.hexdigest()
 
-def find_vcvbarsall():
+def find_vcvarsall():
     candidates = []
-    for root, dirs, files in os.walk("/directory_to_search"):
-        for file in files:
-            if file.endswith(".txt"):
-                txt_files.append(os.path.join(root, file))
+    for root, directory, files in os.walk("C:\\Program Files\\Microsoft Visual Studio\\"):
+        found = [
+            os.path.join(root, directory, f)
+            for f in files
+            if f == "vcvarsall.bat"
+        ]
+        candidates.extend(found)
+    return candidates
 
 
 if not os.path.isdir("glpk_build/"):
@@ -44,6 +48,9 @@ if not os.path.isdir(glpk_build_dir):
     # assert md5("glpk-download.tar.gz") == glpk_md5
     with tarfile.open("glpk-download.tar.gz") as infile:
         infile.extractall("glpk_build")
+
+vcv = find_vcvarsall()
+print(vcv)
 
 os.chdir("%s/w%d" % (glpk_build_dir, bitness))
 if not os.path.isfile("glpk.lib"):
