@@ -39,7 +39,7 @@ jobs:
           platforms: all
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.20.0
+        uses: pypa/cibuildwheel@v2.21.3
         env:
           NEW_GLPK_VERSION: ${{ inputs.glpk_version }}
           GLPK_HEADER_PATH: glpk-${{ inputs.glpk_version }}/src
