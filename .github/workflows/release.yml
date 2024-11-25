@@ -44,6 +44,8 @@ jobs:
     # see https://docs.pypi.org/trusted-publishers/.
     - name: Publish to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        packages-dir: wheelhouse/
 
     - name: Create GitHub release
       if: needs.versions.outputs.glpk_version != needs.versions.outputs.swigplk_version
