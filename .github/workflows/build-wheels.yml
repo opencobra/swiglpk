@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, macos-15-intel, macos-latest]
+        os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, macos-15-intel]
 
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
@@ -44,8 +44,8 @@ jobs:
           CIBW_BEFORE_BUILD_LINUX: source {project}/config.sh && pre_build
           CIBW_BEFORE_BUILD_MACOS: source {project}/config.sh && IS_OSX=true pre_build
           CIBW_BEFORE_BUILD_WINDOWS: rm -rf glpk_build && python -m pip install setuptools && python scripts/build_glpk.py
+          CIBW_ARCHS_MACOS: "arm64 x86_64"
           CIBW_ARCHS_LINUX: "auto"
-          CIBW_ARCHS_MACOS: "auto"
           CIBW_SKIP: pp* *-musllinux* cp36-* cp37-*
           # install before tests
           CIBW_TEST_COMMAND: cp {project}/test_swiglpk.py . && python test_swiglpk.py
