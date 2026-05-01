@@ -49,7 +49,7 @@ jobs:
 
     - name: Create GitHub release
       if: needs.versions.outputs.glpk_version != needs.versions.outputs.swigplk_version
-      uses: softprops/action-gh-release@v2
+      uses: softprops/action-gh-release@v3
       with:
         body: >
           Release of GLPK version ${{ needs.versions.outputs.glpk_version }}.
