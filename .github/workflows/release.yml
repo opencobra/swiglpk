@@ -32,7 +32,7 @@ jobs:
       contents: write
 
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
 
     # Download all artifacts to the same directory (sdist and wheels).
     - uses: actions/download-artifact@v8
