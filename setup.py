@@ -155,7 +155,8 @@ try:
 
     class CustomBdistWheel(bdist_wheel):
         def run(self):
-            self.run_command('build_ext')
+            if not self.skip_build:
+                self.run_command('build_ext')
             bdist_wheel.run(self)
 
     custom_cmd_class['bdist_wheel'] = CustomBdistWheel
